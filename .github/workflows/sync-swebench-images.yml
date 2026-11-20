@@ -11,8 +11,8 @@ on:
   workflow_dispatch:
     inputs:
       list:
-        description: "Instance list file (one instance_id per line)"
-        default: "infra/swebench/instances.txt"
+        description: "Instance list file (one instance_id per line); empty = all infra/swebench/instances*.txt"
+        default: ""
   push:
     branches: [main]
     paths:
@@ -45,11 +45,14 @@ jobs:
 
       - name: Copy images
         env:
-          LIST: ${{ github.event.inputs.list || 'infra/swebench/instances.txt' }}
+          LIST: ${{ github.event.inputs.list || '' }}
         run: |
           OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           DST_REPO="ghcr.io/${OWNER}/swebench-x86_64"
           echo "Target: ${DST_REPO}"
+          # manual run: the given list; push: every infra/swebench/instances*.txt
+          if [ -n "$LIST" ]; then cat "$LIST"; else cat infra/swebench/instances*.txt; fi | grep -v '^\s*$' | sort -u > /tmp/all_instances.txt
+          echo "instances: $(wc -l < /tmp/all_instances.txt)"
           copy_one() {
             iid="$1"; s="${iid//__/_1776_}"
             src="index.docker.io/swebench/sweb.eval.x86_64.${s}:latest"
@@ -64,7 +67,7 @@ jobs:
             echo "FAILED $iid: $(tail -c 300 /tmp/err_${s})"; return 1
           }
           export -f copy_one; export DST_REPO
-          grep -v '^\s*$' "$LIST" | xargs -P 4 -I{} bash -c 'copy_one "$@"' _ {} | tee sync.log
+          grep -v '^\s*$' /tmp/all_instances.txt | xargs -P 4 -I{} bash -c 'copy_one "$@"' _ {} | tee sync.log
           echo "copied/skipped: $(grep -cE '^(copied|skip)' sync.log)  failed: $(grep -c '^FAILED' sync.log || true)"
           ! grep -q '^FAILED' sync.log
 
