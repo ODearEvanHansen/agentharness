@@ -17,3 +17,5 @@ predictions*.jsonl
 # models / big files
 *.gguf
 *.tar.zst
+.dsh-home/
+workspace/

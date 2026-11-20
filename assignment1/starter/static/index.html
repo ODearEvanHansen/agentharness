@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>DSH-Lens</title>
+<!-- 课程约定：前端依赖请下载到 static/ 本地引用，不要用 CDN（国内网络）。 -->
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; display: flex; height: 100vh; }
+  #log { flex: 1; overflow: auto; padding: 12px; }
+  #side { width: 300px; border-left: 1px solid #ddd; padding: 12px; }
+</style>
+</head>
+<body>
+<div style="flex:1;display:flex;flex-direction:column">
+  <div id="log"></div>
+  <form id="f" style="display:flex;gap:8px;padding:8px;border-top:1px solid #ddd">
+    <textarea id="p" style="flex:1;height:60px"></textarea><button>发送</button>
+  </form>
+</div>
+<div id="side">TODO：状态 / 轮数 / 成本 / 子 agent 树</div>
+<script>
+let sid = null, seen = 0, es = null;
+
+function onMessage(m) {
+  seen++;
+  // m.kind === "turn": {status, n, prompt|final, seconds}
+  // m.kind === "note": {method, payload}；method === "session.event" 时 payload.event = {type, data}
+  // TODO(A1-L2): 渲染 assistant/message（text 用 markdown，reasoning 可折叠）、tool/call、tool/result（可折叠，带状态）
+  // TODO(A1-L3): 单次调用状态（pending → ok/error）与整轮状态
+  // TODO(A1-L5): 子 agent 的事件挂到对应节点下（payload.sessionId）
+  const pre = document.createElement('pre');
+  pre.textContent = JSON.stringify(m).slice(0, 300);
+  document.getElementById('log').appendChild(pre);
+}
+
+function listen() {
+  if (es) es.close();
+  es = new EventSource(`/api/stream/${sid}?since=${seen}`);
+  es.onmessage = e => onMessage(JSON.parse(e.data));
+}
+
+document.getElementById('f').onsubmit = async e => {
+  e.preventDefault();
+  const prompt = document.getElementById('p').value.trim();
+  if (!prompt) return;
+  const r = await (await fetch('/api/run', {method: 'POST', headers: {'Content-Type': 'application/json'},
+                                             body: JSON.stringify({prompt, session_id: sid})})).json();
+  if (r.error) { alert(r.error); return; }
+  if (r.session_id !== sid) { sid = r.session_id; seen = 0; document.getElementById('log').innerHTML = ''; listen(); }
+};
+</script>
+</body>
+</html>
