@@ -1,0 +1,1 @@
+有人把 util.py 里的 normalize 改名成了 normalize_name，但没更新调用方，test_task.py 报错。修复调用方（不要把函数名改回去，不要改测试）。

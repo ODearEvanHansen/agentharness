@@ -1,0 +1,1 @@
+merge_config 有副作用导致 test_task.py 失败，修复 cfg.py。不要修改测试文件。

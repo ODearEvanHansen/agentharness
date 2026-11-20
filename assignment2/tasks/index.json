@@ -1,0 +1,10 @@
+{
+ "t01_sum_range": "test_task.py 失败了。修复 mathx.py 中的 bug，使测试通过。不要修改测试文件。",
+ "t02_fizzbuzz": "实现 fb.py 里的 fizzbuzz(n)，让 test_task.py 通过。不要修改测试文件。",
+ "t03_reverse_words": "test_task.py 失败了，请修复 text.py，不要修改测试文件。",
+ "t04_merge_no_mutate": "merge_config 有副作用导致 test_task.py 失败，修复 cfg.py。不要修改测试文件。",
+ "t05_parse_duration": "实现 dur.py 里的 parse_duration，规格见 docstring 和 test_task.py。不要修改测试文件。",
+ "t06_fib_memo": "fib(80) 跑不完，test_task.py 超时。修复 fib.py 的性能问题，结果要正确。不要修改测试文件。",
+ "t07_rename_import": "有人把 util.py 里的 normalize 改名成了 normalize_name，但没更新调用方，test_task.py 报错。修复调用方（不要把函数名改回去，不要改测试）。",
+ "t08_csv_quotes": "load_rows 解析带引号和逗号的 CSV 字段出错，修复 data.py 让 test_task.py 通过。不要修改测试文件。"
+}
