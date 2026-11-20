@@ -28,7 +28,9 @@
 | 目录 | 内容 |
 |---|---|
 | `assignment0/` | 作业 0：环境自检 |
-| `assignment1/`–`assignment5/` | 各次作业（陆续发布） |
+| `assignment1/` | 作业 1 DSH-Lens：起始代码 + 自动检查（可做） |
+| `assignment2/` | 作业 2 madsLoop：起始代码 + 运行器 + 源码阅读题（可做） |
+| `assignment3/`–`assignment5/` | 作业 3–5：草稿（机制已实测，排行榜建设中） |
 | `infra/` | 课程基础设施：DSH 课程配置、只放行 DeepSeek 的出网白名单代理、SWE-bench 国内镜像工具 |
 | `tools/` | 通用工具，例如从 DSH 会话日志统计 token 用量和成本 |
 | `docs/design/` | 课程设计文档 |
