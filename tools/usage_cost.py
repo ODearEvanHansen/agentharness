@@ -45,22 +45,44 @@ def iter_session_lines(home, session_id=None):
                     pass
 
 
+def record_model(rec):
+    """The model that produced this assistant message (DSH records it in message.source)."""
+    try:
+        src = rec["data"]["message"]["source"]
+        return src.get("model"), src.get("provider")
+    except (KeyError, TypeError):
+        return None, None
+
+
 def summarize(home, model="deepseek-flash", tier="peak", session_id=None):
-    hit_p, miss_p, out_p = PRICES[model][tier]
-    tot = {"requests": 0, "input_miss": 0, "cache_read": 0, "output": 0}
+    """Sum usage; each request is priced by the model that served it (falls back to `model`).
+
+    Models not in PRICES (e.g. a local llama-server / Ollama route) are counted but cost $0.
+    `by_model` breaks requests/tokens/usd down per model — useful when subagents use other routes.
+    """
+    tot = {"requests": 0, "input_miss": 0, "cache_read": 0, "output": 0, "usd": 0.0}
+    by_model = {}
     for rec in iter_session_lines(home, session_id):
         acc = []
         find_usage(rec, acc)
-        if acc:
-            u = acc[0]
-            tot["requests"] += 1
-            tot["input_miss"] += u.get("inputTokens", 0)
-            tot["cache_read"] += u.get("cacheReadTokens", 0)
-            tot["output"] += u.get("outputTokens", 0)
+        if not acc:
+            continue
+        u = acc[0]
+        m = record_model(rec)[0] or model
+        hit_p, miss_p, out_p = PRICES[m][tier] if m in PRICES else (0, 0, 0)
+        row = by_model.setdefault(m, {"requests": 0, "input_miss": 0, "cache_read": 0, "output": 0, "usd": 0.0})
+        d = {"requests": 1, "input_miss": u.get("inputTokens", 0), "cache_read": u.get("cacheReadTokens", 0),
+             "output": u.get("outputTokens", 0)}
+        d["usd"] = (d["input_miss"] * miss_p + d["cache_read"] * hit_p + d["output"] * out_p) / 1e6
+        for t in (tot, row):
+            for k, v in d.items():
+                t[k] += v
     total_in = tot["input_miss"] + tot["cache_read"]
     tot["cache_hit_rate"] = round(tot["cache_read"] / total_in, 3) if total_in else 0
-    tot["usd"] = round((tot["input_miss"] * miss_p + tot["cache_read"] * hit_p + tot["output"] * out_p) / 1e6, 6)
-    tot["model"], tot["tier"] = model, tier
+    tot["usd"] = round(tot["usd"], 6)
+    for row in by_model.values():
+        row["usd"] = round(row["usd"], 6)
+    tot["model"], tot["tier"], tot["by_model"] = model, tier, by_model
     return tot
 
 

@@ -1,0 +1,25 @@
+# 作业 5 模板：主 agent 用 DeepSeek API，新增 local_worker 工具把子 agent 路由到本机 llama-server。
+# 先启动：llama-server -m Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --jinja -c 65536 -np 2 --port 8091
+# 运行前：export LOCAL_LLM_KEY=none DSH_PERMISSION_MODE=danger-full-access（务必在容器内）；profile 用 sdk（完整）。
+- id: session-log-deepseek
+  config:
+    enabled: false
+- id: llm-pi-ai
+  config:
+    providers:
+      local:
+        apiKeyEnv: LOCAL_LLM_KEY
+        api: openai-completions
+        baseURL: http://127.0.0.1:8091/v1
+        models:
+          - id: qwen3-coder-30b-a3b
+- insert:
+    - id: tool-subagent-local
+      name: '@deepseek-ai/dsh-tool-subagent'
+      config:
+        provider: spawn
+        toolName: local_worker
+        agentOptions:
+          provider: local
+          model: qwen3-coder-30b-a3b
+          maxTokens: 4096
