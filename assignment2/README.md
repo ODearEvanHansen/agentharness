@@ -9,7 +9,10 @@
 ## 准备
 - 完成[作业 0](../assignment0/)，包括关卡 3（拉取 GHCR 镜像）。
 - SWE 题目要在隔离网络中运行：按照 [infra/README.md](../infra/README.md) 建好 `agentharness-net` 和出网白名单代理 `agentharness-egress`。
+- `pip install deepseek-harness-sdk==0.2.2rc2 swebench datasets`（DSH 对照组和官方评测都要用）
 - `export DEEPSEEK_API_KEY=...`
+
+**运行器已验证**（课程参考实现）：小题 madsLoop 8/8（$0.0085）、DSH 8/8（$0.0064）；`django__django-15467` 两边都通过官方评测（madsLoop 24 步 $0.013，DSH $0.008）。
 
 ## Part A：实现 madsLoop（`madsloop/agent.py`）
 

@@ -19,3 +19,4 @@ predictions*.jsonl
 *.tar.zst
 .dsh-home/
 workspace/
+assignment2/results/
