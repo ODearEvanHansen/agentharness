@@ -1,6 +1,7 @@
 # 作业 4：DSH-Serve —— 在自己的机器上跑模型（草稿）
 
-> 🚧 草稿：实验内容和参数都已经在课程 M0 阶段实测过（数据见下文），起始脚本和自动检查还在开发中。
+> 实验脚本 `engine/bench.py`（E1–E5）和自动检查 `check.py` 已经可用：课程团队用 Qwen3-8B Q4 在 32 核 CPU 上跑过一遍，check 6/6 通过。
+> E3 复现结果：草稿长度 3 时接受率 54%、17.9 → 20.8 tok/s；草稿长度 16 时接受率 21%、降到 11.6 tok/s。
 > 预计 10–14 小时，对应第 9–12 周的课程（推理基础、批处理与调度、量化、推测解码、MoE）。
 
 前三个作业里，模型对你来说是一个黑盒 API。这个作业你要在自己的机器上把模型跑起来，亲手调整推理服务的参数，用数据解释每个参数为什么有效（或者为什么无效），最后把本地模型接回你的 agent。
@@ -15,6 +16,14 @@
 > 为什么不用 DeepSeek 自家的蒸馏模型？M0 实测 DeepSeek-R1-Distill-Qwen-7B 在 30 次请求里**一次工具调用都没有发出**，没法当 agent 用。这本身就是一个值得思考的问题：模型"会推理"和"会用工具"是两回事。
 
 软件：llama.cpp（课程锁定 commit `4783b11`，因为参数名会改，例如 `--draft-max` 已经改成 `--spec-draft-n-max`），Ollama ≥ 0.40。
+
+## 怎么跑
+```bash
+python assignment4/engine/bench.py --exp E1 --model models/Qwen3-8B-Q4_K_M.gguf --server llama.cpp/build/bin/llama-server
+# E3 需要 --draft；E5 需要传两个以上 --model
+python assignment4/check.py
+```
+> ⚠️ 推测解码只给 `-md` 不会生效，必须同时设置 `--spec-type draft-simple`。脚本已经替你加好了，但报告里要说明你是怎么确认草稿确实在工作的。
 
 ## 关卡
 

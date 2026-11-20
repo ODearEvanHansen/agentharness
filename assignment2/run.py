@@ -32,6 +32,12 @@ LABEL = os.environ.get("AH_LABEL", "agentharness.course=a2")
 NET = os.environ.get("AH_NET", "agentharness-net")
 EGRESS = os.environ.get("AH_EGRESS", "agentharness-egress")
 PROXY = f"http://{EGRESS}:8888"
+PROFILE = "sdk-minimal"          # --profile 可改
+EXTRA_PATCHES: list[Path] = []   # --patch 可追加（作业 3/5：你的配置和插件）
+
+
+def all_patches():
+    return tuple(str(p) for p in [REPO / "infra" / "course.patch.yml", *EXTRA_PATCHES])
 SWE_PROMPT = """You are working in the repository at /testbed (Python environment already set up).
 Resolve the following GitHub issue by editing the source code. Do not modify existing tests.
 You may write and run small scripts to reproduce and verify the fix. When done, stop.
@@ -69,8 +75,7 @@ def run_dsh_local(env, prompt, model):
     home = HERE / "results" / "dsh-home-mini"
     home.mkdir(parents=True, exist_ok=True)
     with DeepSeekHarness(provider="deepseek-official", model=model, cwd=env.workdir, dsh_home=str(home),
-                         profile="sdk-minimal", patches=(str(REPO / "infra" / "course.patch.yml"),),
-                         initialize_timeout_seconds=120) as h:
+                         profile=PROFILE, patches=all_patches(), initialize_timeout_seconds=120) as h:
         s = h.start_session()
         res = s.run(prompt)
         sid = s.id
@@ -82,8 +87,8 @@ def run_dsh_container(env, prompt, model):
     """DSH runtime 在任务容器内运行（只读挂载进容器），SDK 通过 docker exec 的 stdin/stdout 与之通信。"""
     from deepseek_harness import DeepSeekHarness
     with DeepSeekHarness(provider="deepseek-official", model=model, cwd="/testbed", runtime_cwd=str(HERE),
-                         dsh_home="/dshhome", dsh_bin=str(HERE / "dsh-in-container.sh"), profile="sdk-minimal",
-                         patches=(str(REPO / "infra" / "course.patch.yml"),),
+                         dsh_home="/dshhome", dsh_bin=str(HERE / "dsh-in-container.sh"), profile=PROFILE,
+                         patches=all_patches(),
                          env={"DSH_CTR": env.ctr, "AH_PROXY": PROXY}, initialize_timeout_seconds=180) as h:
         s = h.start_session()
         res = s.run(prompt)
@@ -131,6 +136,7 @@ def run_swe(task, agent, model, outdir):
     cmd = ["docker", "run", "-d", "--name", name, "--label", LABEL, "--cpus", "4", "--memory", "8g",
            "--network", NET, "-e", f"HTTPS_PROXY={PROXY}", "-e", f"HTTP_PROXY={PROXY}",
            "-v", f"{host_path(runtime)}:/dsh:ro", "-v", f"{host_path(infra)}:{infra}:ro",
+           *[x for d in sorted({p.parent for p in EXTRA_PATCHES}) for x in ("-v", f"{host_path(d)}:{d}:ro")],
            f"{IMAGE_REPO}:{suffix}", "sleep", "infinity"]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
@@ -155,10 +161,18 @@ def main():
     ap.add_argument("--timeout", type=int, default=1200, help="单题超时（秒）")
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--out", default=str(HERE / "results"))
+    ap.add_argument("--profile", default="sdk-minimal", help="DSH profile（仅 --agent dsh）")
+    ap.add_argument("--patch", action="append", default=[],
+                    help="追加的 DSH patch 文件（可重复）。SWE 模式下其所在目录会只读挂载进任务容器，插件 .ts 请放在同一目录并用绝对路径引用")
+    ap.add_argument("--tag", default="", help="结果文件名后缀，用于区分不同配置的运行")
     a = ap.parse_args()
+    global PROFILE
+    PROFILE = a.profile
+    EXTRA_PATCHES.extend(Path(p).resolve() for p in a.patch)
     outdir = Path(a.out)
     outdir.mkdir(parents=True, exist_ok=True)
-    out = outdir / f"{a.suite}-{a.agent}.jsonl"
+    tag = f"-{a.tag}" if a.tag else ""
+    out = outdir / f"{a.suite}-{a.agent}{tag}.jsonl"
     # 断点续跑：跳过已成功完成的题；出错的题会重跑（汇总时同一题以最后一条为准）
     done = {r["id"] for r in map(json.loads, out.open()) if not r.get("error")} if out.exists() else set()
     tasks = mini_tasks() if a.suite == "mini" else swe_tasks(a.instances)
@@ -195,14 +209,14 @@ def main():
     if a.suite == "mini":
         print(f"\n{a.agent}: solved {sum(r['solved'] for r in recs)}/{n}  ${sum(r['usd'] for r in recs):.4f}")
     else:
-        preds = outdir / f"predictions-{a.agent}.jsonl"
+        preds = outdir / f"predictions-{a.agent}{tag}.jsonl"
         with preds.open("w") as f:
             for r in recs:
-                f.write(json.dumps({"instance_id": r["id"], "model_name_or_path": a.agent,
+                f.write(json.dumps({"instance_id": r["id"], "model_name_or_path": a.agent + tag,
                                     "model_patch": r.get("model_patch", "")}) + "\n")
         print(f"\n{n} 题完成，${sum(r['usd'] for r in recs):.4f}。predictions -> {preds}\n判分："
               f"python infra/swebench/make_dataset_cn.py --instances {a.instances} --out ds.json && "
-              f"python -m swebench.harness.run_evaluation -d ds.json -p {preds} -id a2-{a.agent}")
+              f"python -m swebench.harness.run_evaluation -d ds.json -p {preds} -id {a.agent}{tag}")
 
 
 if __name__ == "__main__":

@@ -58,5 +58,20 @@ M0 实测（`sdk-minimal`，任务：运行一个输出 3000 行的脚本，再�
 - 成本按官方**高峰价**计算（`tools/usage_cost.py`），并单独报告缓存命中率。
 - 不允许针对具体题目做特殊处理：插件不能读取题号或 issue 文本来走特殊分支。
 
+## 运行与提交排行榜
+```bash
+# 1. 把你的 patch 和插件放进同一个目录（SWE 模式下这个目录会只读挂载进任务容器），patch 里用绝对路径引用插件
+python assignment2/run.py --agent dsh --suite swe --parallel 3 \
+    --patch $PWD/assignment3/submission/my.patch.yml --tag mine \
+    --instances infra/swebench/instances.txt          # 解决率赛道改为 instances_hard.txt
+# 2. 官方判分
+python infra/swebench/make_dataset_cn.py --instances infra/swebench/instances.txt --out ds.json
+python -m swebench.harness.run_evaluation -d ds.json -p assignment2/results/predictions-dsh-mine.jsonl -id mine
+# 3. 生成提交文件，然后发起 PR
+python assignment3/score.py --run assignment2/results/swe-dsh-mine.jsonl --report dsh-mine.mine.json \
+    --track efficiency --config-dir assignment3/submission --name 你的昵称 > assignment3/submission/leaderboard.json
+```
+维护者会抽查复现：用你的配置重跑一遍，解决数允许相差 ±2。`config_sha` 用来核对配置是否一致。
+
 ## 提交物
 `assignment3/` 目录：patch 文件、插件源码、运行记录，以及一篇博客形式的报告（`BLOG.md`，介绍你的优化思路和数据），可选一段视频。
