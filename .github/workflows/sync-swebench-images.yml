@@ -1,0 +1,79 @@
+name: Sync SWE-bench images to GHCR
+
+# Copies the official SWE-bench eval images (Docker Hub, swebench/sweb.eval.x86_64.<id>:latest)
+# into ONE GHCR package with one tag per instance:
+#   ghcr.io/<owner>/swebench-x86_64:<id-with-__-replaced-by-_1776_>
+# One package (instead of one package per image) means visibility only has to be set to
+# "public" once in the GitHub UI. Copy is registry-to-registry with crane (no docker pull/push,
+# no runner disk pressure). Already-present tags are skipped, so the job is safe to re-run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      list:
+        description: "Instance list file (one instance_id per line)"
+        default: "infra/swebench/instances.txt"
+  push:
+    branches: [main]
+    paths:
+      - "infra/swebench/instances*.txt"
+      - ".github/workflows/sync-swebench-images.yml"
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: sync-swebench-images
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install crane
+        run: |
+          VER=v0.22.1
+          curl -sL "https://github.com/google/go-containerregistry/releases/download/${VER}/go-containerregistry_Linux_x86_64.tar.gz" | tar xz -C /usr/local/bin crane
+          crane version
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | crane auth login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Copy images
+        env:
+          LIST: ${{ github.event.inputs.list || 'infra/swebench/instances.txt' }}
+        run: |
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          DST_REPO="ghcr.io/${OWNER}/swebench-x86_64"
+          echo "Target: ${DST_REPO}"
+          copy_one() {
+            iid="$1"; s="${iid//__/_1776_}"
+            src="index.docker.io/swebench/sweb.eval.x86_64.${s}:latest"
+            dst="${DST_REPO}:${s}"
+            if crane digest "$dst" >/dev/null 2>&1; then echo "skip   $iid"; return 0; fi
+            for attempt in 1 2 3; do
+              if crane copy "$src" "$dst" >/dev/null 2>"/tmp/err_${s}"; then
+                echo "copied $iid -> $(crane digest "$dst")"; return 0
+              fi
+              sleep $((attempt * 20))
+            done
+            echo "FAILED $iid: $(tail -c 300 /tmp/err_${s})"; return 1
+          }
+          export -f copy_one; export DST_REPO
+          grep -v '^\s*$' "$LIST" | xargs -P 4 -I{} bash -c 'copy_one "$@"' _ {} | tee sync.log
+          echo "copied/skipped: $(grep -cE '^(copied|skip)' sync.log)  failed: $(grep -c '^FAILED' sync.log || true)"
+          ! grep -q '^FAILED' sync.log
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### SWE-bench → GHCR"
+            echo '```'
+            cat sync.log 2>/dev/null || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

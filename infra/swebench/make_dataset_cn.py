@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""生成"国内镜像版"SWE-bench 数据集 JSON：把每个实例的 image 字段改成 ACR 地址。
+"""生成"镜像版"SWE-bench 数据集 JSON：把每个实例的 image 字段改成课程镜像仓库（默认 GHCR）地址。
 
 学员用法（无需重新打 tag，官方评测直接读本地 JSON）：
   python make_dataset_cn.py --instances instances.txt --out swe_verified_cn.json
   python -m swebench.harness.run_evaluation -d swe_verified_cn.json -p predictions.jsonl -id run1
-  （拉取镜像走 ACR；数据集本身也可由课程方生成后随课程仓库分发，学员就不必访问 Hugging Face）
+  （拉取镜像走课程仓库；数据集本身也可由课程方生成后随课程仓库分发，学员就不必访问 Hugging Face）
 """
 import argparse, json
 from datasets import load_dataset
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--repo", default="crpi-wuyoxje33x46jb9c.cn-hangzhou.personal.cr.aliyuncs.com/agentharness/swebench-x86_64",
+ap.add_argument("--repo", default="ghcr.io/odearevanhansen/swebench-x86_64",
                 help="完整仓库地址（不含 tag）")
 ap.add_argument("--instances", help="只保留列表中的实例（每行一个 instance_id）")
 ap.add_argument("--dataset", default="SWE-bench/SWE-bench_Verified")
