@@ -7,7 +7,7 @@
 
 | 赛道 | 题集 | 指标 |
 |---|---|---|
-| **解决率赛道** | 难题集（待公布；候选为 Verified 1–4h 等） | 解决数；预算硬上限 |
+| **解决率赛道** | [infra/swebench/instances_hard.txt](../infra/swebench/instances_hard.txt)（20 题，Verified 1–4h/>4h；M0 基线：自写 loop 10/20、DSH 8/20，每题约 $0.04） | 解决数；预算硬上限 |
 | **效率赛道** | [infra/swebench/instances.txt](../infra/swebench/instances.txt)（20 题） | 解决率不低于基线的前提下，比每题成本和中位耗时 |
 
 **基线**（M0 实测，`deepseek-flash`，DSH `sdk-minimal`）：17/20，每题 $0.018，中位耗时 55 s，缓存命中率 95.8%。
