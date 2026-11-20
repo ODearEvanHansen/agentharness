@@ -1,0 +1,4 @@
+# Course defaults: do not upload session logs to DeepSeek.
+- id: session-log-deepseek
+  config:
+    enabled: false

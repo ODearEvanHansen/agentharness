@@ -1,0 +1,19 @@
+# secrets
+.env
+*.env
+secrets/
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+# run artifacts
+runs/
+logs/
+*.log
+dsh-home*/
+predictions*.jsonl
+*.m0*.json
+# models / big files
+*.gguf
+*.tar.zst
