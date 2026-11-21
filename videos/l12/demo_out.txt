@@ -1,0 +1,21 @@
+
+=== stable ===
+step 1: prompt= 3177  cache_hit=    0  miss= 3177  hit_rate= 0.0%
+step 2: prompt= 3208  cache_hit= 3072  miss=  136  hit_rate=95.8%
+step 3: prompt= 3252  cache_hit= 3072  miss=  180  hit_rate=94.5%
+step 4: prompt= 3271  cache_hit= 3072  miss=  199  hit_rate=93.9%
+step 5: prompt= 3293  cache_hit= 3072  miss=  221  hit_rate=93.3%
+
+=== timestamp ===
+step 1: prompt= 3197  cache_hit=    0  miss= 3197  hit_rate= 0.0%
+step 2: prompt= 3225  cache_hit=    0  miss= 3225  hit_rate= 0.0%
+step 3: prompt= 3255  cache_hit=    0  miss= 3255  hit_rate= 0.0%
+step 4: prompt= 3276  cache_hit=    0  miss= 3276  hit_rate= 0.0%
+step 5: prompt= 3306  cache_hit=    0  miss= 3306  hit_rate= 0.0%
+
+=== append ===
+step 1: prompt= 3196  cache_hit= 2944  miss=  252  hit_rate=92.1%
+step 2: prompt= 3251  cache_hit= 3072  miss=  179  hit_rate=94.5%
+step 3: prompt= 3314  cache_hit= 3072  miss=  242  hit_rate=92.7%
+step 4: prompt= 3354  cache_hit= 3200  miss=  154  hit_rate=95.4%
+step 5: prompt= 3406  cache_hit= 3200  miss=  206  hit_rate=94.0%
