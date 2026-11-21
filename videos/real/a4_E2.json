@@ -1,0 +1,25 @@
+{
+ "exp": "E2",
+ "model": [
+  "Qwen3-8B-Q4_K_M.gguf"
+ ],
+ "threads": 16,
+ "cpu": "Intel(R) Xeon(R) Gold 6354 CPU @ 3.00GHz",
+ "seconds": 117,
+ "results": {
+  "cache_off": {
+   "first_prompt_ms": 51540,
+   "first_prompt_n": 4632,
+   "second_prompt_ms": 52378,
+   "second_prompt_n": 4632,
+   "second_cache_n": 0
+  },
+  "cache_on": {
+   "first_prompt_ms": 582,
+   "first_prompt_n": 15,
+   "second_prompt_ms": 625,
+   "second_prompt_n": 15,
+   "second_cache_n": 4617
+  }
+ }
+}

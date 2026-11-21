@@ -1,0 +1,70 @@
+LECTURE = {'id': 'l14',
+ 'no': 14,
+ 'title': '成本与可靠性',
+ 'subtitle': '重试策略、预算控制、模型选择',
+ 'scenes': [{'type': 'title', 'narration': '第十四讲，成本与可靠性。agent 要跑很多步，每一步都可能失败，每一步都在花钱。这一讲讲三件事：重试、预算和模型选择。本视频由程序合成，配音来自 DeepSeek 语音合成。'},
+            {'type': 'code',
+             'title': '重试：只重试可恢复的错误',
+             'sub': 'assignment2/madsloop/agent.py 中已提供的 chat()',
+             'lang': 'python',
+             'code': 'for attempt in range(5):\n'
+                     '    try:\n'
+                     '        with urllib.request.urlopen(req, timeout=300) as r:\n'
+                     '            return json.load(r)\n'
+                     '    except urllib.error.HTTPError as e:\n'
+                     '        if e.code in (429, 500, 502, 503) and attempt < 4:\n'
+                     '            time.sleep(2 ** attempt)\n'
+                     '            continue\n'
+                     '        raise',
+             'caption': '限流和服务端错误才重试，指数退避，最多 5 次',
+             'narration': '先看重试。作业二提供的 chat 函数里，只对四二九限流和五百系列的服务端错误重试，每次等待时间翻倍，最多五次。其他错误，比如参数写错，直接抛出，重试也没有用。'},
+            {'type': 'bullets',
+             'title': 'DSH 里的可靠性设计',
+             'sub': 'agent-loop/README.md',
+             'items': ['请求失败进入 agent/request-error，插件可以返回 retry',
+                       '重试复用同一份已组装的请求，不重复组装和准入',
+                       '失败时给没有结果的工具调用补上 TOOL_OUTCOME_UNKNOWN',
+                       '不自动重试结果不确定的操作，避免重复执行副作用'],
+             'caption': '重试模型请求可以，重试不确定的工具调用要小心',
+             'narration': 'DSH 的设计更细一些。请求失败会进入 request error 钩子，由插件决定是否重试，重试时复用同一份请求，所以前缀不变。如果一步失败时有工具调用还没拿到结果，DSH '
+                          '会补一个结果未知的记录，让后续请求的历史保持配对，但不会自动重试这些结果不确定的操作，以免重复执行。'},
+            {'type': 'bars',
+             'title': '成本长尾：最贵的题是平均的两倍多',
+             'sub': 'M0 实测，SWE-bench 20 题，每题成本（高峰价）',
+             'rows': [('loop 平均', 0.0257, 'green', '$0.0257'),
+                      ('loop 最高', 0.058, 'red', '$0.058'),
+                      ('DSH 平均', 0.018, 'blue', '$0.018'),
+                      ('DSH 最高', 0.044, 'orange', '$0.044')],
+             'caption': '耗时同样有长尾：最长约 8 分钟',
+             'narration': '再看预算。M0 的二十道题里，自写 loop 每题平均零点零二五七美元，最贵的一题零点零五八；DSH 平均零点零一八，最贵零点零四四。最贵的题是平均的两倍多，耗时也有长尾，最长的一题跑了大约八分钟。'},
+            {'type': 'bullets',
+             'title': '预算控制：给每一层都设上限',
+             'sub': None,
+             'items': ['步数上限：madsLoop 的 solve() 默认 max_steps=50',
+                       '每题超时：M0 每题限时 20 分钟',
+                       '输出上限和推理强度：DSH 默认 maxTokens 256000、reasoningEffort high，要显式设置',
+                       '解决率赛道有预算硬上限'],
+             'caption': '不设上限，成本就不可控',
+             'narration': '所以每一层都要设上限。步数有上限，作业二的 loop 默认最多五十步；时间有上限，M0 每题限时二十分钟。还有一个容易忽略的点：DSH 默认的最大输出是二十五万六千 token，推理强度是 '
+                          'high，课程要求显式设置这两个参数，否则成本不可控。'},
+            {'type': 'compare',
+             'title': '模型选择：flash 和 pro 怎么选',
+             'left': ('deepseek-flash', ['课程默认模型', '20 题每题约 2 美分', '简单步骤、批量实验'], 'green'),
+             'right': ('deepseek-v4-pro', ['输入价格约为 flash 的四倍多', '留给困难步骤', '在 DSH 里用多模型路由混用'], 'purple'),
+             'caption': '先用 flash 跑通，再决定哪些步骤值得用 pro',
+             'narration': '最后是模型选择。flash 是课程的默认模型，在二十道题上每题大约两美分。pro 更强，但输入价格是 flash 的四倍多。比较合理的做法是简单步骤给 flash，困难步骤再交给 pro，在 DSH '
+                          '里可以用多模型路由实现。具体怎么分，要用数据说话。'},
+            {'type': 'bullets',
+             'title': '隐性成本：钱花回去的地方',
+             'sub': None,
+             'items': ['请求更多、读写更零碎：自写 loop 成本比 DSH 多约 43%',
+                       '不信任子 agent，自己再算一遍（作业五实测）',
+                       '提示开头放了会变的内容，缓存全部失效',
+                       '省钱建议：默认 flash、低峰跑全量、先用 5 题子集调试'],
+             'caption': '省钱先看步数和缓存，再看单价',
+             'narration': '还要警惕隐性成本。自写 loop 请求更多、读写更零碎，成本比 DSH 多出约百分之四十三。主 agent 不信任子 agent、自己复核，也会把钱花回去。提示开头放了会变的内容，缓存就全部失效。几个省钱建议：默认用 '
+                          'flash，在低峰时段跑全量，先用五道题的小子集调试。'},
+            {'type': 'summary',
+             'items': ['只重试可恢复的错误，指数退避', '不确定的工具调用不自动重试', '步数、时间、输出都要设上限', '默认 flash，困难步骤再考虑 pro'],
+             'exercise': '用 tools/usage_cost.py 统计你一轮 20 题的成本分布，找出最贵的 3 题并分析原因',
+             'narration': '小结：只重试可恢复的错误；结果不确定的工具调用不要自动重试；步数、时间和输出都要设上限；默认用 flash。课后练习：统计你一轮二十道题的成本分布，找出最贵的三道题，分析原因。'}]}

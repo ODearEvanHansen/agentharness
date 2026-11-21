@@ -1,0 +1,4 @@
+finish_reason: tool_calls
+reasoning_content: …
+tool_call: get_time {"tz": "Asia/Shanghai"}
+usage: {"prompt_tokens": 293, "completion_tokens": 41, "prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 293}

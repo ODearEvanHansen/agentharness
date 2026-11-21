@@ -1,0 +1,11 @@
+t03_reverse_words                        solved=True      6.3s steps=  5 $0.000842
+t02_fizzbuzz                             solved=True      6.7s steps=  5 $0.000964
+t01_sum_range                            solved=True      7.3s steps=  5 $0.000909
+t04_merge_no_mutate                      solved=True     10.7s steps=  7 $0.001716
+t06_fib_memo                             solved=True      6.8s steps=  4 $0.000734
+t07_rename_import                        solved=True      6.4s steps=  5 $0.000829
+t05_parse_duration                       solved=True      8.8s steps=  5 $0.001578
+t08_csv_quotes                           solved=True      8.1s steps=  6 $0.000949
+
+madsloop: solved 8/8  $0.0085
+(dsh 同一批题: solved 8/8  $0.0064, 每题 3-4 步)

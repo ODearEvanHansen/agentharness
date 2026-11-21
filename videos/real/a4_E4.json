@@ -1,0 +1,21 @@
+{
+ "exp": "E4",
+ "model": [
+  "Qwen3-8B-Q4_K_M.gguf"
+ ],
+ "threads": 16,
+ "cpu": "Intel(R) Xeon(R) Gold 6354 CPU @ 3.00GHz",
+ "seconds": 203,
+ "results": {
+  "kv_f16": {
+   "rss_mb": 12757,
+   "pp_tok_s": 89.2,
+   "tg_tok_s": 10.21
+  },
+  "kv_q8_0": {
+   "rss_mb": 10599,
+   "pp_tok_s": 36.4,
+   "tg_tok_s": 9.23
+  }
+ }
+}

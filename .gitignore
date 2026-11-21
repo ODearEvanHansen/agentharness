@@ -21,3 +21,4 @@ predictions*.jsonl
 workspace/
 assignment2/results/
 assignment4/results/
+videos/out/
