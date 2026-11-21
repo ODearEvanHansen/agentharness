@@ -19,6 +19,7 @@
 - 从 [作业 0：环境自检](assignment0/) 开始
 
 > ⚠️ **安全与隐私**：
+>
 > - agent 会在你的机器上执行 shell 命令，所以课程的所有作业都在 Docker 容器中运行。
 > - DSH 默认会把会话日志随请求上传给 DeepSeek。课程配置（[infra/course.patch.yml](infra/course.patch.yml)）默认关闭这一行为，详见第 1 讲。
 > - 不要把 API key 提交到 git。
