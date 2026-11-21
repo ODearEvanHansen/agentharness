@@ -119,10 +119,31 @@ def lecture_page(L, videos):
     return "\n".join(lines) + "\n"
 
 
+def leaderboard_md():
+    rows = [json.loads(p.read_text()) for p in sorted((REPO / "leaderboard").glob("*.json"))]
+    out = []
+    for track, title, key in (("accuracy", "解决率赛道（难题集 20 题）", lambda r: (-r["resolved"], r["usd_per_task"])),
+                              ("efficiency", "效率赛道（20 题；解决率不低于基线时按每题成本排名）", lambda r: (r["usd_per_task"], -r["resolved"]))):
+        rs = sorted((r for r in rows if r["track"] == track), key=key)
+        out += [f"## {title}", "", "| # | 名称 | 解决 | 每题成本 | 中位耗时 | 缓存命中 | 模型 | 备注 |", "|---|---|---|---|---|---|---|---|"]
+        for i, r in enumerate(rs, 1):
+            med = f"{r['median_seconds']:.0f}s" if r.get("median_seconds") else "—"
+            hit = f"{r['cache_hit_rate']:.1%}" if r.get("cache_hit_rate") else "—"
+            name = r["name"] + (" 🔖" if r.get("baseline") else "")
+            out.append(f"| {i} | {name} | {r['resolved']}/{r['n']} | ${r['usd_per_task']:.4f} | {med} | {hit} | {', '.join(r.get('models', []))} | {r.get('note', '')} |")
+        out.append("")
+    out.append("🔖 = 课程团队提供的基线或示例。")
+    return "\n".join(out)
+
+
 def main():
     shutil.rmtree(OUT, ignore_errors=True)
     OUT.mkdir()
-    copy_md(REPO / "README.md")
+    for name in ("home", "project", "leaderboard"):   # 站点原生页面（链接按站内路径写）
+        src = (REPO / "docs" / f"{name}.md").read_text()
+        if name == "leaderboard":
+            src = src.replace("{{LEADERBOARD}}", leaderboard_md())
+        (OUT / ("index.md" if name == "home" else f"{name}.md")).write_text(src)
     copy_md(REPO / "docs/syllabus.md")
     copy_md(REPO / "infra/README.md")
     for n in range(6):
@@ -153,7 +174,7 @@ def main():
     for n in range(6):
         if (OUT / f"assignments/a{n}.md").exists():
             nav.append(f"      - 'A{n} {ASSIGN_NAMES[n]}': assignments/a{n}.md")
-    nav += ["      - 'A2 源码阅读题': assignments/a2-questions.md", "  - 基础设施: infra.md"]
+    nav += ["      - 'A2 源码阅读题': assignments/a2-questions.md", "  - 期末项目: project.md", "  - 排行榜: leaderboard.md", "  - 基础设施: infra.md"]
     base = (REPO / "mkdocs.base.yml").read_text()
     (REPO / "mkdocs.yml").write_text("# 由 scripts/build_site.py 生成，请修改 mkdocs.base.yml\n" + base.rstrip() + "\n" + "\n".join(nav) + "\n")
     print(f"site_src: {sum(1 for _ in OUT.rglob('*.md'))} pages")

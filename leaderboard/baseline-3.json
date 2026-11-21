@@ -1,0 +1,14 @@
+{
+ "name": "示例 · DSH + trim-tool-output 插件",
+ "track": "efficiency",
+ "n": 20,
+ "resolved": 17,
+ "usd_per_task": 0.01701,
+ "median_seconds": 71.9,
+ "cache_hit_rate": 0.961,
+ "models": [
+  "deepseek-flash"
+ ],
+ "baseline": true,
+ "note": "作业 3 模板插件（maxChars 4000）"
+}

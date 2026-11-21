@@ -4,7 +4,7 @@
 用法（先启动你的服务）：
   python assignment1/check.py --url http://127.0.0.1:8765 --dsh-home assignment1/starter/.dsh-home
 
-会真实调用 DeepSeek API（约 2 轮对话，几分钱）。检查项：
+会真实调用 DeepSeek API（2 轮对话，约 $0.003）。检查项：
   L1 提交与流式：POST /api/run 返回 session_id；SSE 能收到事件
   L2 工具调用：summary.tool_calls 含 bash 类调用，状态为 ok/error，call_id 唯一
   L3 状态与续聊：同一会话第二轮后 turns 递增、状态回到 idle
@@ -74,6 +74,7 @@ def main():
     ok("L2", any(c.get("status") in ("ok", "error") for c in calls), f"tool_calls 有已完成的调用（{len(calls)} 个）")
     ok("L2", len({c.get("call_id") for c in calls}) == len(calls) and all(c.get("call_id") for c in calls), "call_id 非空且唯一")
     ok("L2", not any(c.get("status") == "pending" for c in calls), "空闲时没有残留 pending 调用")
+    ok("L2", any(c.get("name") == "bash" for c in calls), "tool_calls 中能看到 bash 调用（工具名正确解析）")
     agents = s.get("agents", [])
     ok("L5", any(x.get("parent") == sid for x in agents), f"agents 中有挂在根会话下的子 agent（{len(agents)} 个节点）")
     ok("L5", any(c.get("session_id") not in (None, sid) for c in calls), "存在归属于子 agent 会话的工具调用")
@@ -92,7 +93,10 @@ def main():
             ref[k] += part[k]
     close = all(abs(u.get(k, -1) - v) <= max(1, 0.01 * v) for k, v in ref.items())
     ok("L4", close, f"usage 与会话日志一致：你的={ {k: u.get(k) for k in ref} } 参考={ref}")
-    ok("L4", isinstance(u.get("usd"), (int, float)) and u["usd"] > 0, f"usd={u.get('usd')}")
+    hit, miss, out = usage_cost.PRICES[a.model]["peak"]
+    usd_ref = (u.get("input_miss", 0) * miss + u.get("cache_read", 0) * hit + u.get("output", 0) * out) / 1e6
+    ok("L4", isinstance(u.get("usd"), (int, float)) and u["usd"] > 0 and abs(u["usd"] - usd_ref) <= max(1e-6, 0.01 * usd_ref),
+       f"usd={u.get('usd')}，按高峰价由你的 token 数重算应为 {usd_ref:.6f}")
 
     passed = sum(1 for _, c, _ in RESULTS if c)
     print(f"\n{passed}/{len(RESULTS)} 通过")

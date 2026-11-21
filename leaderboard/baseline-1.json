@@ -1,0 +1,14 @@
+{
+ "name": "基线 · DSH sdk-minimal",
+ "track": "efficiency",
+ "n": 20,
+ "resolved": 17,
+ "usd_per_task": 0.018,
+ "median_seconds": 55,
+ "cache_hit_rate": 0.958,
+ "models": [
+  "deepseek-flash"
+ ],
+ "baseline": true,
+ "note": "M0 实测"
+}

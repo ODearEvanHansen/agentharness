@@ -2,7 +2,7 @@ LECTURE = {'id': 'l13',
  'no': 13,
  'title': '插件开发',
  'subtitle': 'tools/post-execute、agent/pre-step、agent/request-error；.ts 免编译加载',
- 'scenes': [{'type': 'title', 'narration': '第十三讲，插件开发。作业三规定不改 DSH 的源码，所有优化都要通过配置补丁和插件完成。这一讲，我们学会写第一个插件。本视频由程序合成，配音来自 DeepSeek 语音合成。'},
+ 'scenes': [{'type': 'title', 'narration': '第十三讲，插件开发。作业三本周发布，它规定不改 DSH 的源码，所有优化都要通过配置补丁和插件完成。这一讲，我们学会写第一个插件。'},
             {'type': 'code',
              'title': '最小的插件',
              'sub': 'docs/user/develop/basic/index.zh.md',
@@ -39,8 +39,8 @@ LECTURE = {'id': 'l13',
                        'agent/request-error：模型请求失败后，决定是否重试',
                        '⚠️ agent/request 已弃用，不要基于它开发'],
              'caption': '这些都是 waterfall：可以修改，也可以交给下一个',
-             'narration': '常用的挂载点有这几个。工具执行之后，可以替换或裁剪结果；工具执行之前，可以拒绝或放行；每一步开始之前，可以修改消息，还能声明开启新的 request series；请求失败时，可以决定是否重试。注意，agent '
-                          'request 这个钩子已经弃用了，不要基于它开发。'},
+             'narration': '常用的挂载点有这几个。工具执行之后，可以替换或裁剪结果；工具执行之前，可以拒绝或放行；每一步开始之前，可以修改消息，还能声明开启新的 request series；请求失败时，可以决定是否重试。注意，名叫 agent 斜杠 '
+                          'request 的那个钩子已经弃用了，不要基于它开发。'},
             {'type': 'code',
              'title': 'waterfall 的写法：要么返回结果，要么调用 next',
              'sub': 'assignment3/templates/trim-tool-output.ts（节选）',
@@ -67,6 +67,6 @@ LECTURE = {'id': 'l13',
              'narration': '最后是写插件的规矩。每个插件都要有独立的对照实验。插件不能读取题号或者题目文本来走特殊分支。patch 和插件要放在同一个目录，评测时它会只读挂进任务容器。另外，上线前先看看缓存命中率，确认你的改动没有打断前缀。'},
             {'type': 'summary',
              'items': ['插件 = 导出 name 和 apply 的 .ts 文件', 'patch 里 insert，绝对路径，免编译', 'waterfall：返回决定，或调用 next()', 'agent/request 已弃用'],
-             'exercise': '改造 trim-tool-output.ts：按工具名设置不同阈值，并在 20 题上做开关对照',
-             'narration': '小结：插件就是一个导出名字和 apply 的 ts 文件，在 patch 里用绝对路径插入，不用编译；waterfall 钩子要么返回决定，要么调用 '
-                          'next。课后练习：改造裁剪模板，按工具名设置不同阈值，并做对照实验。'}]}
+             'exercise': '15 分钟：把 hello-plugin 改成挂在 tools/post-execute 上、打印工具名和输出长度后调用 next()；跑一个小任务，预期每次工具调用打印一行，结果不变',
+             'narration': '小结一下。插件就是一个导出名字和 apply 的 ts 文件，在 patch 里用绝对路径插入，不用编译；waterfall 钩子要么返回决定，要么调用 '
+                          'next。课后小练习：把最小插件改成挂在工具执行之后，打印工具名和输出长度，再交给 next。跑一个小任务，预期每次工具调用都打印一行，而 agent 的结果不变。下一讲，我们讲成本与可靠性。'}]}

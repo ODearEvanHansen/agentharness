@@ -12,16 +12,18 @@ runs/
 logs/
 *.log
 dsh-home*/
-predictions*.jsonl
 *.m0*.json
 # models / big files
 *.gguf
 *.tar.zst
 .dsh-home/
 workspace/
-assignment2/results/
-assignment4/results/
 videos/out/
 site_src/
 mkdocs.yml
 _site/
+# 运行中间产物（学员提交的 results/*.jsonl、报告和 E*.json 不忽略）
+assignment2/results/dsh-home*/
+assignment2/results/dsh-homes/
+assignment2/results/work/
+assignment2/results/judge/

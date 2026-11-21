@@ -1,6 +1,6 @@
 # 作业 1：DSH-Lens —— 观察 agent 在做什么
 
-> 预计 4–6 小时。对应第 2–3 周课程（DSH 导论、agent loop）。
+> 预计 6–10 小时。第 2 周发布，第 4 周截止，对应第 3–5 讲（DSH 导论、事件与会话日志、子 agent）。需要先完成作业 0。
 
 用别人写的 agent 很容易，但想看清它每一步在干什么、为什么花这么多钱，就难多了。这个作业要你做一个网页，用 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）的 Python SDK 驱动 agent，并**实时**把它的执行过程展示出来。后面几个作业都要靠这个工具来分析 agent 的行为。
 
@@ -10,16 +10,21 @@
 - 事件流（实时、无用量信息）和会话日志（落盘、有用量信息）这两种数据源的区别。
 
 ## 准备
-- 完成[作业 0](../assignment0/)。
-- `pip install fastapi uvicorn`
-- **在 Docker 容器或一次性虚拟机里运行。** 起始代码用的是 DSH 完整 profile，并设置了 `DSH_PERMISSION_MODE=danger-full-access`，也就是说 agent 能执行任意 shell 命令。隔离靠容器来做（第 1 讲讲过原因）。
+- 完成[作业 0](../assignment0/)，包括关卡 1 第 4 步（隔离网络和运行器镜像）。
+- **必须在容器里运行。** 起始代码用的是 DSH 完整 profile，并设置了 `DSH_PERMISSION_MODE=danger-full-access`，agent 能执行任意 shell 命令，隔离全靠容器（第 1 讲讲过原因）。如果不在容器里，`app.py` 会拒绝启动。
 
+**启动**（在仓库根目录执行）：
 ```bash
-cd assignment1/starter
-export DEEPSEEK_API_KEY=...
-python -m uvicorn app:app --port 8765
-# 浏览器打开 http://127.0.0.1:8765
+docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agentharness-net \
+  -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
+  -v "$PWD":/work agentharness-runner:0.1 \
+  python -m uvicorn --app-dir assignment1/starter app:app --host 0.0.0.0 --port 8765
 ```
+`--internal` 网络里的容器不能做端口映射。浏览器访问有两种方式：
+- 查到容器的 IP（`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' agentharness-a1`），在宿主机上打开 `http://<IP>:8765`。Linux 上可以直接访问，WSL2 下要在 WSL 里的浏览器或用 curl 访问。
+- 或者启动一个只做端口转发的小容器，同时接入两个网络。**不要**把 agent 容器本身接到普通网络上，那样做会让第三条白名单验证失效。
+
+前端会用到少量 HTML/JavaScript：`EventSource`（SSE）、`fetch` 和简单的 DOM 操作。不熟悉的话，先读 MDN 的 [Server-sent events](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events)（约 20 分钟）。
 
 ## 起始代码里已经有的
 - `app.py`：启动 DSH（加载课程配置，**关闭会话日志上传**）；`POST /api/run` 提交 prompt 或续聊；`GET /api/stream/{sid}` 用 SSE 按顺序推送这个会话树的全部原始事件，支持 `?since=N` 断点续传。
@@ -53,7 +58,7 @@ python -m uvicorn app:app --port 8765
 
 ### 运行自动检查
 ```bash
-python assignment1/check.py --url http://127.0.0.1:8765 --dsh-home assignment1/starter/.dsh-home
+docker exec agentharness-a1 python assignment1/check.py --url http://127.0.0.1:8765 --dsh-home assignment1/starter/.dsh-home
 ```
 检查会真实调用 API，跑 2 轮对话，其中包括一次子 agent，花费约 0.003 美元。全部 ✅ 才算通过 L1–L5。
 

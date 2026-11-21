@@ -1,0 +1,12 @@
+{
+ "name": "基线 · DSH sdk-minimal",
+ "track": "accuracy",
+ "n": 20,
+ "resolved": 8,
+ "usd_per_task": 0.037,
+ "models": [
+  "deepseek-flash"
+ ],
+ "baseline": true,
+ "note": "M0 实测，难题集"
+}

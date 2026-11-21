@@ -1,54 +1,61 @@
 # 作业 0：环境自检
 
-目标：确认你的机器能完成本课程的全部作业。预计 1–2 小时，大部分时间花在下载上。
+目标：确认你的机器能完成本课程的全部作业。预计 1–2 小时，大部分时间花在下载上。**第 1 周周末截止**，作业 1 要求先完成本作业。
+
+> 本课程所有命令都在**仓库根目录**下执行：`git clone https://github.com/ODearEvanHansen/agentharness && cd agentharness`。
 
 ## 关卡 1：基础环境
 1. 安装 Docker。Linux 用户安装 Docker Engine，并把当前用户加入 `docker` 组；Windows 用户安装 Docker Desktop 并启用 WSL2 后端，之后**所有操作都在 WSL2 里进行**。
-2. 安装 Python ≥ 3.10，再安装课程锁定版本的 DSH SDK：
+2. 安装 Python ≥ 3.10，以及课程锁定版本的依赖：
    ```bash
    python3 -m venv ~/.venvs/agentharness && source ~/.venvs/agentharness/bin/activate
-   pip install deepseek-harness-sdk==0.2.2rc2      # 国内可加 -i https://pypi.tuna.tsinghua.edu.cn/simple
+   pip install deepseek-harness-sdk==0.2.2rc2 swebench==5.0.2 zstandard   # 国内可加 -i https://pypi.tuna.tsinghua.edu.cn/simple
    ```
-3. 在 [platform.deepseek.com](https://platform.deepseek.com/) 创建 API key，充值少量金额，建议同时设置消费上限。然后：
+3. **为本课程单独创建一个 API key**：在 [platform.deepseek.com](https://platform.deepseek.com/) 新建 key，只充值少量金额，课程结束后删除。原因是 agent 在容器里运行不可信代码时能读到这个 key。然后执行：
    ```bash
-   export DEEPSEEK_API_KEY=...        # 写进 ~/.bashrc 也行，但千万不要提交进任何 git 仓库
+   export DEEPSEEK_API_KEY=...        # 可以写进 ~/.bashrc，但千万不要提交到任何 git 仓库
    ```
+4. 搭建隔离网络并构建运行器镜像，详见 [infra/README.md](../infra/README.md)。共四条 `docker` 命令，再加一条 `docker build`。之后的作业都会用到它们，**请按 README 里的三条验证逐一确认**。
 
 ## 关卡 2：运行自检
 ```bash
 python3 assignment0/selfcheck.py
 ```
-所有 ❌ 项必须修好，⚠️ 项按提示处理。常见问题：
+所有 ❌ 都必须修好，⚠️ 按提示处理。常见问题：
 
 | 现象 | 处理 |
 |---|---|
-| Docker Hub / PyPI / Hugging Face 慢或不通 | Docker 配置 `registry-mirrors`；pip 换国内源；设置 `HF_ENDPOINT=https://hf-mirror.com` |
-| `DEEPSEEK_API_KEY` 格式警告 | 官方 key 以 `sk-` 开头，检查是不是复制成了其他平台的 key |
-| macOS | 不支持，请使用 x86_64 Linux 云主机或 Windows + WSL2 |
+| PyPI / Hugging Face 慢或不通 | pip 换国内源；Hugging Face 一般用不到（课程已把数据集随仓库分发），确实需要时设置 `HF_ENDPOINT=https://hf-mirror.com` |
+| GHCR 不通或很慢 | 见 [infra/README.md](../infra/README.md) 的"国内访问"一节 |
+| Docker Hub 不通 | 只影响自检里的探测镜像，可以忽略；关卡 3 会用 GHCR 镜像再验证一次 |
+| `DEEPSEEK_API_KEY` 格式警告 | 官方 key 以 `sk-` 开头，检查是不是误复制了其他平台的 key |
+| 内存 ⚠️（16–32GB） | 可以完成 A0–A3，以及 A4 的 8B 实验；A4 L3 和 A5 需要 32GB，A5 可以改用课程提供的本地基线数据 |
+| macOS | 不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2 |
 
-## 关卡 3：拉取评测镜像并跑一道题的测试
-课程把 SWE-bench 评测镜像同步到了 GHCR（无需登录）：`ghcr.io/odearevanhansen/swebench-x86_64:<实例>`。
+## 关卡 3：拉取评测镜像，跑通一道题的评测
+课程已把 SWE-bench 评测镜像同步到 GHCR，拉取无需登录：`ghcr.io/odearevanhansen/swebench-x86_64:<实例>`。
 
 1. 拉取示例镜像（约 3GB）：
    ```bash
    docker pull ghcr.io/odearevanhansen/swebench-x86_64:django_1776_django-15467
    ```
-2. 在**断网**容器里确认环境可用：仓库位于 `/testbed`，Python 环境名为 `testbed`。
+2. 在**断网**容器里确认环境可用。仓库位于 `/testbed`，Python 环境名为 `testbed`：
    ```bash
    docker run --rm --network none --cpus 2 --memory 4g \
      ghcr.io/odearevanhansen/swebench-x86_64:django_1776_django-15467 \
      bash -lc 'source /opt/miniconda3/bin/activate testbed && cd /testbed && git log --oneline -1 && python -c "import django; print(django.get_version())"'
    ```
    能打印出一条 commit 和 Django 版本号，就算通过。
-3. （可选）用官方评测工具验证"金标准补丁"能通过测试。这一步会测通整条评测链路：
+3. 用官方评测工具验证"标准答案补丁"（gold patch）能通过测试，这一步会把整条评测链路跑一遍。第一次运行要准备评测环境，大约需要 5–10 分钟：
    ```bash
-   pip install swebench
-   python infra/swebench/make_dataset_cn.py --instances <(echo django__django-15467) --out /tmp/one.json
-   python -m swebench.harness.run_evaluation -d /tmp/one.json -p gold -id a0-check
+   python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json -p gold \
+     -i django__django-15467 -id a0-check
    ```
-   输出中出现 `Instances resolved: 1` 即为通过。
+   输出里出现 `Instances resolved: 1` 就算通过。
+4. 清理（可选）：`docker rmi ghcr.io/odearevanhansen/swebench-x86_64:django_1776_django-15467`。之后每道题的镜像都按需拉取，用完就删，100GB 磁盘就够用。
 
 ## 完成标准
-在课程讨论区的"作业 0 打卡"帖里贴出：
+在课程讨论区的"作业 0 打卡"帖里贴出以下内容：
 - `selfcheck.py` 的完整输出（不要包含 key）；
-- 关卡 3 第 2 步的输出。
+- 关卡 3 第 2 步和第 3 步的输出；
+- `infra/README.md` 中白名单三条验证的输出。

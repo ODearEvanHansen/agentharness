@@ -25,14 +25,22 @@ def find_usage(obj, acc):
             find_usage(v, acc)
 
 
+def _zstd_decompress(data: bytes) -> bytes:
+    try:
+        from compression import zstd          # Python ≥ 3.14
+        return zstd.decompress(data)
+    except ImportError:
+        import io, zstandard                  # Python < 3.14：pip install zstandard
+        return zstandard.ZstdDecompressor().stream_reader(io.BytesIO(data)).read()
+
+
 def iter_session_lines(home, session_id=None):
     """Yield JSON records from plain and zstd-compressed DSH session logs."""
     pat = f"sessions/*/{session_id}/" if session_id else "sessions/**/"
     for f in list(Path(home).glob(pat + "session.v4.jsonl")) + list(Path(home).glob(pat + "session.v4.jsonl.zstd")):
         if f.suffix == ".zstd":
-            from compression import zstd
             try:
-                text = zstd.decompress(f.read_bytes()).decode()
+                text = _zstd_decompress(f.read_bytes()).decode()
             except Exception:
                 continue  # file being written; caller retries later
         else:

@@ -8,7 +8,7 @@ import json, random
 from collections import Counter, defaultdict
 from datasets import load_dataset
 
-ds = load_dataset("princeton-nlp/SWE-bench_Verified", split="test")
+ds = load_dataset("SWE-bench/SWE-bench_Verified", split="test")
 by = defaultdict(list)
 for r in ds:
     by[r["difficulty"]].append(r)

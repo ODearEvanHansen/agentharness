@@ -1,7 +1,7 @@
 LECTURE = {
     "id": "l25", "no": 25, "title": "全栈：多模型路由", "subtitle": "主 agent 用云端模型，子 agent 用本地模型",
     "scenes": [
-        {"type": "title", "narration": "第二十五讲，我们进入全栈部分：多模型路由。主 agent 用云端的 DeepSeek，子任务交给本机托管的模型。这也是作业五的核心。本视频由程序合成，配音来自 DeepSeek 语音合成。"},
+        {"type": "title", "narration": "第二十五讲，我们进入全栈部分：多模型路由。主 agent 用云端的 DeepSeek，子任务交给本机托管的模型。这是本周发布的作业五的核心。"},
         {"type": "blocks", "title": "架构：一主一从", "sub": "主 agent 规划和决策，local_worker 子 agent 做具体子任务",
          "rows": [("主 agent", [("deepseek-flash", 300, "blue"), ("调用 local_worker", 320, "orange"), ("拿到结果继续", 300, "blue")]),
                   ("子 agent", [("等待任务", 300, "gray"), ("本地 30B-A3B", 320, "green"), ("返回最终答案", 300, "green")])],
@@ -19,7 +19,7 @@ LECTURE = {
         {"type": "bars", "title": "M0 实测：请求数", "sub": "任务：派子 agent 统计文件里大于 50 的数有多少个；答案正确（245）",
          "rows": [("主 agent · DeepSeek", 7, "blue", "7 次 · $0.0046"), ("子 agent · 本地", 6, "green", "6 次 · $0")],
          "caption": "路由确实打通：子 agent 的 6 次请求全部走本地",
-         "narration": "M0 做了一个实测。任务是：派子 agent 统计一个文件里大于五十的数有多少个。答案正确，是二百四十五。主 agent 发了七次请求，花费零点零零四六美元。子 agent 发了六次请求，全部打到本地模型，成本为零。路由机制确实打通了。"},
+         "narration": "试做阶段做了一个实测。任务是：派子 agent 统计一个文件里大于五十的数有多少个。答案正确，是二百四十五。主 agent 发了七次请求，花费约零点四六美分。子 agent 发了六次请求，全部打到本地模型，成本为零。路由机制确实打通了。"},
         {"type": "bullets", "title": "隐性成本：“不信任”带来的重复劳动", "sub": "M0 观察到的现象",
          "items": ["主 agent 拿到子 agent 的结果后，自己又算了一遍来复核",
                    "省下的钱又花回去了，耗时还更长",
@@ -33,9 +33,9 @@ LECTURE = {
                    "让子 agent 返回证据（命令和输出），而不只是结论",
                    "注意冷启动：约 1 万 token 的系统提示，预填充约 120 tok/s"],
          "caption": "选易验证的任务，返回可核对的证据",
-         "narration": "那什么样的子任务适合交给本地模型呢？作业五给出的方向是搜索代码、运行测试、总结日志这类结果容易验证的任务。最好让子 agent 返回命令和输出作为证据，主 agent 核对证据即可，不必重做。还要注意，子 agent 每次请求带着约一万 token 的系统提示，CPU 预填充每秒只有约一百二十个 token，冷启动要上百秒，必须依赖前缀复用。"},
+         "narration": "那什么样的子任务适合交给本地模型呢？作业五给出的方向是搜索代码、运行测试、总结日志这类结果容易验证的任务。最好让子 agent 返回命令和输出作为证据，主 agent 核对证据即可，不必重做。还要注意，子 agent 每次请求带着约一万 token 的系统提示，CPU 预填充每秒只有约一百二十个 token，光预填充就要八十秒以上，必须依赖前缀复用。"},
         {"type": "summary", "items": ["多实例挂载 tool-subagent，用 agentOptions 指定本地模型", "M0 实测：主 7 次请求 $0.0046；子 6 次请求 $0", "隐性成本：主 agent 复核导致重复劳动", "选易验证的子任务，并依赖前缀复用降低冷启动"],
-         "exercise": "完成作业五 L1：复现路由实验，用会话日志的 message.source.model 确认子 agent 走了本地",
-         "narration": "小结一下。通过多实例挂载 tool subagent，我们把子 agent 路由到本地模型。路由本身不难，难的是让主 agent 信任子 agent，避免重复劳动。练习是完成作业五第一关，复现这个实验。下一讲，我们讨论系统级优化。"},
+         "exercise": "按模板挂载 local_worker，跑同款计数任务。预期：答案 245；子 agent 的 message.source.model 为本地模型，llama-server 日志有约 6 次请求",
+         "narration": "小结一下。通过多实例挂载 tool subagent，我们把子 agent 路由到本地模型。路由本身不难，难的是让主 agent 信任子 agent，避免重复劳动。练习是按模板挂上本地子 agent，复现这个计数任务，并在日志里确认子 agent 的请求确实打到了本地。下一讲，我们讨论系统级优化。"},
     ],
 }

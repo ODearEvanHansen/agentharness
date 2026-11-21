@@ -2,7 +2,7 @@ LECTURE = {'id': 'l12',
  'no': 12,
  'title': '前缀缓存与 request series',
  'subtitle': '追加还是改写？“每一步都写入当前时间”的代价',
- 'scenes': [{'type': 'title', 'narration': '这一讲，我们讨论前缀缓存。同样一个 agent，只是换一种写法，成本就可能相差七倍以上。本视频由程序合成，配音来自 DeepSeek 语音合成。里面的数据都来自真实运行。'},
+ 'scenes': [{'type': 'title', 'narration': '第十二讲，前缀缓存与 request series。同样一个 agent，只是换一种写法，成本就可能相差七倍以上。视频里的数据都来自真实运行。'},
             {'type': 'bars',
              'title': '先看价格：命中与未命中差 50 倍',
              'sub': 'deepseek-flash 输入价格（高峰价，美元 / 百万 token）',
@@ -19,12 +19,12 @@ LECTURE = {'id': 'l12',
              'narration': '再看 agent 的请求是什么样的。每一步，agent '
                           '都要把系统提示、工具定义和之前的全部消息重新发一遍，再加上这一步新增的一小段内容。只要开头的部分和上一步一字不差，这部分就能命中缓存，我们只需要为新增的那一小段付全价。'},
             {'type': 'bars',
-             'title': '真实数据：DSH 跑 20 道 SWE-bench',
-             'sub': '命中率 96%',
-             'rows': [('实际花费', 0.34, 'green', '$0.34'), ('假如没有缓存', 2.59, 'red', '$2.59')],
-             'caption': '相差 7.6 倍',
-             'narration': '这是课程实测的数据。DSH 在二十道 SWE bench 题目上，一共读入了七百六十多万个命中缓存的 '
-                          'token，未命中的只有三十万左右，缓存命中率达到百分之九十六。实际花费零点三四美元；如果完全没有缓存，要花两点五九美元，相差七点六倍。'},
+             'title': '真实数据：DSH 跑 20 道 SWE-bench（M0 基线）',
+             'sub': '无缓存≈8.3M 输入×$0.30 + 0.17M 输出×$1.20（每题均值×20 推算）',
+             'rows': [('实际花费（高峰价）', 0.36, 'green', '$0.36'), ('假如没有缓存（估算）', 2.7, 'red', '≈$2.70')],
+             'caption': '命中率 95.8%；没有缓存约贵 7.5 倍',
+             'narration': '这是课程团队试做阶段的 DSH 基线。二十道 SWE bench 题，每题平均输入约四十一万五千 token，命中率百分之九十五点八，按高峰价一共花了零点三六美元。如果完全没有缓存呢？用每题均值乘以二十，总输入约八百三十万 '
+                          'token，全部按未命中价零点三美元每百万计算，再加上输出，大约两点七美元，是实际花费的七点五倍左右。'},
             {'type': 'blocks',
              'title': '反面教材：在系统提示开头写入当前时间',
              'sub': '缓存按前缀匹配，第一个 token 变了，后面全部作废',
@@ -70,20 +70,21 @@ LECTURE = {'id': 'l12',
              'text': "when the prepared call declares `systemPromptUpdate: 'in-history'`, a non-empty prompt change inside a continuing "
                      'request series is appended after the cached history, so the prefix through that history stays reusable.',
              'source': 'packages/core/agent-loop/README.md L166 @ dsh-v0.2.2-rc.2',
-             'caption': '同一个 request series 内追加；新 series 或路由不支持时才改写开头',
-             'narration': 'DSH 把这个原则直接做进了 agent loop。系统提示需要更新时，如果还在同一个 request series 里，并且模型路由支持，DSH 会把新的提示追加到历史末尾，前缀照常命中。只有开启新的 '
-                          'series、或者路由不支持时，才会改写开头。'},
+             'caption': '续接 series 内追加；新 series 且文本变化或路由不支持时才合并',
+             'narration': 'DSH 把这个原则直接做进了 agent loop。系统提示需要更新时，如果路由支持在历史中更新，并且还在同一个 request series 里，DSH '
+                          '会把新的提示追加到历史末尾，前缀照常命中。只有两种情况会把提示合并回开头：路由不支持；或者开启了新的 series，而且提示文本确实变了。提示没变时，即使开启新 series，也不会改写。'},
             {'type': 'bullets',
              'title': '什么会开启新的 request series',
-             'sub': 'agent-loop/README.md L122',
+             'sub': 'packages/core/agent-loop/README.md @ dsh-v0.2.2-rc.2',
              'items': ['agent/pre-step 的决策声明了 startsRequestSeries',
                        '会话内容被替换过，例如压缩或图片卸载',
                        '路由不支持工具更新时，工具定义变化会迫使提示合并到开头',
-                       '恢复会话、切换 provider 或模型，本身不会开启新 series'],
+                       '恢复会话、切换模型本身不开新 series；但缓存按模型区分，换模型照样未命中'],
              'caption': '写插件时要清楚：你的改动会不会打断前缀',
-             'narration': '那么什么情况会开启新的 series？一是插件在 pre step '
-                          '阶段明确声明要开启；二是会话内容被替换过，比如做了压缩。另外，如果路由不支持工具更新，工具定义一变，提示也要合并回开头。而恢复会话、切换模型，本身并不会开启新的 series。'},
+             'narration': '那么什么情况会开启新的 series？一是插件在每一步开始前的钩子里明确声明要开启；二是会话内容被替换过，比如做了压缩。另外，如果路由不支持工具更新，工具定义一变，提示也要合并回开头。恢复会话或切换模型，本身不会开启新的 '
+                          'series；但要注意，前缀缓存是按服务商和模型分开的，换了模型，前缀照样不会命中。'},
             {'type': 'summary',
              'items': ['缓存按前缀匹配', '命中与未命中差 50 倍', '会变的信息放在末尾', '系统提示和工具定义保持稳定，能追加就不改写'],
-             'exercise': '用作业一的 DSH-Lens 观察你的 agent 的命中率曲线，找到下降的那一步并解释原因',
-             'narration': '总结一下。缓存按前缀匹配；命中和未命中差五十倍；会变化的信息要放在末尾；系统提示和工具定义要保持稳定。课后练习：用作业一的工具，观察你自己的 agent 的命中率曲线，找到它下降的那一步，并解释原因。'}]}
+             'exercise': '15 分钟：同一约 3k token 提示连发 3 次，再把时间戳放到开头连发 3 次；预期前者第 2、3 次命中约 3k，后者命中为 0',
+             'narration': '小结一下。缓存按前缀匹配；命中和未命中差五十倍；会变化的信息要放在末尾；系统提示和工具定义要保持稳定。课后小练习：把同一段三千 token 左右的提示连发三次，再把当前时间放到开头连发三次，对比用量里的命中 token '
+                          '数。预期前者从第二次起几乎全部命中，后者始终是零。下一讲，我们讲插件开发。'}]}

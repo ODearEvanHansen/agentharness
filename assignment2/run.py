@@ -70,16 +70,16 @@ def run_madsloop(env, prompt, model):
 
 
 def run_dsh_local(env, prompt, model):
-    """DSH sdk-minimal 在本地目录工作（小题）。"""
+    """DSH 在本地目录工作（小题）。每题独立的 DSH_HOME，统计包含子 agent 在内的全部会话（by_model 区分云端/本地）。"""
     from deepseek_harness import DeepSeekHarness
-    home = HERE / "results" / "dsh-home-mini"
+    home = HERE / "results" / "dsh-home-mini" / Path(env.workdir).name
+    shutil.rmtree(home, ignore_errors=True)
     home.mkdir(parents=True, exist_ok=True)
     with DeepSeekHarness(provider="deepseek-official", model=model, cwd=env.workdir, dsh_home=str(home),
-                         profile=PROFILE, patches=all_patches(), initialize_timeout_seconds=120) as h:
+                         profile=PROFILE, patches=all_patches(), initialize_timeout_seconds=180) as h:
         s = h.start_session()
         res = s.run(prompt)
-        sid = s.id
-    u = usage_cost.summarize(home, model, "peak", sid)
+    u = usage_cost.summarize(home, model, "peak")
     return u, u["requests"], sum(1 for e in res.events if e.get("type") == "tool/call")
 
 
@@ -116,15 +116,35 @@ def run_mini(task, agent, model, outdir):
     fn = run_madsloop if agent == "madsloop" else run_dsh_local
     usage, steps, tcalls = fn(env, task["prompt"], model)
     unchanged = hashlib.sha256((d / "test_task.py").read_bytes()).hexdigest() == th
-    p = subprocess.run([sys.executable, "test_task.py"], cwd=d, capture_output=True, text=True, timeout=60)
+    # 判分在干净副本里进行：只采纳 agent 对"原有源文件"的修改，新增文件（如 conftest.py、sitecustomize.py）一律不带入
+    judge = outdir / "judge" / agent / task["id"]
+    shutil.rmtree(judge, ignore_errors=True)
+    shutil.copytree(src, judge)
+    for f in src.rglob("*"):
+        rel = f.relative_to(src)
+        if f.is_file() and rel.name != "test_task.py" and (d / rel).is_file():
+            shutil.copy2(d / rel, judge / rel)
+    p = subprocess.run([sys.executable, "test_task.py"], cwd=judge, capture_output=True, text=True, timeout=60)
     return {"solved": unchanged and p.returncode == 0, "usage": usage, "steps": steps, "tool_calls": tcalls}
 
 
 def swe_tasks(instances_file):
+    """题面优先从仓库自带的 infra/swebench/dataset*.json 读取（国内无需访问 Hugging Face），缺的题再在线加载。"""
     ids = [l.strip() for l in open(instances_file) if l.strip() and not l.startswith("#")]
-    from datasets import load_dataset
-    ds = {r["instance_id"]: r for r in load_dataset("SWE-bench/SWE-bench_Verified", split="test")}
+    ds = {}
+    for f in (REPO / "infra" / "swebench").glob("dataset*.json"):
+        ds.update({r["instance_id"]: r for r in json.load(open(f))})
+    if any(i not in ds for i in ids):
+        from datasets import load_dataset   # 国内可先 export HF_ENDPOINT=https://hf-mirror.com
+        ds.update({r["instance_id"]: r for r in load_dataset("SWE-bench/SWE-bench_Verified", split="test")})
     return [{"id": i, "prompt": SWE_PROMPT.format(issue=ds[i]["problem_statement"])} for i in ids]
+
+
+CONTAINERS = {}   # task id -> 任务容器名（超时时用来强制清理）
+
+
+def in_container():
+    return Path("/.dockerenv").exists() or os.environ.get("AH_IN_CONTAINER") == "1"
 
 
 def run_swe(task, agent, model, outdir):
@@ -138,6 +158,7 @@ def run_swe(task, agent, model, outdir):
            "-v", f"{host_path(runtime)}:/dsh:ro", "-v", f"{host_path(infra)}:{infra}:ro",
            *[x for d in sorted({p.parent for p in EXTRA_PATCHES}) for x in ("-v", f"{host_path(d)}:{d}:ro")],
            f"{IMAGE_REPO}:{suffix}", "sleep", "infinity"]
+    CONTAINERS[task["id"]] = name
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError(r.stderr[-300:])
@@ -165,6 +186,7 @@ def main():
     ap.add_argument("--patch", action="append", default=[],
                     help="追加的 DSH patch 文件（可重复）。SWE 模式下其所在目录会只读挂载进任务容器，插件 .ts 请放在同一目录并用绝对路径引用")
     ap.add_argument("--tag", default="", help="结果文件名后缀，用于区分不同配置的运行")
+    ap.add_argument("--prompt-suffix-file", help="追加到每道题 prompt 末尾的文本文件（作业 5：路由指引）")
     a = ap.parse_args()
     global PROFILE
     PROFILE = a.profile
@@ -178,6 +200,15 @@ def main():
     tasks = mini_tasks() if a.suite == "mini" else swe_tasks(a.instances)
     tasks = [t for t in tasks if t["id"] not in done and (not a.only or t["id"] in a.only)]
     runner = run_mini if a.suite == "mini" else run_swe
+    if a.suite == "mini" and not in_container():
+        sys.exit("小题模式会在当前机器上直接执行 agent 生成的 shell 命令，必须在容器里运行（见 README「在容器里跑小题」）。\n"
+                 "如果你确认当前环境就是一次性的隔离环境，可以设置 AH_IN_CONTAINER=1。")
+    if a.agent == "dsh" and a.suite == "mini":
+        os.environ.setdefault("DSH_PERMISSION_MODE", "danger-full-access")   # 隔离由外层容器负责
+    if a.prompt_suffix_file:
+        suffix = Path(a.prompt_suffix_file).read_text()
+        for t in tasks:
+            t["prompt"] = t["prompt"].rstrip() + "\n\n" + suffix
 
     def one(t):
         t0 = time.time()
@@ -187,6 +218,9 @@ def main():
             r = ex.submit(runner, t, a.agent, a.model, outdir).result(timeout=a.timeout)
         except Exception as e:
             err = f"{type(e).__name__}: {str(e)[:300]}"
+            if isinstance(e, cf.TimeoutError) and t["id"] in CONTAINERS:
+                # 超时：删除任务容器，正在运行的 agent 随之失去执行环境并很快退出，不会继续在后台花钱
+                subprocess.run(["docker", "rm", "-f", CONTAINERS[t["id"]]], capture_output=True)
             r = {"solved": False if a.suite == "mini" else None, "steps": 0, "tool_calls": 0,
                  "usage": {"requests": 0, "input_miss": 0, "cache_read": 0, "output": 0}, "model_patch": ""}
         finally:
@@ -194,7 +228,9 @@ def main():
         u = {k: r["usage"].get(k, 0) for k in ("requests", "input_miss", "cache_read", "output")}
         rec = {"id": t["id"], "agent": a.agent, "model": a.model, "seconds": round(time.time() - t0, 1),
                "solved": r["solved"], "steps": r["steps"], "tool_calls": r["tool_calls"], **u,
-               "usd": price(u, a.model), "error": err}
+               "usd": r["usage"].get("usd", price(u, a.model)), "error": err}
+        if r["usage"].get("by_model"):
+            rec["by_model"] = r["usage"]["by_model"]
         if "model_patch" in r:
             rec["model_patch"] = r["model_patch"]
         with out.open("a") as f:
@@ -214,9 +250,9 @@ def main():
             for r in recs:
                 f.write(json.dumps({"instance_id": r["id"], "model_name_or_path": a.agent + tag,
                                     "model_patch": r.get("model_patch", "")}) + "\n")
+        ds = "infra/swebench/dataset_hard.json" if "hard" in Path(a.instances).name else "infra/swebench/dataset.json"
         print(f"\n{n} 题完成，${sum(r['usd'] for r in recs):.4f}。predictions -> {preds}\n判分："
-              f"python infra/swebench/make_dataset_cn.py --instances {a.instances} --out ds.json && "
-              f"python -m swebench.harness.run_evaluation -d ds.json -p {preds} -id {a.agent}{tag}")
+              f"python -m swebench.harness.run_evaluation -d {ds} -p {preds} -id {a.agent}{tag}")
 
 
 if __name__ == "__main__":

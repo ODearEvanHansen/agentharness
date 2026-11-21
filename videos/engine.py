@@ -104,7 +104,7 @@ class Ctx:
 
 def chrome(d, t, L, title, sub=None):
     text(d, (80, 56), f"第 {L['no']} 讲 · {L['title']}", 26, "dim")
-    text(d, (W - 80, 56), "AI 合成视频", 22, "dim", anchor="ra")
+    text(d, (W - 80, 56), "AI 合成（含 AI 配音）", 26, "fg", anchor="ra")
     if title:
         text(d, (80, 112), title, 54, "fg", ease(t / 0.6), bold=True)
     if sub:
@@ -386,6 +386,8 @@ def main():
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(silent), "-i", str(build / "voice.wav"),
                     "-i", str(out / f"{L['id']}.srt"), "-map", "0:v", "-map", "1:a", "-map", "2:s", "-c:v", "copy",
                     "-c:a", "aac", "-b:a", "128k", "-c:s", "mov_text", "-metadata:s:s:0", "language=chi",
+                    "-metadata", "comment=AIGC: 画面、字幕由程序生成，配音由 DeepSeek TTS 合成（AgentHarness 公开课）",
+                    "-metadata", "description=AI-generated content (synthetic video and voice)",
                     "-shortest", "-movflags", "+faststart", str(final)], check=True)
     print("done", final, f"{t0:.0f}s")
 

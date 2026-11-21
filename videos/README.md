@@ -7,3 +7,8 @@
 依赖：Pillow、ffmpeg、Noto Sans SC 字体（放在 ~/.fonts 下，或用环境变量 FONTDIR 指定目录）。
 
 配音：`voice_l12.py` 把讲稿逐段交给 DeepSeek TTS（音色 stella）合成，画面时间轴按配音时长拉伸，同时生成 srt 字幕（内嵌字幕轨，也可单独上传到 B 站）。需要 `DEEPSEEK_API_KEY`；生成一讲约 3 分钟的配音约花 $0.01。
+
+## 标识与许可
+- **AI 生成内容标识**：画面右上角始终显示"AI 合成（含 AI 配音）"，片头有文字说明，mp4 元数据里也写入了 AIGC 说明。上传 B 站时，需要在投稿页勾选"作者声明：使用 AI 生成"，并在简介里注明"画面由程序生成，配音由 DeepSeek TTS 合成"。
+- **许可**：讲稿（`lectures/*.py` 中的文字）和生成的视频采用 CC BY-SA 4.0，引擎代码采用 MIT。配音使用 DeepSeek TTS 生成，使用时请遵守 DeepSeek 开放平台的服务条款，视频公开发布前要再确认一遍条款。
+- **字体**：Noto Sans SC 和 DejaVu Sans Mono，均为 SIL OFL 1.1 / 自由许可。字体只在渲染时使用，仓库不再分发字体文件。

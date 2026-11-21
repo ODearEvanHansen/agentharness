@@ -1,0 +1,14 @@
+{
+ "name": "基线 · 自写 loop",
+ "track": "efficiency",
+ "n": 20,
+ "resolved": 18,
+ "usd_per_task": 0.0257,
+ "median_seconds": 132,
+ "cache_hit_rate": 0.97,
+ "models": [
+  "deepseek-flash"
+ ],
+ "baseline": true,
+ "note": "M0 实测"
+}

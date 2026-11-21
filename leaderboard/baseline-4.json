@@ -1,0 +1,12 @@
+{
+ "name": "基线 · 自写 loop",
+ "track": "accuracy",
+ "n": 20,
+ "resolved": 10,
+ "usd_per_task": 0.045,
+ "models": [
+  "deepseek-flash"
+ ],
+ "baseline": true,
+ "note": "M0 实测，难题集"
+}

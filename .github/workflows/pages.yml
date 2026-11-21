@@ -3,7 +3,7 @@ name: Deploy course site
 on:
   push:
     branches: [main]
-    paths: ["README.md", "docs/**", "assignment*/**", "infra/README.md", "videos/lectures/**", "videos/bilibili.json",
+    paths: ["README.md", "docs/**", "assignment*/**", "infra/README.md", "videos/lectures/**", "videos/bilibili.json", "leaderboard/**",
             "scripts/build_site.py", "mkdocs.base.yml", ".github/workflows/pages.yml"]
   workflow_dispatch:
 

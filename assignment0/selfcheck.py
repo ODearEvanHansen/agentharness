@@ -50,13 +50,23 @@ def check_os():
 def check_python():
     ok = sys.version_info >= (3, 10)
     add("✅" if ok else "❌", "Python", platform.python_version(), "" if ok else "需要 Python ≥ 3.10")
+    if sys.version_info < (3, 14):
+        try:
+            import zstandard  # noqa: F401
+            add("✅", "zstandard", "已安装（读取压缩的 DSH 会话日志）")
+        except ImportError:
+            add("❌", "zstandard", "未安装", "pip install zstandard（Python < 3.14 读取 .zstd 会话日志需要）")
 
 
 def check_resources():
     try:
         total = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") / 1024**3
-        add("✅" if total >= 15 else "⚠️", "内存", f"{total:.0f} GB",
-            "" if total >= 15 else "作业 4 本地模型建议 ≥16GB 内存")
+        if total >= 30:
+            add("✅", "内存", f"{total:.0f} GB")
+        elif total >= 15:
+            add("⚠️", "内存", f"{total:.0f} GB", "可完成 A0–A3 和 A4 的 8B 实验；A4 L3 与 A5 的 30B-A3B 需要 32GB（A5 可用课程提供的本地基线）；A2 建议 --parallel 1")
+        else:
+            add("❌", "内存", f"{total:.0f} GB", "至少需要 16GB")
     except (ValueError, OSError, AttributeError):
         add("⚠️", "内存", "无法检测")
     free = shutil.disk_usage(os.path.expanduser("~")).free / 1024**3
@@ -78,15 +88,16 @@ def check_container_runtime():
     probe = [exe, "run", "--rm", "--name", "agentharness-a0-selfcheck", "--label", "agentharness.course=a0",
              "--cpus", "1", "--memory", "256m", "--network", "none", "alpine:3.20", "true"]
     rc, out = run(probe, timeout=180)
-    add("✅" if rc == 0 else "❌", "Docker 运行容器", "ok" if rc == 0 else out[-160:],
-        "" if rc == 0 else "检查镜像拉取（国内可配置 registry-mirrors）")
+    add("✅" if rc == 0 else "⚠️", "Docker 运行容器", "ok" if rc == 0 else out[-160:],
+        "" if rc == 0 else "拉取探测镜像 alpine:3.20（Docker Hub）失败；若只是 Docker Hub 不通可忽略，关卡 3 会用 GHCR 镜像再验证一次")
 
 
 def check_network():
     targets = [
         ("DeepSeek API", "https://api.deepseek.com/", True),
         ("PyPI", "https://pypi.org/simple/deepseek-harness-sdk/", True),
-        ("Docker Hub", "https://registry-1.docker.io/v2/", True),
+        ("GHCR（评测镜像）", "https://ghcr.io/v2/", True),
+        ("Docker Hub", "https://registry-1.docker.io/v2/", False),
         ("Hugging Face", "https://huggingface.co/api/models?limit=1", False),
         ("GitHub", "https://github.com/", False),
     ]
@@ -112,20 +123,31 @@ def check_key():
         with urllib.request.urlopen(req, timeout=10) as r:
             b = json.load(r)["balance_infos"][0]
         add("✅", "DEEPSEEK_API_KEY", f"有效，余额 {b['total_balance']} {b['currency']}")
+        add("⚠️", "API key 安全", "建议为本课程单独创建 key、只充值少量余额，课程结束后删除",
+            "agent 在容器里运行不可信代码时可以读到 key；白名单代理也挡不住经 api.deepseek.com 的数据外传")
     except urllib.error.HTTPError as e:
         add("❌", "DEEPSEEK_API_KEY", f"HTTP {e.code}", "key 无效或已删除")
     except Exception as e:
         add("⚠️", "DEEPSEEK_API_KEY", f"无法验证：{type(e).__name__}")
 
 
+PINS = {"deepseek-harness-sdk": "0.2.2rc2", "swebench": "5.0.2"}
+
+
 def check_dsh():
+    from importlib import metadata
+    for pkg, want in PINS.items():
+        try:
+            v = metadata.version(pkg)
+            add("✅" if v == want else "❌", pkg, v, "" if v == want else f"课程锁定版本：pip install {pkg}=={want}")
+        except metadata.PackageNotFoundError:
+            add("❌", pkg, "未安装", f"pip install {pkg}=={want}")
     try:
-        import deepseek_harness  # noqa: F401
         from deepseek_harness_runtime import resolve_bundled_launch_args
         rc, out = run([*resolve_bundled_launch_args(), "--version"])
-        add("✅" if rc == 0 else "❌", "DSH SDK", out if rc == 0 else out[-160:])
+        add("✅" if rc == 0 else "❌", "DSH 运行时", out if rc == 0 else out[-160:])
     except ImportError:
-        add("⚠️", "DSH SDK", "未安装", "pip install deepseek-harness-sdk==<课程锁定版本>")
+        pass
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@
 
 实验：
   E1 批处理：-np 1 对比 -np 4，同时发 4 个请求 → 总吞吐、平均延迟
-  E2 前缀复用：cache_prompt 关/开，第二个请求与第一个共享约 3k token 前缀 → 预填充时间
+  E2 前缀复用：cache_prompt 关/开（各自冷启动），第二个请求与第一个共享约 4.6k token 前缀 → 预填充时间
   E3 推测解码：无草稿 / 草稿长度 3 / 草稿长度 16 → 生成速度、接受率
   E4 KV 量化：f16 对比 q8_0（-fa on）→ 常驻内存、预填充和生成速度
   E5 权重量化与架构：llama-bench pp512/tg128
@@ -20,7 +20,7 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE.parent / "results"
 CODE_PROMPT = ("Write a Python function that parses an ISO-8601 duration like P1DT2H3M4S into seconds, "
                "with docstring and 5 doctests.\n```python\n")
-# 约 3k token 的"agent 风格"共享前缀：系统提示 + 工具定义 + 一段代码
+# 约 4.6k token（Qwen3 分词）的"agent 风格"共享前缀：系统提示 + 工具定义 + 一段代码
 LONG_PREFIX = ("You are a coding agent. Tools: bash(command), read_file(path), edit_file(path, old, new), done(summary).\n"
                + "\n".join(f"def helper_{i}(x):\n    '''Helper number {i}: returns x transformed.'''\n    return (x * {i} + {i % 7}) % 9973\n"
                            for i in range(120)))
@@ -88,10 +88,10 @@ def e1(a):
 
 
 def e2(a):
+    """每种配置各自重启服务器，保证第一次请求是冷启动；两次请求共享同一段前缀，只有结尾的问题不同。"""
     res = {}
-    with Server(a, ["-np", "1"]) as s:
-        for cache in (False, True):
-            s.complete("reset", 4, cache_prompt=False)
+    for cache in (False, True):
+        with Server(a, ["-np", "1"]) as s:
             x = s.complete(LONG_PREFIX + "\n\nQ1: what does helper_3 return for x=1?\nA:", 16, cache_prompt=cache)
             y = s.complete(LONG_PREFIX + "\n\nQ2: what does helper_5 return for x=2?\nA:", 16, cache_prompt=cache)
             res["cache_on" if cache else "cache_off"] = {
