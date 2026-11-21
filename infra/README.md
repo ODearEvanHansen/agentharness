@@ -16,10 +16,23 @@ docker network create --internal agentharness-net
 docker run -d --name agentharness-egress agentharness-egress:0.1
 docker network connect agentharness-net agentharness-egress
 ```
-搭好后在容器内验证，下面三条都必须满足：
-1. `curl https://api.deepseek.com/` 返回 401：说明通过代理已经连通，只是请求没带 key。
-2. `curl https://github.com/` 失败：代理拒绝了白名单以外的域名。
-3. `curl --noproxy '*' https://example.com/` 失败：说明网络本身是 `--internal`，绕过代理也出不去。**如果这一条能成功，白名单就形同虚设。**
+搭好后在隔离网络里的容器内验证（用运行器镜像，下面整段可直接复制），三条都必须满足：
+```bash
+docker run --rm --network agentharness-net -e HTTPS_PROXY=http://agentharness-egress:8888 \
+  agentharness-runner:0.1 sh -c '
+    echo "1) deepseek: HTTP $(curl -s -o /dev/null -w "%{http_code}" https://api.deepseek.com/)"
+    curl -s -o /dev/null --max-time 15 https://github.com/; echo "2) github: rc=$?"
+    curl -s -o /dev/null --max-time 15 --noproxy "*" https://example.com/; echo "3) noproxy example.com: rc=$?"'
+```
+预期输出：
+```
+1) deepseek: HTTP 401
+2) github: rc=56        # 只要不是 0 就对（代理拒绝，常见 56 或 22）
+3) noproxy example.com: rc=6   # 不是 0 就对；6 表示隔离网络里连 DNS 都解析不了
+```
+1. 返回 401：说明通过代理已经连通，只是请求没带 key。
+2. github 的 rc ≠ 0：代理拒绝了白名单以外的域名。
+3. rc ≠ 0（通常是 6）：说明网络本身是 `--internal`，绕过代理也出不去。**如果这一条 rc=0，白名单就形同虚设。**
 
 白名单有一种情况**防不住**：容器里的 agent 能拿到你的 API key，它可以通过 `api.deepseek.com` 本身把数据发出去，比如发到攻击者自己的 DeepSeek 账号。所以请**为本课程单独创建一个 key，只充值少量余额，课程结束后删除**。
 

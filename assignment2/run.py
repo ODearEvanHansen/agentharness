@@ -6,7 +6,7 @@
   python assignment2/run.py --agent madsloop --suite swe --parallel 3  # SWE-bench 子集（导出 predictions，再用官方评测判分）
 
 SWE 模式要求：先按 infra/README.md 建好隔离网络和出网白名单代理（默认 agentharness-net / agentharness-egress）。
-结果写入 assignment2/results/<suite>-<agent>.jsonl（可断点续跑：已有结果的题会跳过）。
+结果写入 assignment2/results/<suite>-<agent>.jsonl（可断点续跑：已有无错误记录的题会跳过；--fresh 先备份旧文件再全部重跑）。
 
 可选环境变量（一般不用改）：
   AH_NAME_PREFIX  任务容器名前缀（默认 agentharness-a2-）
@@ -176,6 +176,21 @@ def run_swe(task, agent, model, outdir):
     return {"solved": None, "usage": usage, "steps": steps, "tool_calls": tcalls, "model_patch": patch}
 
 
+def resume_filter(tasks, out, only=None, fresh=False):
+    """断点续跑：跳过已有无错误记录的题；出错的题会重跑（汇总时同一题以最后一条为准）。
+    fresh=True 时先把已有结果文件改名备份，全部重跑。"""
+    if fresh and out.exists():
+        bak = out.with_name(f"{out.name}.bak-{time.strftime('%Y%m%d-%H%M%S')}")
+        out.rename(bak)
+        print(f"--fresh：已有结果文件移到 {bak}", flush=True)
+    done = {r["id"] for r in map(json.loads, out.open()) if not r.get("error")} if out.exists() else set()
+    wanted = [t for t in tasks if not only or t["id"] in only]
+    skipped = [t for t in wanted if t["id"] in done]
+    if skipped:
+        print(f"跳过 {len(skipped)} 道已有记录的题（结果文件 {out}）；要重跑请加 --fresh 或换 --tag", flush=True)
+    return [t for t in wanted if t["id"] not in done]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--agent", choices=["madsloop", "dsh"], required=True)
@@ -190,6 +205,8 @@ def main():
     ap.add_argument("--patch", action="append", default=[],
                     help="追加的 DSH patch 文件（可重复）。SWE 模式下其所在目录会只读挂载进任务容器，插件 .ts 请放在同一目录并用绝对路径引用")
     ap.add_argument("--tag", default="", help="结果文件名后缀，用于区分不同配置的运行")
+    ap.add_argument("--fresh", action="store_true",
+                    help="不续跑：先把已有结果文件改名为 <名字>.jsonl.bak-<时间戳>，再全部重跑")
     ap.add_argument("--prompt-suffix-file", help="追加到每道题 prompt 末尾的文本文件（作业 5：路由指引）")
     a = ap.parse_args()
     global PROFILE, OUTDIR
@@ -200,10 +217,8 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
     tag = f"-{a.tag}" if a.tag else ""
     out = outdir / f"{a.suite}-{a.agent}{tag}.jsonl"
-    # 断点续跑：跳过已成功完成的题；出错的题会重跑（汇总时同一题以最后一条为准）
-    done = {r["id"] for r in map(json.loads, out.open()) if not r.get("error")} if out.exists() else set()
     tasks = mini_tasks() if a.suite == "mini" else swe_tasks(a.instances)
-    tasks = [t for t in tasks if t["id"] not in done and (not a.only or t["id"] in a.only)]
+    tasks = resume_filter(tasks, out, a.only, a.fresh)
     runner = run_mini if a.suite == "mini" else run_swe
     if a.suite == "mini" and not in_container():
         sys.exit("小题模式会在当前机器上直接执行 agent 生成的 shell 命令，必须在容器里运行（见 assignment2/README.md「在容器里跑小题」）。\n"

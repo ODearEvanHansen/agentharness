@@ -11,7 +11,7 @@
   L4 成本：summary.usage 与独立从会话日志重算的值一致（误差 ≤1%）
   L5 子 agent：派出子 agent 后 summary.agents 中出现 parent 指向根会话的节点
 """
-import argparse, json, sys, time, urllib.request
+import argparse, json, sys, time, urllib.error, urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools"))
@@ -21,9 +21,11 @@ PROMPT1 = ("请完成两件事：1) 用 bash 在当前目录创建 a1_check.py�
            "2) 派一个子 agent 统计当前目录有多少个 .py 文件，并把结论告诉我。")
 PROMPT2 = "把 a1_check.py 改成打印立方并运行，只告诉我输出。"
 RESULTS = []
+STAGE = ["L1"]   # 当前正在检查的关卡，接口出错时用来提示
 
 
 def ok(level, cond, msg):
+    STAGE[0] = level
     RESULTS.append((level, bool(cond), msg))
     print(("✅" if cond else "❌"), level, msg)
     return cond
@@ -62,13 +64,32 @@ def main():
     ap.add_argument("--model", default="deepseek-flash")
     a = ap.parse_args()
     base = a.url.rstrip("/")
+    try:
+        checks(base, a)
+    except urllib.error.HTTPError as e:
+        api = e.url.split(base, 1)[-1] if e.url else "?"
+        print(f"❌ {STAGE[0]}+ 接口 {api} 返回 {e.code}（起始代码里 summary 等接口尚未实现，或你的实现抛了异常；看服务端日志）")
+    except urllib.error.URLError as e:
+        print(f"❌ {STAGE[0]}+ 连不上 {base}：{e.reason}（服务启动了吗？--url 对吗？）")
+    except TimeoutError as e:
+        print(f"❌ {STAGE[0]}+ 超时：{e}")
+    else:
+        passed = sum(1 for _, c, _ in RESULTS if c)
+        print(f"\n{passed}/{len(RESULTS)} 通过")
+        sys.exit(0 if passed == len(RESULTS) else 1)
+    passed = sum(1 for _, c, _ in RESULTS if c)
+    print(f"\n检查中断：已完成的 {len(RESULTS)} 项里 {passed} 项通过，其余关卡未检查")
+    sys.exit(1)
 
+
+def checks(base, a):
     r = req(f"{base}/api/run", {"prompt": PROMPT1})
     sid = r.get("session_id")
     ok("L1", sid, f"POST /api/run 返回 session_id={sid}")
     ev = first_sse_event(f"{base}/api/stream/{sid}")
     ok("L1", ev and "kind" in ev, "SSE 收到事件")
 
+    STAGE[0] = "L2"
     s = wait_idle(base, sid, 1)
     calls = s.get("tool_calls", [])
     ok("L2", any(c.get("status") in ("ok", "error") for c in calls), f"tool_calls 有已完成的调用（{len(calls)} 个）")
@@ -97,10 +118,6 @@ def main():
     usd_ref = (u.get("input_miss", 0) * miss + u.get("cache_read", 0) * hit + u.get("output", 0) * out) / 1e6
     ok("L4", isinstance(u.get("usd"), (int, float)) and u["usd"] > 0 and abs(u["usd"] - usd_ref) <= max(1e-6, 0.01 * usd_ref),
        f"usd={u.get('usd')}，按高峰价由你的 token 数重算应为 {usd_ref:.6f}")
-
-    passed = sum(1 for _, c, _ in RESULTS if c)
-    print(f"\n{passed}/{len(RESULTS)} 通过")
-    sys.exit(0 if passed == len(RESULTS) else 1)
 
 
 if __name__ == "__main__":

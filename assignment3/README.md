@@ -22,14 +22,41 @@
 - 也可以继续用作业 2 的 madsLoop 参赛（`--agent madsloop`）。
 
 ## 插件模板（已验证）
-[`templates/trim-tool-output.ts`](templates/trim-tool-output.ts)：工具输出超过阈值时，只保留开头和结尾。在你的 patch 里这样插入（路径必须是绝对路径）：
+[`templates/trim-tool-output.ts`](templates/trim-tool-output.ts)：工具输出超过阈值（默认 `maxChars: 2000`）时，只保留开头和结尾。patch 里插件路径必须是绝对路径，而小题（容器里，仓库在 `/work`）和 SWE 题（宿主机）看到的路径不同，所以准备了两份 patch 模板：[`templates/mini.patch.yml`](templates/mini.patch.yml) 和 [`templates/swe.patch.yml`](templates/swe.patch.yml)。在仓库根目录执行：
+```bash
+NICK=你的昵称
+mkdir -p assignment3/submission/$NICK
+cp assignment3/templates/trim-tool-output.ts assignment3/templates/mini.patch.yml assignment3/templates/swe.patch.yml \
+   assignment3/submission/$NICK/
+# 小题 patch：把 NICK 换成你的昵称 → /work/assignment3/submission/<昵称>/trim-tool-output.ts
+sed -i "s|NICK|$NICK|" assignment3/submission/$NICK/mini.patch.yml
+# SWE patch：HOST_REPO 换成宿主机上仓库的绝对路径，NICK 换成昵称
+sed -i -e "s|HOST_REPO|$PWD|" -e "s|NICK|$NICK|" assignment3/submission/$NICK/swe.patch.yml
+cat assignment3/submission/$NICK/*.patch.yml     # 确认路径对
+```
+替换后 `mini.patch.yml` 里的内容是：
 ```yaml
 - insert:
     - id: trim-tool-output
-      name: '/abs/path/to/assignment3/submission/<昵称>/trim-tool-output.ts'
+      name: '/work/assignment3/submission/<昵称>/trim-tool-output.ts'
       config: { maxChars: 2000 }
 ```
 在小实验里，它让成本降到约三分之一；放到 20 道 SWE-bench 题上，效果几乎为零。完整的复盘见第 16 讲。
+
+**确认插件真的加载了**：路径写错时 DSH 不一定报错，结果和不加插件一模一样。插件裁剪时会在工具输出里插入一行 `…[已省略 N 个字符…`，这行文字会原样写进会话日志。跑完后搜一下：
+```bash
+python3 - <<'EOF'
+import pathlib, zstandard
+n = 0
+for p in pathlib.Path("assignment2/results").glob("dsh-home*/**/session.v4.jsonl*"):
+    b = p.read_bytes()
+    if p.suffix == ".zstd":
+        b = zstandard.ZstdDecompressor().decompressobj().decompress(b)
+    n += b.decode(errors="ignore").count("已省略")
+print("裁剪次数:", n)
+EOF
+```
+开插件的一组应该大于 0（前提是有工具输出超过 2000 字符），关插件的一组应该是 0。也可以对比两组运行记录里的 `input_miss` / `cache_read`。注意 `dsh-home*/` 会被下一次运行覆盖，查完再跑下一组。
 
 ## 关卡
 | 关卡 | 内容 |
@@ -42,12 +69,21 @@
 L1 小题（在运行器容器里跑，和作业 2 的写法一致）：
 ```bash
 NICK=你的昵称
-docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
-  -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
-  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 \
-  python assignment2/run.py --agent dsh --suite mini --patch /work/assignment3/submission/$NICK/my.patch.yml --tag $NICK
+# 把容器参数包成一个 shell 函数（每开一个新终端定义一次）
+ahrun() {
+  docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
+    -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
+    -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 "$@"
+}
+# 关插件（基线）
+ahrun python assignment2/run.py --agent dsh --suite mini --tag $NICK-off
+# 开插件：用 mini.patch.yml
+ahrun python assignment2/run.py --agent dsh --suite mini --tag $NICK-on \
+  --patch /work/assignment3/submission/$NICK/mini.patch.yml
 ```
-容器里仓库挂在 `/work`，所以 patch 和插件的绝对路径要写成 `/work/assignment3/submission/<昵称>/...`；SWE 模式在宿主机上运行，用宿主机上的绝对路径（`$PWD/...`）。两种模式各用一份 patch 即可。
+容器里仓库挂在 `/work`，所以小题用 `mini.patch.yml`（`/work/...` 路径）；SWE 模式在宿主机上运行，用 `swe.patch.yml`（宿主机绝对路径）。
+
+**重复实验**：运行器会跳过结果文件里已有记录的题（见作业 2「断点续跑」）。同一配置重复跑多次时，每次换一个 `--tag`（例如 `$NICK-on-r2`），或者加 `--fresh`（旧文件会被改名备份）。
 
 ## 预算建议
 单次运行的成本约为：小题 8 道 $0.01，效率赛道 20 题 $0.4，难题集 20 题 $0.8。例如 2 个优化，每个做开、关两组，每组重复 3 次，在效率赛道上总共约 $5（约 35 元）。**先在小题上调试，确认能跑通后再上 20 题。**
@@ -67,7 +103,7 @@ TRACK=efficiency; SET=infra/swebench/instances.txt;      DS=infra/swebench/datas
 
 # 1. 运行
 python assignment2/run.py --agent dsh --suite swe --parallel 1 --instances $SET \
-    --patch $PWD/assignment3/submission/$NICK/my.patch.yml --tag $NICK
+    --patch $PWD/assignment3/submission/$NICK/swe.patch.yml --tag $NICK
 # 2. 官方判分。报告 dsh-$NICK.$NICK.json 写在当前目录，移进 results/
 python -m swebench.harness.run_evaluation -d $DS -p assignment2/results/predictions-dsh-$NICK.jsonl -id $NICK
 mv dsh-$NICK.$NICK.json assignment2/results/

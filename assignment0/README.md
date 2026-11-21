@@ -22,8 +22,9 @@
 4. 搭建隔离网络并构建运行器镜像，详见 [infra/README.md](../infra/README.md)。共四条 `docker` 命令，再加一条 `docker build`。两个镜像都基于 Docker Hub 上的基础镜像构建：Docker Hub 不通时，要么给 Docker 配置镜像加速（registry mirror），要么直接拉课程预构建的镜像再改成本地名字（见 infra/README.md 的"Docker Hub 不通时"一节）。PyPI 慢时，构建运行器可以加 `--build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple`。之后的作业都会用到它们，**请按 README 里的三条验证逐一确认**。
 
 ## 关卡 2：运行自检
+新开的终端要先激活虚拟环境、载入 key，再运行：
 ```bash
-python3 assignment0/selfcheck.py
+source ~/.venvs/agentharness/bin/activate && set -a && . ~/.config/agentharness/env && set +a && python assignment0/selfcheck.py
 ```
 所有 ❌ 都必须修好，⚠️ 按提示处理。常见问题：
 

@@ -9,7 +9,7 @@
  *   - insert:
  *       - id: trim-tool-output
  *         name: '/abs/path/to/trim-tool-output.ts'
- *         config: { maxChars: 4000, headRatio: 0.3 }
+ *         config: { maxChars: 2000, headRatio: 0.3 }
  */
 import type { Context } from '@deepseek-ai/cordis'
 
@@ -21,7 +21,7 @@ export interface Config {
 }
 
 export function apply(ctx: Context, config: Config = {}) {
-  const maxChars = config.maxChars ?? 4000
+  const maxChars = config.maxChars ?? 2000
   const headRatio = config.headRatio ?? 0.3
 
   ctx.on('tools/post-execute' as any, async (exec: any, result: any, next: () => Promise<any>) => {

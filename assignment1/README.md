@@ -71,6 +71,8 @@ docker exec agentharness-a1 python assignment1/check.py --url http://127.0.0.1:8
 ```
 检查会真实调用 API，跑 2 轮对话，其中包括一次子 agent，花费约 0.003 美元。全部 ✅ 才算通过 L1–L5。
 
+用没改过的起始代码跑，只有 L1 能通过：summary 等接口还没实现，会看到 `❌ L2+ 接口 /api/sessions/<id>/summary 返回 500` 之类的提示，脚本随即以非零退出码结束。这是正常的，实现完接口再跑。
+
 ## 你会踩的坑（提前告诉你）
 1. **事件里没有 token 用量。** `step/end` 只有轮次和步数编号。用量只记录在会话日志 `$DSH_HOME/sessions/**/session.v4.jsonl(.zstd)` 里，每次请求对应一条 `assistant/message` 记录的 `usage` 字段（`inputTokens` 是**未命中缓存**的输入，`cacheReadTokens` 是命中的部分）。
 2. **子 agent 的归属**：用 `subagent.started` 事件的 `parentSessionId` / `childSessionId` 建立父子关系；子 agent 的 `session.event` 带着它自己的 `sessionId`。

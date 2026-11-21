@@ -29,7 +29,7 @@
 ```bash
 export LOCAL_LLM_KEY=$(openssl rand -hex 16)     # 随机 key，同一网络里的其他容器拿不到就用不了
 docker run -d --name agentharness-llm --cpus 16 --memory 30g --network agentharness-net \
-  -v "$PWD/models":/models:ro \
+  -e LOCAL_LLM_KEY -v "$PWD/models":/models:ro \
   ghcr.io/ggml-org/llama.cpp@sha256:ae28f5c2046de51dfd00c9116a36fe44b5e8703ef730d0aea69082781eecb1f7 \
   --model /models/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --jinja -c 65536 -np 2 -t 16 \
   --host 0.0.0.0 --port 8091 --api-key "$LOCAL_LLM_KEY"
@@ -39,22 +39,28 @@ docker run -d --name agentharness-llm --cpus 16 --memory 30g --network agentharn
 
 ## 运行（所有命令都在仓库根目录执行）
 ```bash
-RUN="docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
-  -e HTTPS_PROXY=http://agentharness-egress:8888 -e NO_PROXY=agentharness-llm \
-  -e DEEPSEEK_API_KEY -e LOCAL_LLM_KEY -u $(id -u):$(id -g) -e HOME=/tmp -v $PWD:/work agentharness-runner:0.1"
+# 把容器参数包成一个 shell 函数（每开一个新终端定义一次）
+ahrun() {
+  docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
+    -e HTTPS_PROXY=http://agentharness-egress:8888 -e NO_PROXY=agentharness-llm \
+    -e DEEPSEEK_API_KEY -e LOCAL_LLM_KEY -u "$(id -u):$(id -g)" -e HOME=/tmp \
+    -v "$PWD":/work agentharness-runner:0.1 "$@"
+}
 # 对照组：完整 profile，不路由
-$RUN python assignment2/run.py --agent dsh --suite mini --profile sdk --tag sdkfull --parallel 4
+ahrun python assignment2/run.py --agent dsh --suite mini --profile sdk --tag sdkfull --parallel 4
 # 路由组：模板配置 + 路由提示（这两个文件就是你要改进的对象）
-$RUN python assignment2/run.py --agent dsh --suite mini --profile sdk --tag a5 --parallel 2 --timeout 1800 \
+ahrun python assignment2/run.py --agent dsh --suite mini --profile sdk --tag a5 --parallel 2 --timeout 1800 \
   --patch /work/assignment5/templates/local-worker.patch.yml \
   --prompt-suffix-file assignment5/templates/routing-hint.txt
 python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl assignment2/results/mini-dsh-sdkfull.jsonl
 ```
+改了路由配置后重跑，记得加 `--fresh` 或换 `--tag`，否则已有记录的题会被跳过（见作业 2「断点续跑」）。
+
 `check.py` 在宿主机上运行（容器把仓库挂载成可写目录，agent 能改动仓库里的文件，所以检查以宿主机上的结果为准；key 不要放在仓库里，见作业 0）。
 
 **耗时估算**：课程团队的机器上，路由组 8 题（`-np 2`）墙钟约 26 分钟，对照组约 1 分钟。跑 20 题的加做之前先估算：本地耗时 ≈ 本地请求步数 × 每步预填充 token 数 ÷ 预填充速度（tok/s，用作业 4 E5 的 pp512 或 llama-server 日志里的 prompt eval 速度），再加上生成时间；用小题的 `by_model` 和日志算出这几个数，按题数放大。
 
-**日志证据**：`.gitignore` 会忽略 `*.log`，所以保存 llama-server 日志时用 `.txt`，例如 `docker logs agentharness-llm > assignment5/submission/<昵称>/llama-server.txt 2>&1`。
+**日志证据**：`.gitignore` 虽然忽略 `*.log`，但 `assignment*/submission/` 下的 `.log` 例外，会被保留，不用改扩展名。例如 `docker logs agentharness-llm > assignment5/submission/<昵称>/llama-server.log 2>&1`。
 
 `tools/usage_cost.py` 会按每次请求实际用到的模型分别计价，写在运行记录的 `by_model` 字段里，本地模型按 $0 计。
 
@@ -69,5 +75,5 @@ python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl assignment2/re
 
 ## 提交物
 - `assignment5/submission/<昵称>/`：路由配置、提示词、插件；
-- `assignment2/results/` 下对应的运行记录；llama-server 日志存成 `.txt` 放在 `submission/<昵称>/`；
+- `assignment2/results/` 下对应的运行记录；llama-server 日志放在 `submission/<昵称>/`（`.log` 会被保留）；
 - 博客形式的报告 `BLOG.md`。负面结果同样有价值，例如"在小题上路由永远不划算，原因是……"，前提是有数据支撑。

@@ -41,6 +41,8 @@ python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
 mv madsloop.a2-mine.json assignment2/results/     # 官方评测把报告写在当前目录（仓库根目录）
 ```
 报告文件名是 `<模型名>.<run_id>.json`，模型名取自 predictions 里的 `model_name_or_path`（这里是 `madsloop`）；如果 `mv` 找不到文件，用 `ls *.a2-mine.json` 看实际名字。
+**断点续跑**：结果按题追加写入 `assignment2/results/<suite>-<agent>[-<tag>].jsonl`。再次运行同样的命令时，已有无错误记录的题会跳过，并打印 `跳过 N 道已有记录的题（结果文件 ...）；要重跑请加 --fresh 或换 --tag`；出错的题会重跑。想全部重跑：加 `--fresh`（旧文件改名为 `<名字>.jsonl.bak-<时间戳>` 留作备份），或者换一个 `--tag` 写到新文件。改了 agent 代码之后一定要这么做，否则看到的还是旧结果。
+
 数据集 `dataset.json` 已随仓库提供，**不需要访问 Hugging Face**。单题超时（`--timeout`，默认 1200 秒）后，运行器会删除该题的任务容器，agent 随之停止。
 
 **容易踩的坑（提前告诉你）**
@@ -76,7 +78,9 @@ mv dsh.a2-mine.json assignment2/results/
 ## 提交物
 提交到 `assignment2/` 目录：
 1. `madsloop/agent.py`；
-2. `results/` 下的 `mini-*.jsonl`、`swe-*.jsonl`、`predictions-*.jsonl`，以及官方评测报告 `*.a2-mine.json`；
+2. `results/` 下的结果文件（`git add assignment2/results/` 即可，中间产物已被 `.gitignore` 忽略）：
+   - **要提交**：`mini-*.jsonl`、`swe-*.jsonl`、`predictions-*.jsonl`，以及官方评测报告 `*.a2-mine.json`；
+   - **不提交（已忽略）**：`results/work/`、`results/judge/`（小题工作副本和判分副本）、`results/dsh-home*/`、`results/dsh-homes/`（DSH 会话日志）、`--fresh` 留下的 `*.bak-*` 备份，以及仓库根目录下评测生成的 `logs/`；
 3. `WRITEUP.md`：Part B 的回答加 Part C 的分析，共 2–4 页；
 4. （选做）`contrib/` 下你贡献的题目。
 

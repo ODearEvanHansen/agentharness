@@ -15,12 +15,14 @@
 
 为什么不用 DeepSeek 自家的蒸馏模型？试做阶段实测，DeepSeek-R1-Distill-Qwen-7B 在 30 次请求里**一次工具调用都没有发出**，没法当 agent 用。这本身就值得想一想："会推理"和"会用工具"是两回事。
 
-**下载**：模型都放在仓库根目录的 `models/` 下（已被 `.gitignore` 忽略）。Hugging Face（国内可先 `export HF_ENDPOINT=https://hf-mirror.com`）：
+**下载**：模型都放在仓库根目录的 `models/` 下（已被 `.gitignore` 忽略）。先装下载工具，二选一：`pip install -U "huggingface_hub[cli]"`（命令是 `hf`；旧版本叫 `huggingface-cli`，参数相同），或 `pip install modelscope`。
+
+Hugging Face（国内可先 `export HF_ENDPOINT=https://hf-mirror.com`）：
 ```bash
-huggingface-cli download Qwen/Qwen3-8B-GGUF Qwen3-8B-Q4_K_M.gguf --local-dir models
-huggingface-cli download Qwen/Qwen3-8B-GGUF Qwen3-8B-Q8_0.gguf --local-dir models
-huggingface-cli download Qwen/Qwen3-0.6B-GGUF Qwen3-0.6B-Q8_0.gguf --local-dir models
-huggingface-cli download unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --local-dir models   # 32GB 才需要
+hf download Qwen/Qwen3-8B-GGUF Qwen3-8B-Q4_K_M.gguf --local-dir models
+hf download Qwen/Qwen3-8B-GGUF Qwen3-8B-Q8_0.gguf --local-dir models
+hf download Qwen/Qwen3-0.6B-GGUF Qwen3-0.6B-Q8_0.gguf --local-dir models
+hf download unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --local-dir models   # 32GB 才需要
 ```
 或者 ModelScope（同名仓库）：
 ```bash
