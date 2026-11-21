@@ -10,7 +10,7 @@
 
 | 项 | 决定 | 依据 |
 |---|---|---|
-| 形式 | 中文在线公开课，自愿排行榜，完成证书 | 用户确认 |
+| 形式 | 中文在线公开课，自愿排行榜（证书已取消，2026-11-21） | 用户确认 |
 | 模型 API | 学员自用 DeepSeek 官方 API，默认 `deepseek-flash` | 用户确认；M0 实测成本极低 |
 | Agent 框架 | DSH Python SDK，锁定一个 PyPI 版本（M0 使用 0.2.2rc2） | M0 第 1 步 |
 | 本地推理 | Ollama 作为入门层，llama.cpp `llama-server` 作为主体；不做 SGLang/vLLM 实验 | 用户确认 |
