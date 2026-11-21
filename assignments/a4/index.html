@@ -2102,7 +2102,7 @@ python<span class="w"> </span>assignment4/check.py
 <td>E2 前缀复用</td>
 <td>第 20 讲</td>
 <td><code>cache_prompt</code> 关 / 开（各自冷启动），共享约 4.6k token 的前缀</td>
-<td>第二次请求的预填充时间：关闭时约 50 秒，开启后不到 1 秒，因为几乎全部前缀都被复用</td>
+<td>两次请求共享 4632 token 前缀：关闭时第二次预填充仍要 40.6 s；开启后 0.49 s（复用 4617 token）</td>
 </tr>
 <tr>
 <td>E3 推测解码</td>

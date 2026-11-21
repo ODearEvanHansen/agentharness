@@ -1587,7 +1587,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        已验证的路由机制
+        先看课程团队的实测结果：路由不一定省钱
       
     </span>
   </a>
@@ -1598,7 +1598,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关卡（草案）
+        准备
       
     </span>
   </a>
@@ -1609,7 +1609,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关于耗时
+        运行（所有命令都在仓库根目录执行）
       
     </span>
   </a>
@@ -1618,6 +1618,17 @@
       
         <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关卡
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         提交物
@@ -1782,7 +1793,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        已验证的路由机制
+        先看课程团队的实测结果：路由不一定省钱
       
     </span>
   </a>
@@ -1793,7 +1804,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关卡（草案）
+        准备
       
     </span>
   </a>
@@ -1804,7 +1815,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关于耗时
+        运行（所有命令都在仓库根目录执行）
       
     </span>
   </a>
@@ -1813,6 +1824,17 @@
       
         <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关卡
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         提交物
@@ -1839,84 +1861,117 @@
 
 
 
-<h1 id="5dsh-stack">作业 5：DSH-Stack —— 云端模型和本地模型混合使用（草稿）<a class="headerlink" href="#5dsh-stack" title="Permanent link">&para;</a></h1>
+<h1 id="5dsh-stack">作业 5：DSH-Stack —— 云端模型和本地模型混合使用<a class="headerlink" href="#5dsh-stack" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>🚧 草稿：多模型路由已经实测打通（数据见下文），任务集和排行榜还在建设中。
-预计 12–18 小时，对应第 13–14 周课程。</p>
+<p>预计 12–18 小时。第 13 周发布，<strong>第 16 周末</strong>截止，对应第 25–26 讲。
+课程团队已经完整跑通了路由机制、运行器和自动检查，数据见下文。</p>
 </blockquote>
-<p>前面的作业里，你分别优化过 harness（作业 3）和推理服务（作业 4）。这个作业要把两者合起来：<strong>主 agent 用 DeepSeek API，一部分子任务交给你在本机托管的模型</strong>，在"解决率 × 成本 × 耗时"三个指标上一起优化。本地模型能力弱一些，但只要路由策略得当，就不会拖垮整体任务。</p>
-<h2 id="_1">已验证的路由机制<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>DSH 的 <code>@deepseek-ai/dsh-tool-subagent</code> 插件可以多实例挂载。新挂一个实例，通过 <code>agentOptions</code> 把子 agent 固定到另一个 provider/model 上即可，模板在 <a href="https://github.com/ODearEvanHansen/agentharness/blob/main/assignment5/templates/local-worker.patch.yml"><code>templates/local-worker.patch.yml</code></a>：</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">insert</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tool-subagent-local</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'@deepseek-ai/dsh-tool-subagent'</span>
-<span class="w">      </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spawn</span>
-<span class="w">        </span><span class="nt">toolName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local_worker</span>
-<span class="w">        </span><span class="nt">agentOptions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> provider</span><span class="p">:</span><span class="w"> </span><span class="nv">local</span><span class="p p-Indicator">,</span><span class="nt"> model</span><span class="p">:</span><span class="w"> </span><span class="nv">qwen3-coder-30b-a3b</span><span class="p p-Indicator">,</span><span class="nt"> maxTokens</span><span class="p">:</span><span class="w"> </span><span class="nv">4096</span><span class="w"> </span><span class="p p-Indicator">}</span>
-</code></pre></div>
-<p>M0 实测（<code>sdk</code> 完整 profile；主 agent 用 <code>deepseek-flash</code>，子 agent 用本机 CPU 上的 Qwen3-Coder-30B-A3B；任务：派子 agent 统计文件里大于 50 的数有多少个）：</p>
+<p>作业 3 优化的是 harness，作业 4 优化的是推理服务。这个作业把两者合起来：<strong>主 agent 用 DeepSeek API，一部分子任务交给你在本机托管的模型</strong>，在解决率、成本和耗时三个指标上一起优化。</p>
+<h2 id="_1">先看课程团队的实测结果：路由不一定省钱<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>实验在 8 道课程小题上进行。主 agent 用 <code>deepseek-flash</code>，子 agent 用 CPU 上的 Qwen3-Coder-30B-A3B（Xeon Gold 6354，<code>-t 16</code>）。两组都用 <code>sdk</code> 完整 profile，唯一的区别是路由组多了 <code>local_worker</code> 工具和一段路由提示：</p>
 <table>
 <thead>
 <tr>
-<th></th>
-<th>请求数</th>
-<th>输入 token（未命中 / 命中）</th>
-<th>成本</th>
+<th>配置</th>
+<th>解决</th>
+<th>云端请求</th>
+<th>本地请求</th>
+<th>云端成本</th>
+<th>中位耗时</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>主 agent（DeepSeek）</td>
-<td>7</td>
-<td>10,243 / 59,264</td>
-<td>$0.0046</td>
+<td>不路由（对照）</td>
+<td>8/8</td>
+<td>—</td>
+<td>0</td>
+<td>$0.0167</td>
+<td>12.8 s</td>
 </tr>
 <tr>
-<td>子 agent（本地）</td>
-<td>6</td>
-<td>14,635 / 65,691（llama.cpp 前缀复用）</td>
-<td>$0</td>
+<td>路由（模板 + 示例提示）</td>
+<td>8/8</td>
+<td>58</td>
+<td>34</td>
+<td><strong>$0.0231</strong></td>
+<td><strong>204 s</strong></td>
 </tr>
 </tbody>
 </table>
-<p>答案正确（245）。但要注意：<strong>主 agent 拿到子 agent 的结果后，自己又算了一遍来复核</strong>。这是混合路由的典型隐性成本："不信任"本地模型，就会把省下的钱又花回去。你的路由策略需要解决这个问题。</p>
-<p><code>tools/usage_cost.py</code> 的 <code>summarize()</code> 会按每次请求实际使用的模型分别计价（返回值里的 <code>by_model</code> 字段），本地模型按 $0 计算。</p>
-<h2 id="_2">关卡（草案）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>按模板路由后，云端成本<strong>反而高了约 38%</strong>，耗时则变成原来的十几倍。原因有三点：
+- 每委派一次，主 agent 都要多发几次请求：写任务说明、等结果、读结果。
+- 小题本身只要五六步就能做完，委派省下的工作量抵不过这些额外开销。
+- 本地 30B 模型在 CPU 上预填充约 1 万 token 的系统提示，要一分多钟。</p>
+<p>除此之外还有一个隐性成本。第 25 讲的例子里，主 agent 拿到子 agent 的结果后又自己算了一遍来复核：主 agent 不信任本地模型，就会重复劳动。</p>
+<p><strong>你的任务是找出路由真正划算的条件，或者证明在什么条件下它不划算。</strong></p>
+<h2 id="_2">准备<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li>完成作业 0–4，需要 32GB 内存。内存不足的学员可以跳过 L1 的本地运行，直接使用课程团队提供的本地基线（上表，原始记录在 <a href="https://github.com/ODearEvanHansen/agentharness/tree/main/assignment5/baseline"><code>baseline/</code></a>），完成 L2–L4 的设计和云端实验部分，评分只看这些部分。</li>
+<li>本地模型以容器形式跑在课程的隔离网络里，agent 容器通过容器名 <code>agentharness-llm</code> 访问它。<strong>不要</strong>把 agent 容器接到宿主机网络上。
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>agentharness-llm<span class="w"> </span>--cpus<span class="w"> </span><span class="m">16</span><span class="w"> </span>--memory<span class="w"> </span>30g<span class="w"> </span>--network<span class="w"> </span>agentharness-net<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/models"</span>:/models:ro<span class="w"> </span>ghcr.io/ggml-org/llama.cpp:server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>/models/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf<span class="w"> </span>--jinja<span class="w"> </span>-c<span class="w"> </span><span class="m">65536</span><span class="w"> </span>-np<span class="w"> </span><span class="m">2</span><span class="w"> </span>-t<span class="w"> </span><span class="m">16</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8091</span>
+</code></pre></div>
+  等模型加载完再继续：<code>docker logs -f agentharness-llm</code> 里出现 <code>listening on http://0.0.0.0:8091</code> 才算就绪。判断就绪要看健康检查或日志，<strong>不要只看进程在不在</strong>。课程团队就踩过这个坑：脚本用 <code>pgrep</code> 判断服务已经起来，结果匹配到的是脚本自己的命令行，本地服务其实没启动，6 道题全部退回到云端完成。</li>
+<li>上面用的是 llama.cpp 官方镜像，版本可能和作业 4 里你自己编译的不同，所以性能数字只在本作业内部互相比较。</li>
+</ul>
+<h2 id="_3">运行（所有命令都在仓库根目录执行）<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><div class="highlight"><pre><span></span><code><span class="nv">RUN</span><span class="o">=</span><span class="s2">"docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \</span>
+<span class="s2">  -e HTTPS_PROXY=http://agentharness-egress:8888 -e NO_PROXY=agentharness-llm \</span>
+<span class="s2">  -e DEEPSEEK_API_KEY -e LOCAL_LLM_KEY=none -v </span><span class="nv">$PWD</span><span class="s2">:/work agentharness-runner:0.1"</span>
+<span class="c1"># 对照组：完整 profile，不路由</span>
+<span class="nv">$RUN</span><span class="w"> </span>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>mini<span class="w"> </span>--profile<span class="w"> </span>sdk<span class="w"> </span>--tag<span class="w"> </span>sdkfull<span class="w"> </span>--parallel<span class="w"> </span><span class="m">4</span>
+<span class="c1"># 路由组：模板配置 + 路由提示（这两个文件就是你要改进的对象）</span>
+<span class="nv">$RUN</span><span class="w"> </span>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>mini<span class="w"> </span>--profile<span class="w"> </span>sdk<span class="w"> </span>--tag<span class="w"> </span>a5<span class="w"> </span>--parallel<span class="w"> </span><span class="m">2</span><span class="w"> </span>--timeout<span class="w"> </span><span class="m">1800</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--patch<span class="w"> </span>/work/assignment5/templates/local-worker.patch.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt-suffix-file<span class="w"> </span>assignment5/templates/routing-hint.txt
+python<span class="w"> </span>assignment5/check.py<span class="w"> </span>assignment2/results/mini-dsh-a5.jsonl<span class="w"> </span>assignment2/results/mini-dsh-sdkfull.jsonl
+</code></pre></div>
+<code>tools/usage_cost.py</code> 会按每次请求实际用到的模型分别计价，写在运行记录的 <code>by_model</code> 字段里，本地模型按 $0 计。</p>
+<h2 id="_4">关卡<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>关卡</th>
 <th>内容</th>
+<th>检查</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>L1</td>
-<td>复现上面的路由实验，确认子 agent 的请求确实打到了本地模型（看会话日志里的 <code>message.source.model</code> 和 llama-server 的日志）</td>
+<td>复现上面两组实验，确认子 agent 的请求确实打到了本地模型（看 <code>by_model</code> 和 llama-server 日志）</td>
+<td><code>check.py</code>：解决 ≥ 6/8，且至少一半的题有本地请求</td>
 </tr>
 <tr>
 <td>L2</td>
-<td>在作业 3 的 20 题上，比较三种配置：全部走 DeepSeek / 全部走本地 / 你设计的混合路由。报告解决率、成本和耗时</td>
+<td>分析模板路由为什么更贵：把多出来的云端请求按用途分类（委派、等待、复核……），用作业 1 的工具找证据</td>
+<td>报告</td>
 </tr>
 <tr>
 <td>L3</td>
-<td>设计路由策略：哪类子任务交给本地模型（例如搜索代码、运行测试、总结日志），提示词和工具描述该怎么写，如何避免主 agent 重复劳动</td>
+<td>改进路由策略（改提示词、改工具描述或写插件），目标是解决率不下降、云端成本低于对照组。至少做两个版本，每个版本都要有对照</td>
+<td><code>check.py</code> + 报告</td>
 </tr>
 <tr>
 <td>L4</td>
-<td>协同优化：结合作业 4 的推理服务参数（<code>-np</code>、前缀复用、量化），让本地子 agent 更快</td>
+<td>协同优化：结合作业 4 的推理服务参数（<code>-np</code>、前缀复用、量化）缩短本地子 agent 的耗时，并说明它对云端成本有没有影响</td>
+<td>报告</td>
 </tr>
 <tr>
-<td>L5</td>
-<td>提交排行榜（主指标为解决率；成本和耗时作为第二、第三指标）</td>
+<td>加做</td>
+<td>在作业 3 的 20 题上做 L3 的实验。每题都要启动任务容器，所以 <code>agentharness-llm</code> 需要和任务容器在同一个网络里，并设置 <code>NO_PROXY</code>。CPU 推理可能要跑好几个小时，请先估算时间</td>
+<td>报告</td>
 </tr>
 </tbody>
 </table>
-<h2 id="_3">关于耗时<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>本地 30B-A3B 模型在 CPU 上的预填充速度只有约 120 tok/s，子 agent 每次请求要带上约 1 万 token 的系统提示和工具定义。冷启动的第一次请求要花上百秒，之后依赖前缀复用（作业 4 的 E2）才能降下来。这是本作业最主要的权衡点。</p>
-<h2 id="_4">提交物<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p>路由配置和插件、运行记录、博客形式的报告（<code>BLOG.md</code>），以及可选的视频。</p>
+<h2 id="_5">提交物<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>assignment5/submission/&lt;昵称&gt;/</code>：路由配置、提示词、插件；</li>
+<li><code>assignment2/results/</code> 下对应的运行记录；</li>
+<li>博客形式的报告 <code>BLOG.md</code>。负面结果同样有价值，例如"在小题上路由永远不划算，原因是……"，前提是有数据支撑。</li>
+</ul>
 
 
 
