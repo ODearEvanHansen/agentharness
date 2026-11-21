@@ -5,19 +5,19 @@
  ],
  "threads": 16,
  "cpu": "Intel(R) Xeon(R) Gold 6354 CPU @ 3.00GHz",
- "seconds": 117,
+ "seconds": 137,
  "results": {
   "cache_off": {
-   "first_prompt_ms": 51540,
+   "first_prompt_ms": 40590,
    "first_prompt_n": 4632,
-   "second_prompt_ms": 52378,
+   "second_prompt_ms": 40553,
    "second_prompt_n": 4632,
    "second_cache_n": 0
   },
   "cache_on": {
-   "first_prompt_ms": 582,
-   "first_prompt_n": 15,
-   "second_prompt_ms": 625,
+   "first_prompt_ms": 40087,
+   "first_prompt_n": 4632,
+   "second_prompt_ms": 493,
    "second_prompt_n": 15,
    "second_cache_n": 4617
   }

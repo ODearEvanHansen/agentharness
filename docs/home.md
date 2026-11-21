@@ -10,7 +10,7 @@
 
 - :material-code-braces: **从零实现**
 
-    用约 100 行 Python 写一个 agent loop，去解真实的 SWE-bench 题目。[作业 2](assignments/a2.md)
+    用约 110 行 Python 写一个 agent loop，去解真实的 SWE-bench 题目。[作业 2](assignments/a2.md)
 
 - :material-speedometer: **优化**
 
@@ -52,7 +52,7 @@
 | 先修 | 熟练使用 Python，会用 git 和 Docker，了解 HTTP。不需要机器学习背景 |
 
 !!! warning "当前状态"
-    课程正在建设中：作业 0–2 已可完成，作业 3–5 仍在完善，讲座视频制作中。进展请关注 [GitHub 仓库](https://github.com/ODearEvanHansen/agentharness)。
+    课程正在建设中：作业 0–5 均已可完成（课程团队已完整跑通，等待外部试学员校准耗时与花费），讲座视频制作中。进展请关注 [GitHub 仓库](https://github.com/ODearEvanHansen/agentharness)。
 
 ---
 

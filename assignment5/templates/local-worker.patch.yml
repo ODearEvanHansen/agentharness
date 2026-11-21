@@ -1,16 +1,14 @@
-# 作业 5 模板：主 agent 用 DeepSeek API，新增 local_worker 工具把子 agent 路由到本机 llama-server。
-# 先启动：llama-server -m Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --jinja -c 65536 -np 2 --port 8091
-# 运行前：export LOCAL_LLM_KEY=none DSH_PERMISSION_MODE=danger-full-access（务必在容器内）；profile 用 sdk（完整）。
-- id: session-log-deepseek
-  config:
-    enabled: false
+# 作业 5 模板：主 agent 用 DeepSeek API，新增 local_worker 工具，把子 agent 路由到本地模型。
+# 本地模型以容器 agentharness-llm 的形式跑在课程隔离网络里，agent 容器通过容器名访问它，见 assignment5/README.md。
+# 运行前需要 LOCAL_LLM_KEY=none（本地服务不校验 key），profile 用 sdk（完整版，带子 agent）。
+# 会话日志上传已由课程配置 infra/course.patch.yml 关闭（run.py 会自动加载）。
 - id: llm-pi-ai
   config:
     providers:
       local:
         apiKeyEnv: LOCAL_LLM_KEY
         api: openai-completions
-        baseURL: http://127.0.0.1:8091/v1
+        baseURL: http://agentharness-llm:8091/v1
         models:
           - id: qwen3-coder-30b-a3b
 - insert:

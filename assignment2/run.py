@@ -33,6 +33,7 @@ NET = os.environ.get("AH_NET", "agentharness-net")
 EGRESS = os.environ.get("AH_EGRESS", "agentharness-egress")
 PROXY = f"http://{EGRESS}:8888"
 PROFILE = "sdk-minimal"          # --profile 可改
+OUTDIR = HERE / "results"        # --out 可改；所有中间产物都写在这里
 EXTRA_PATCHES: list[Path] = []   # --patch 可追加（作业 3/5：你的配置和插件）
 
 
@@ -72,7 +73,7 @@ def run_madsloop(env, prompt, model):
 def run_dsh_local(env, prompt, model):
     """DSH 在本地目录工作（小题）。每题独立的 DSH_HOME，统计包含子 agent 在内的全部会话（by_model 区分云端/本地）。"""
     from deepseek_harness import DeepSeekHarness
-    home = HERE / "results" / "dsh-home-mini" / Path(env.workdir).name
+    home = OUTDIR / "dsh-home-mini" / Path(env.workdir).name
     shutil.rmtree(home, ignore_errors=True)
     home.mkdir(parents=True, exist_ok=True)
     with DeepSeekHarness(provider="deepseek-official", model=model, cwd=env.workdir, dsh_home=str(home),
@@ -93,7 +94,7 @@ def run_dsh_container(env, prompt, model):
         s = h.start_session()
         res = s.run(prompt)
         sid = s.id
-    dst = HERE / "results" / "dsh-homes" / env.ctr
+    dst = OUTDIR / "dsh-homes" / env.ctr
     dst.mkdir(parents=True, exist_ok=True)
     subprocess.run(["docker", "cp", f"{env.ctr}:/dshhome/sessions", str(dst / "sessions")], capture_output=True)
     u = usage_cost.summarize(dst, model, "peak", sid)
@@ -188,8 +189,9 @@ def main():
     ap.add_argument("--tag", default="", help="结果文件名后缀，用于区分不同配置的运行")
     ap.add_argument("--prompt-suffix-file", help="追加到每道题 prompt 末尾的文本文件（作业 5：路由指引）")
     a = ap.parse_args()
-    global PROFILE
+    global PROFILE, OUTDIR
     PROFILE = a.profile
+    OUTDIR = Path(a.out).resolve()
     EXTRA_PATCHES.extend(Path(p).resolve() for p in a.patch)
     outdir = Path(a.out)
     outdir.mkdir(parents=True, exist_ok=True)

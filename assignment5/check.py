@@ -3,12 +3,10 @@
 
 先运行（需要 llama-server 在 8091 端口托管本地模型，见 README）：
   export LOCAL_LLM_KEY=none DSH_PERMISSION_MODE=danger-full-access   # 务必在容器内
-  python assignment2/run.py --agent dsh --suite mini --profile sdk \
-      --patch $PWD/assignment5/templates/local-worker.patch.yml \
-      --prompt-suffix-file assignment5/templates/routing-hint.txt --tag a5
-  python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl
+  （命令见 assignment5/README.md：先跑对照组 --tag sdkfull，再跑路由组 --tag a5）
+  python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl assignment2/results/mini-dsh-sdkfull.jsonl
 
-检查：解决 ≥ 6/8；至少一半的题目确实把请求路由到了本地模型；同时报告 DeepSeek 侧成本，与不路由的基线（mini-dsh.jsonl，如果存在）对比。
+检查：解决 ≥ 6/8；至少一半的题目确实把请求路由到了本地模型；并与同一 profile、不路由的对照组比较云端成本和耗时。
 """
 import json, sys
 from pathlib import Path
@@ -33,9 +31,9 @@ cloud = sum(v["usd"] for r in rs for m, v in (r.get("by_model") or {}).items() i
 local_req = sum(v["requests"] for r in rs for m, v in (r.get("by_model") or {}).items() if not m.startswith("deepseek"))
 cloud_req = sum(v["requests"] for r in rs for m, v in (r.get("by_model") or {}).items() if m.startswith("deepseek"))
 print(f"   云端请求 {cloud_req} 次 ${cloud:.4f}；本地请求 {local_req} 次；中位耗时 {sorted(r['seconds'] for r in rs)[len(rs)//2]}s")
-base = f.with_name("mini-dsh.jsonl")
+base = Path(sys.argv[2]) if len(sys.argv) > 2 else f.with_name("mini-dsh-sdkfull.jsonl")
 if base.exists():
     b = list({r["id"]: r for r in map(json.loads, base.open())}.values())
-    print(f"   对照（不路由）：解决 {sum(r['solved'] for r in b)}/{len(b)}，云端 ${sum(r['usd'] for r in b):.4f}，"
+    print(f"   对照（同 profile、不路由）：解决 {sum(r['solved'] for r in b)}/{len(b)}，云端 ${sum(r['usd'] for r in b):.4f}，"
           f"中位耗时 {sorted(r['seconds'] for r in b)[len(b)//2]}s")
 sys.exit(0 if ok else 1)
