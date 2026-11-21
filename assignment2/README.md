@@ -4,7 +4,7 @@
 
 agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Python 标准库写一个最小的 agent loop，让它在隔离容器里解真实的 SWE-bench 题目，再和工业级 harness（DSH）做对照。
 
-**参考数据**（课程试做阶段 M0 实测，`deepseek-flash`，20 道分层抽样的 Verified 题）：一个约 110 行的 loop 解出 18/20，DSH `sdk-minimal` 解出 17/20；loop 每题约 $0.026，DSH 每题约 $0.018。也就是说，你写的 loop 有能力解出大部分题，但你需要讲清楚它为什么更贵。
+**参考数据**（试做阶段（开课前课程团队的完整试做）实测，`deepseek-flash`，20 道分层抽样的 Verified 题）：一个约 110 行的 loop 解出 18/20，DSH `sdk-minimal` 解出 17/20；loop 每题约 $0.026，DSH 每题约 $0.018。也就是说，你写的 loop 有能力解出大部分题，但你需要讲清楚它为什么更贵。
 
 ## 准备
 - 完成[作业 0](../assignment0/)，包括隔离网络、运行器镜像和 GHCR 镜像拉取。
@@ -23,11 +23,13 @@ agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Pytho
 | L2 | 主循环：调用模型、执行工具、累加 token 用量、判断何时停止 | 课程小题 ≥ 6/8 |
 | L3 | 在 SWE 子集上运行（[instances.txt](../infra/swebench/instances.txt)，20 题），用官方评测判分 | 记录解决率 |
 
+### 在容器里跑小题
+
 **小题**会执行模型生成的 shell 命令，所以必须在运行器容器里跑（不在容器里时运行器会拒绝执行）：
 ```bash
 docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
   -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
-  -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent madsloop --suite mini
+  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent madsloop --suite mini
 ```
 判分在一份干净副本里进行：只采用你对原有源文件的修改。新增的文件（例如 `conftest.py`）不会带入判分副本，改动 `test_task.py` 的解答直接判为不通过。
 
@@ -36,7 +38,9 @@ docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
 python assignment2/run.py --agent madsloop --suite swe --parallel 1
 python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
   -p assignment2/results/predictions-madsloop.jsonl -id a2-mine
+mv madsloop.a2-mine.json assignment2/results/     # 官方评测把报告写在当前目录（仓库根目录）
 ```
+报告文件名是 `<模型名>.<run_id>.json`，模型名取自 predictions 里的 `model_name_or_path`（这里是 `madsloop`）；如果 `mv` 找不到文件，用 `ls *.a2-mine.json` 看实际名字。
 数据集 `dataset.json` 已随仓库提供，**不需要访问 Hugging Face**。单题超时（`--timeout`，默认 1200 秒）后，运行器会删除该题的任务容器，agent 随之停止。
 
 **容易踩的坑（提前告诉你）**
@@ -52,8 +56,11 @@ python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
 ```bash
 docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
   -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
-  -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent dsh --suite mini
+  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent dsh --suite mini
 python assignment2/run.py --agent dsh --suite swe --parallel 1
+python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
+  -p assignment2/results/predictions-dsh.jsonl -id a2-mine
+mv dsh.a2-mine.json assignment2/results/
 ```
 在同一批题上比较 madsLoop 和 DSH，写一页分析，至少包括：
 - 一张表：解决率、平均步数、输入/输出 token、缓存命中率、每题成本、中位耗时；

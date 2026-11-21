@@ -13,9 +13,13 @@
    ```
 3. **为本课程单独创建一个 API key**：在 [platform.deepseek.com](https://platform.deepseek.com/) 新建 key，只充值少量金额，课程结束后删除。原因是 agent 在容器里运行不可信代码时能读到这个 key。然后执行：
    ```bash
-   export DEEPSEEK_API_KEY=...        # 可以写进 ~/.bashrc，但千万不要提交到任何 git 仓库
+   mkdir -p ~/.config/agentharness
+   printf 'export DEEPSEEK_API_KEY=%s\n' 'sk-...' > ~/.config/agentharness/env   # 换成你的 key
+   chmod 600 ~/.config/agentharness/env
+   source ~/.config/agentharness/env   # 每次开新终端时执行
    ```
-4. 搭建隔离网络并构建运行器镜像，详见 [infra/README.md](../infra/README.md)。共四条 `docker` 命令，再加一条 `docker build`。之后的作业都会用到它们，**请按 README 里的三条验证逐一确认**。
+   key 放在仓库**之外**：作业容器会把仓库挂载成可写目录，agent 能读写仓库里的任何文件，所以不要在仓库根目录放 `.env`；也不要写进 `~/.bashrc`（很多工具会读取或打印它）。千万不要提交到任何 git 仓库。
+4. 搭建隔离网络并构建运行器镜像，详见 [infra/README.md](../infra/README.md)。共四条 `docker` 命令，再加一条 `docker build`。两个镜像都基于 Docker Hub 上的基础镜像构建：Docker Hub 不通时，要么给 Docker 配置镜像加速（registry mirror），要么直接拉课程预构建的镜像再改成本地名字（见 infra/README.md 的"Docker Hub 不通时"一节）。PyPI 慢时，构建运行器可以加 `--build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple`。之后的作业都会用到它们，**请按 README 里的三条验证逐一确认**。
 
 ## 关卡 2：运行自检
 ```bash
@@ -27,7 +31,7 @@ python3 assignment0/selfcheck.py
 |---|---|
 | PyPI / Hugging Face 慢或不通 | pip 换国内源；Hugging Face 一般用不到（课程已把数据集随仓库分发），确实需要时设置 `HF_ENDPOINT=https://hf-mirror.com` |
 | GHCR 不通或很慢 | 见 [infra/README.md](../infra/README.md) 的"国内访问"一节 |
-| Docker Hub 不通 | 只影响自检里的探测镜像，可以忽略；关卡 3 会用 GHCR 镜像再验证一次 |
+| Docker Hub 不通 | **不能忽略**：运行器和出网代理镜像都从 Docker Hub 的基础镜像构建。请配置镜像加速，或拉取 `ghcr.io/odearevanhansen/agentharness-runner:0.1` 和 `ghcr.io/odearevanhansen/agentharness-egress:0.1` 后用 `docker tag` 改成本地名字，见 [infra/README.md](../infra/README.md) |
 | `DEEPSEEK_API_KEY` 格式警告 | 官方 key 以 `sk-` 开头，检查是不是误复制了其他平台的 key |
 | 内存 ⚠️（16–32GB） | 可以完成 A0–A3，以及 A4 的 8B 实验；A4 L3 和 A5 需要 32GB，A5 可以改用课程提供的本地基线数据 |
 | macOS | 不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2 |

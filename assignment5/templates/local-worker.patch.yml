@@ -1,6 +1,6 @@
 # 作业 5 模板：主 agent 用 DeepSeek API，新增 local_worker 工具，把子 agent 路由到本地模型。
 # 本地模型以容器 agentharness-llm 的形式跑在课程隔离网络里，agent 容器通过容器名访问它，见 assignment5/README.md。
-# 运行前需要 LOCAL_LLM_KEY=none（本地服务不校验 key），profile 用 sdk（完整版，带子 agent）。
+# 运行前设置 LOCAL_LLM_KEY（与 llama-server --api-key 相同的随机值），profile 用 sdk（完整版，带子 agent）。
 # 会话日志上传已由课程配置 infra/course.patch.yml 关闭（run.py 会自动加载）。
 - id: llm-pi-ai
   config:

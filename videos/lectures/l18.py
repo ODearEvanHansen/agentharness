@@ -13,7 +13,7 @@ LECTURE = {
                    "Qwen3-8B：Q4 约 5GB，Q8 约 8.7GB",
                    "Qwen3-Coder-30B-A3B Q4_K_M：18.6GB"],
          "caption": "量化档位决定文件大小，也决定速度和质量",
-         "narration": "llama dot cpp 用的模型格式叫 GGUF。权重、分词器和对话模板都打包在一个文件里，文件名会标出量化档位。比如 Qwen3 八 B，Q4 版本约五 GB，Q8 版本约八点七 GB。课程主力模型 Qwen3 Coder 三十 B A 三 B 的 Q4 版本是十八点六 GB。"},
+         "narration": "llama dot cpp 用的模型格式叫 GGUF。权重、分词器和对话模板都打包在一个文件里，文件名会标出量化档位。比如 Qwen3 八 B，Q 四 版本约五 GB，Q 八 版本约八点七 GB。课程主力模型 Qwen3 Coder 三十 B A 三 B 的 Q 四 版本是十八点六 GB。"},
         {"type": "bullets", "title": "作业四第一关：把 Ollama 接到 DSH", "sub": "在 llm-pi-ai 里新增一个 openai-completions provider",
          "items": ["安装：解压 tar.zst 安装包到用户目录，不需要 root",
                    "ollama pull qwen3-coder:30b",

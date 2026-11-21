@@ -40,8 +40,10 @@ WORKSPACE.mkdir(parents=True, exist_ok=True)
 
 # 完整 profile 的 bash 默认要求 bubblewrap/Landlock 沙箱；课程约定在 Docker 容器里运行，由容器隔离。
 # 只有确认在容器里（课程运行器镜像会设置 AH_IN_CONTAINER=1）才放开权限，否则拒绝启动，避免 agent 直接在你的电脑上执行命令。
-if not (Path("/.dockerenv").exists() or os.environ.get("AH_IN_CONTAINER") == "1"):
-    sys.exit("DSH-Lens 必须在容器里运行（见 assignment1/README.md「启动」）。agent 会以完全权限执行 shell 命令。")
+# 挂进来的 docker.sock 等于把宿主机 Docker 交给 agent，这种"容器"不算隔离。
+if Path("/var/run/docker.sock").exists() or not (Path("/.dockerenv").exists() or os.environ.get("AH_IN_CONTAINER") == "1"):
+    sys.exit("DSH-Lens 必须在课程运行器容器里运行（见 assignment1/README.md「启动」），且容器内不能挂载 docker.sock。\n"
+             "agent 会以完全权限执行 shell 命令。完整启动命令（隔离网络、出网代理、资源限制）见该小节。")
 os.environ.setdefault("DSH_PERMISSION_MODE", "danger-full-access")
 
 harness = DeepSeekHarness(

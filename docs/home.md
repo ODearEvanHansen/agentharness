@@ -1,3 +1,4 @@
+<!-- 本文件由 scripts/build_site.py 用于生成网站，站内链接在 GitHub 仓库里直接浏览会失效，请访问 https://odearevanhansen.github.io/agentharness/ -->
 # AgentHarness · Agent 系统公开课
 
 **基于 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的中文公开课：把一个编码 agent 从上到下拆开，看清它、写出它、优化它，再亲手部署它背后的推理服务。**
@@ -32,14 +33,14 @@
 
 ## 这门课有什么不同
 
-- **数据都是真实测出来的**：讲义和视频里的每个数字，都来自课程团队实际运行的结果，我们会公开命令和原始输出。例如，一个约 100 行的 loop 在 20 道 SWE-bench Verified 题上解决了 18 道，每题约 $0.026。
+- **数据都是真实测出来的**：讲义和视频里的每个数字，都来自课程团队实际运行的结果，我们会公开命令和原始输出。例如，一个约 110 行的 loop 在 20 道 SWE-bench Verified 题上解决了 18 道，每题约 $0.026。
 - **不需要 GPU**：除了 DeepSeek API，其余环节都能在一台普通 Linux 电脑上完成，本地推理部分全部在 CPU 上做。
 - **每关都有自动检查**：作业拆成多个可以独立完成的关卡，跑完自动检查就知道这一关过没过。
 - **安全优先**：agent 会执行真实命令，所以所有作业都在容器里运行，网络只放行 DeepSeek API，会话日志也不会上传。
 
 ## 开始学习
 
-1. 阅读[课程大纲](syllabus.md)：14 周，共 28 讲，每讲 3–5 分钟视频，配讲稿全文。
+1. 阅读[课程大纲](syllabus.md)：14 周授课 + 2 周项目期，共 28 讲，每讲 3–5 分钟视频，配讲稿全文。
 2. 完成[作业 0：环境自检](assignments/a0.md)。
 3. 从[第 1 讲](lectures/l01.md)开始。
 
@@ -48,7 +49,7 @@
 | | |
 |---|---|
 | 电脑 | x86_64 Linux，或 Windows + WSL2；内存至少 16GB（作业 4、5 推荐 32GB）；磁盘 100GB；Docker |
-| API | 自己的 [DeepSeek API key](https://platform.deepseek.com/)。全课 API 费用预计在 100 元以内，最终数字会在试做阶段校准后公布 |
+| API | 自己的 [DeepSeek API key](https://platform.deepseek.com/)。API 费用分项估算（试做阶段实测，按官方高峰价）：A0–A1 几元；A2 不到 $2；A3 必做部分约 $5（约 35 元），大量调试可能到 $50（约 350 元），所以请先在小题或子集上调试；A5 必做部分的云端花费不到 $1；期末项目建议控制在 100 元以内。全课总额要等外部试学员做完后再校准公布 |
 | 先修 | 熟练使用 Python，会用 git 和 Docker，了解 HTTP。不需要机器学习背景 |
 
 !!! warning "当前状态"

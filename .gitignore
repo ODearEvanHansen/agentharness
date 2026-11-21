@@ -28,3 +28,5 @@ assignment2/results/dsh-homes/
 assignment2/results/work/
 assignment2/results/judge/
 site/
+# 提交目录里的日志不忽略
+!assignment*/submission/**/*.log

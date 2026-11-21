@@ -5,7 +5,7 @@
 
 这个作业不改 DSH 源码，只用**配置补丁**和**自己写的插件**来优化 agent。有两条赛道，选一条即可，也可以两条都参加：
 
-| 赛道 | 题集 | 排名方式 | 基线（试做阶段 M0 实测，`deepseek-flash`） |
+| 赛道 | 题集 | 排名方式 | 基线（试做阶段实测，`deepseek-flash`） |
 |---|---|---|---|
 | **解决率赛道** | [instances_hard.txt](../infra/swebench/instances_hard.txt)：难题集，20 道 Verified 题，预计修复耗时 1–4 小时及以上 | 解决数优先，其次是每题成本 | 自写 loop 10/20（每题 $0.045）；DSH `sdk-minimal` 8/20（每题 $0.037） |
 | **效率赛道** | [instances.txt](../infra/swebench/instances.txt)：原 20 题 | 解决数不低于 17 的前提下，比每题成本 | DSH `sdk-minimal` 17/20，每题 $0.018，中位耗时 55 s，缓存命中率 95.8% |
@@ -34,10 +34,20 @@
 ## 关卡
 | 关卡 | 内容 |
 |---|---|
-| L1 | 先在 8 道小题上跑通（几美分），再在效率赛道的 20 题上复现基线（约 $0.4）。报告你的结果和基线差多少，并分析原因 |
-| L2 | 加载模板插件，在 20 题上分别跑开启和关闭两种情况，报告解决率、成本和缓存命中率的变化 |
+| L1 | 先在 8 道小题上跑通（几美分，命令见下），再在效率赛道的 20 题上复现基线（约 $0.4）。报告你的结果和基线差多少，并分析原因 |
+| L2 | 必做：加载模板插件，在 8 道小题上跑开启和关闭两组，复现"成本明显下降"的效果；再结合第 16 讲解释为什么这个效果在 20 道 SWE 题上几乎消失。选做：在 20 题上也跑开、关两组，用数据验证你的解释 |
 | L3 | 至少实现 2 个你自己的优化（插件或配置都可以），每个都要有单独的对照实验 |
 | L4 | 选一条赛道，按下面的流程提交排行榜 |
+
+L1 小题（在运行器容器里跑，和作业 2 的写法一致）：
+```bash
+NICK=你的昵称
+docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
+  -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
+  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 \
+  python assignment2/run.py --agent dsh --suite mini --patch /work/assignment3/submission/$NICK/my.patch.yml --tag $NICK
+```
+容器里仓库挂在 `/work`，所以 patch 和插件的绝对路径要写成 `/work/assignment3/submission/<昵称>/...`；SWE 模式在宿主机上运行，用宿主机上的绝对路径（`$PWD/...`）。两种模式各用一份 patch 即可。
 
 ## 预算建议
 单次运行的成本约为：小题 8 道 $0.01，效率赛道 20 题 $0.4，难题集 20 题 $0.8。例如 2 个优化，每个做开、关两组，每组重复 3 次，在效率赛道上总共约 $5（约 35 元）。**先在小题上调试，确认能跑通后再上 20 题。**
@@ -58,10 +68,11 @@ TRACK=efficiency; SET=infra/swebench/instances.txt;      DS=infra/swebench/datas
 # 1. 运行
 python assignment2/run.py --agent dsh --suite swe --parallel 1 --instances $SET \
     --patch $PWD/assignment3/submission/$NICK/my.patch.yml --tag $NICK
-# 2. 官方判分（报告文件名为 dsh-$NICK.$NICK.json）
+# 2. 官方判分。报告 dsh-$NICK.$NICK.json 写在当前目录，移进 results/
 python -m swebench.harness.run_evaluation -d $DS -p assignment2/results/predictions-dsh-$NICK.jsonl -id $NICK
+mv dsh-$NICK.$NICK.json assignment2/results/
 # 3. 生成提交文件，然后发起 PR（提交 leaderboard/ 下的 JSON 和 submission/$NICK/ 目录）
-python assignment3/score.py --run assignment2/results/swe-dsh-$NICK.jsonl --report dsh-$NICK.$NICK.json \
+python assignment3/score.py --run assignment2/results/swe-dsh-$NICK.jsonl --report assignment2/results/dsh-$NICK.$NICK.json \
     --track $TRACK --config-dir assignment3/submission/$NICK --name $NICK > leaderboard/$NICK-$TRACK.json
 ```
 `score.py` 会做以下检查：运行记录是否覆盖整个题集、评测报告是否与运行记录对应、有没有运行出错的题。维护者会抽查复现：用你的配置重跑一遍，解决数允许相差 ±2；`config_sha` 用来核对配置是否一致。提交后的结果显示在[排行榜](../docs/leaderboard.md)页面。
@@ -69,6 +80,6 @@ python assignment3/score.py --run assignment2/results/swe-dsh-$NICK.jsonl --repo
 ## 提交物
 - `assignment3/submission/<昵称>/`：patch 文件和插件源码；
 - `leaderboard/<昵称>-<赛道>.json`；
-- `assignment2/results/` 下对应的运行记录和评测报告；
+- `assignment2/results/` 下对应的运行记录 `swe-dsh-<昵称>.jsonl`、`predictions-dsh-<昵称>.jsonl` 和评测报告 `dsh-<昵称>.<昵称>.json`；
 - 一篇博客形式的报告 `assignment3/submission/<昵称>/BLOG.md`，写你的优化思路和数据；
 - 视频可选。

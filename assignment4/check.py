@@ -3,7 +3,9 @@
 import json, sys
 from pathlib import Path
 
-R = Path(__file__).resolve().parent / "results"
+HERE = Path(__file__).resolve().parent
+R = HERE / "results"            # 你自己跑出的结果（bench.py 默认写到这里）
+REF = HERE / "reference"        # 课程团队的参考结果，只用来对比
 ok_all = True
 
 
@@ -15,7 +17,19 @@ def check(name, cond, msg):
 
 def load(e):
     f = R / f"{e}.json"
-    return json.loads(f.read_text())["results"] if f.exists() else None
+    if not f.exists():
+        return None
+    d = json.loads(f.read_text())
+    ref = REF / f"{e}.json"
+    if ref.exists():
+        r = json.loads(ref.read_text())
+        if d == r or (d.get("cpu"), d.get("seconds")) == (r.get("cpu"), r.get("seconds")):
+            print(f"⚠️  {e}: results/{e}.json 和 reference/{e}.json 相同（CPU 和耗时一致），这是课程参考数据，不是你的结果")
+            return None
+    return d["results"]
+
+if not R.exists():
+    print(f"⚠️  还没有 {R}：先用 engine/bench.py 跑实验。参考结果在 {REF}")
 
 
 e1 = load("E1")

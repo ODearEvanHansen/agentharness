@@ -17,12 +17,21 @@
 ```bash
 docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agentharness-net \
   -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
-  -v "$PWD":/work agentharness-runner:0.1 \
+  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 \
   python -m uvicorn --app-dir assignment1/starter app:app --host 0.0.0.0 --port 8765
 ```
 `--internal` 网络里的容器不能做端口映射。浏览器访问有两种方式：
 - 查到容器的 IP（`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' agentharness-a1`），在宿主机上打开 `http://<IP>:8765`。Linux 上可以直接访问，WSL2 下要在 WSL 里的浏览器或用 curl 访问。
-- 或者启动一个只做端口转发的小容器，同时接入两个网络。**不要**把 agent 容器本身接到普通网络上，那样做会让第三条白名单验证失效。
+- 或者启动一个只做端口转发的小容器，同时接入两个网络（WSL2 和远程主机推荐这种）。**不要**把 agent 容器本身接到普通网络上，那样做会让第三条白名单验证失效。
+  ```bash
+  docker run -d --name agentharness-portfwd --network bridge -p 127.0.0.1:8765:8765 \
+    alpine/socat TCP-LISTEN:8765,fork TCP:agentharness-a1:8765
+  docker network connect agentharness-net agentharness-portfwd
+  curl -s 127.0.0.1:8765/ | head      # 能看到页面 HTML 就通了
+  ```
+  之后浏览器打开 `http://127.0.0.1:8765`（WSL2 下 Windows 浏览器一般也能直接访问；远程主机用 `ssh -L 8765:127.0.0.1:8765 <主机>` 再在本地打开）。用完执行 `docker rm -f agentharness-portfwd`。
+
+> **注意**：`-v "$PWD":/work` 让 agent 能读写整个仓库。提交前在宿主机上用 `git status` / `git diff` 看一眼 agent 有没有改动起始代码之外的文件；key 不要放在仓库里（见作业 0）。`-u` 让容器以你的用户身份运行，避免在仓库里留下 root 所有、宿主机删不掉的文件。
 
 前端会用到少量 HTML/JavaScript：`EventSource`（SSE）、`fetch` 和简单的 DOM 操作。不熟悉的话，先读 MDN 的 [Server-sent events](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events)（约 20 分钟）。
 

@@ -38,7 +38,9 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight
   - tables
-  - toc: {permalink: true}
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
 extra_css:
   - assets/extra.css
 extra:

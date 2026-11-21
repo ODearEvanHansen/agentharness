@@ -10,5 +10,5 @@
   "deepseek-flash"
  ],
  "baseline": true,
- "note": "作业 3 模板插件（maxChars 4000）"
+ "note": "作业 3 插件，maxChars 设为 4000（模板默认 2000）"
 }

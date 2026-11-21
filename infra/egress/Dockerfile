@@ -1,4 +1,5 @@
-FROM alpine:3.20
+ARG BASE_IMAGE=alpine:3.20
+FROM ${BASE_IMAGE}
 RUN apk add --no-cache tinyproxy
 COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
 COPY filter /etc/tinyproxy/filter

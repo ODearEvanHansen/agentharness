@@ -145,6 +145,9 @@ CONTAINERS = {}   # task id -> 任务容器名（超时时用来强制清理）
 
 
 def in_container():
+    # 挂进来的 docker.sock 等于把宿主机 Docker 交给 agent，这种"容器"不算隔离
+    if Path("/var/run/docker.sock").exists():
+        return False
     return Path("/.dockerenv").exists() or os.environ.get("AH_IN_CONTAINER") == "1"
 
 
@@ -193,7 +196,7 @@ def main():
     PROFILE = a.profile
     OUTDIR = Path(a.out).resolve()
     EXTRA_PATCHES.extend(Path(p).resolve() for p in a.patch)
-    outdir = Path(a.out)
+    outdir = OUTDIR
     outdir.mkdir(parents=True, exist_ok=True)
     tag = f"-{a.tag}" if a.tag else ""
     out = outdir / f"{a.suite}-{a.agent}{tag}.jsonl"
@@ -203,8 +206,8 @@ def main():
     tasks = [t for t in tasks if t["id"] not in done and (not a.only or t["id"] in a.only)]
     runner = run_mini if a.suite == "mini" else run_swe
     if a.suite == "mini" and not in_container():
-        sys.exit("小题模式会在当前机器上直接执行 agent 生成的 shell 命令，必须在容器里运行（见 README「在容器里跑小题」）。\n"
-                 "如果你确认当前环境就是一次性的隔离环境，可以设置 AH_IN_CONTAINER=1。")
+        sys.exit("小题模式会在当前机器上直接执行 agent 生成的 shell 命令，必须在容器里运行（见 assignment2/README.md「在容器里跑小题」）。\n"
+                 "完整命令（隔离网络、出网代理、资源限制）见该小节；容器里不能挂载 docker.sock。")
     if a.agent == "dsh" and a.suite == "mini":
         os.environ.setdefault("DSH_PERMISSION_MODE", "danger-full-access")   # 隔离由外层容器负责
     if a.prompt_suffix_file:
