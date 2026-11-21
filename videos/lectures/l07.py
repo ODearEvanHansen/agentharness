@@ -21,7 +21,7 @@ LECTURE = {
          "left": ("请求层重试", ["历史、前缀、工具状态都不变", "幂等，复用已渲染的组装", "madsLoop 的 chat() 对 429/5xx 退避"], "green"),
          "right": ("loop 层重试", ["可能已执行的调用要先补结果", "由插件或策略决定", "可换模型、先压缩再重试"], "orange"),
          "caption": "插件失败只结束这一轮，不会结束整个 loop",
-         "narration": "关于重试，DSH 留给插件的入口是请求出错钩子，名字见屏幕，插件返回 kind 等于 retry 就会重试，没人处理的失败则直接结束本轮。要区分两种重试。请求层重试，历史和前缀都不变，是幂等的，mads loop 的 chat 函数遇到状态码四二九和五百系列错误时做指数退避，就属于这种。loop 层重试，则要先给可能执行过的调用补上结果，再由策略决定，比如换一个模型，或者先压缩上下文。"},
+         "narration": "关于重试，DSH 留给插件的入口是请求出错钩子，名字见屏幕，插件返回 kind 等于 retry 就会重试，没人处理的失败则直接结束本轮。要区分两种重试。请求层重试，历史和前缀都不变，是幂等的，M A D S loop 的 chat 函数遇到状态码四二九和五百系列错误时做指数退避，就属于这种。loop 层重试，则要先给可能执行过的调用补上结果，再由策略决定，比如换一个模型，或者先压缩上下文。"},
         {"type": "quote", "title": "并行工具调用", "text": "maxParallelToolCalls remains a volatile positive-integer Config field with default 10; 1 selects serial execution. … Live edits apply to the next batch.",
          "source": "packages/core/agent-loop/README.md L55 @ dsh-v0.2.2-rc.2",
          "caption": "默认最多 10 个并行，设为 1 就是串行",

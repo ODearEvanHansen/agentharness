@@ -1,7 +1,7 @@
 LECTURE = {
     "id": "l06", "no": 6, "title": "Agent loop 剖析（上）", "subtitle": "一个 step 的生命周期、请求组装、工具分发",
     "scenes": [
-        {"type": "title", "narration": "第六讲，我们打开 agent loop，看一个 step 从头到尾经历了什么。我们会对照 DSH 的源码，也对照作业二你要写的 mads loop。"},
+        {"type": "title", "narration": "第六讲，我们打开 agent loop，看一个 step 从头到尾经历了什么。我们会对照 DSH 的源码，也对照作业二你要写的 M A D S loop。"},
         {"type": "blocks", "title": "一个 step 的生命周期", "sub": "每一步都从会话日志重新推导出请求",
          "rows": [("组装", [("派生历史", 300, "blue"), ("有效系统提示", 300, "blue"), ("可见工具 schema", 320, "blue")]),
                   ("请求", [("调用模型", 300, "purple"), ("文本或 tool_calls", 400, "purple")]),
@@ -23,7 +23,7 @@ LECTURE = {
         {"type": "code", "title": "madsLoop 的主循环骨架", "sub": "assignment2/madsloop/agent.py（节选，主循环由你实现）",
          "code": "def solve(env, prompt, model=\"deepseek-flash\", max_steps=50):\n    messages = [{\"role\": \"system\", \"content\": SYSTEM},\n                {\"role\": \"user\", \"content\": prompt}]\n    usage = {\"requests\": 0, \"input_miss\": 0, \"cache_read\": 0, \"output\": 0}\n    steps = tool_calls = 0\n    finished = False\n    # TODO(A2-L2): main loop\n    return {\"steps\": steps, \"tool_calls\": tool_calls, \"usage\": usage, \"finished\": finished}", "lang": "python",
          "caption": "同样四步：组装、请求、分发、记录",
-         "narration": "再看作业二的起始代码，作业二下一讲发布。mads loop 的 solve 函数用一个 messages 列表保存全部历史。主循环要你自己实现：调用 chat，累加用量；把助手消息追加进去，记得带回 reasoning content；对每个工具调用执行 run tool，追加 tool 消息；遇到 done 或者步数用完就结束。和 DSH 一样，也是组装、请求、分发、记录四步，只是 messages 列表就是你的会话日志。它其实就是第二讲那个示意循环的完整版。"},
+         "narration": "再看作业二的起始代码，作业二下一讲发布。M A D S loop 的 solve 函数用一个 messages 列表保存全部历史。主循环要你自己实现：调用 chat，累加用量；把助手消息追加进去，记得带回 reasoning content；对每个工具调用执行 run tool，追加 tool 消息；遇到 done 或者步数用完就结束。和 DSH 一样，也是组装、请求、分发、记录四步，只是 messages 列表就是你的会话日志。它其实就是第二讲那个示意循环的完整版。"},
         {"type": "bullets", "title": "工具分发：错误也是结果", "sub": None,
          "items": ["run_tool 出错时返回错误文本，而不是抛异常",
                    "让模型看到错误，自己纠正",
