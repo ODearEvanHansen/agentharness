@@ -27,7 +27,7 @@
     
     
       
-        <title>16 案例复盘：作业三的优化方案 - AgentHarness · Agent 系统公开课</title>
+        <title>16 课程团队方案复盘 - AgentHarness · Agent 系统公开课</title>
       
     
     
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              16 案例复盘：作业三的优化方案
+              16 课程团队方案复盘
             
           </span>
         </div>
@@ -290,6 +290,44 @@
         </a>
       </li>
     
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
   
 
       
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -939,7 +977,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -957,7 +995,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1401,7 +1439,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1684,6 +1722,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1835,22 +1927,22 @@
 
 
 
-<h1 id="16">第 16 讲 · 案例复盘：作业三的优化方案<a class="headerlink" href="#16" title="Permanent link">&para;</a></h1>
-<p><em>小实验的收益，为什么没能迁移到 SWE-bench</em></p>
+<h1 id="16">第 16 讲 · 课程团队方案复盘<a class="headerlink" href="#16" title="Permanent link">&para;</a></h1>
+<p><em>一个在小实验里有效、在真实任务上无效的插件</em></p>
 <div class="admonition info">
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第十六讲是一次案例复盘。作业三今天截止，我们用课程团队自己跑过的一个方案，完整走一遍从想法、小实验、真实评测到结论的过程。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第十六讲，课程团队方案复盘。作业三还有两周截止，我们用课程团队自己跑过的一个方案，完整走一遍从想法、小实验、真实评测到结论的过程。这是全课唯一一次完整讲这个案例。</p>
 <h2 id="_1">复盘对象：工具输出裁剪插件<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>assignment3/templates/trim-tool-output.ts</em></p>
 <ul>
-<li>想法：工具输出太长，会在之后每一步被重复发送，浪费 token</li>
-<li>做法：挂在 tools/post-execute 上，超过阈值只保留开头和结尾</li>
-<li>中间替换成一行省略提示，引导模型用 grep 或 sed -n 精确查看</li>
+<li>想法：工具输出太长，之后每一步都会被重复发送</li>
+<li>做法：挂在 tools/post-execute，超过阈值只留首尾</li>
+<li>中间换成一行省略提示，引导模型用 grep、sed -n 精确查看</li>
 <li>不改 DSH 源码，只通过 patch 文件插入插件</li>
 </ul>
-<p>我们复盘的方案，是作业三提供的模板插件：工具输出裁剪。想法很直接，工具输出太长，会在之后的每一步被重复发送给模型。所以插件挂在 tools post execute 上，输出超过阈值时只保留开头和结尾，中间换成一行省略提示，提醒模型用更精确的命令去查看。整个过程不改 DSH 源码。</p>
+<p>我们复盘的方案，是作业三提供的模板插件：工具输出裁剪。想法很直接，工具输出太长，会在之后的每一步被重复发送给模型。所以插件挂在工具执行之后的挂载点上，输出超过阈值时只保留开头和结尾，中间换成一行省略提示，提醒模型用更精确的命令去查看。整个过程不改 DSH 源码。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>一个直觉上很合理的优化</p>
@@ -1868,13 +1960,13 @@
 <span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">changed</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">'accept'</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">next</span><span class="p">()</span>
 <span class="p">})</span>
 </code></pre></div>
-<p>核心代码只有十几行，这里为了显示做了简化。按 head ratio 算出开头保留多少，剩下的留给结尾，中间记下省略了多少字符。注意最后一行：如果内容被改了，就返回 accept，否则调用 next，交给下一个插件处理。这就是 waterfall 挂载点的写法。</p>
+<p>核心代码只有十几行，这里为了显示做了简化。按开头比例算出开头保留多少，剩下的留给结尾，中间记下省略了多少字符。注意最后一行：如果内容被改了，就返回 accept，否则调用 next，交给下一个插件处理。这就是 waterfall 挂载点的写法。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>waterfall 挂载点：改了就 accept，没改就交给下一个</p>
+<p>改了就 accept，没改就交给下一个</p>
 </div>
 <h2 id="_3">小实验：成本降到约三分之一<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p><em>M0 实测，sdk-minimal，输出 3000 行的脚本再回答三个问题</em></p>
+<p><em>课程团队试做实测，sdk-minimal，输出 3000 行的脚本再回答三个问题</em></p>
 <table>
 <thead>
 <tr>
@@ -1893,7 +1985,7 @@
 </tr>
 </tbody>
 </table>
-<p>先看小实验。任务是运行一个输出三千行的脚本，再回答其中三行是什么。不裁剪时，成本约零点零零二六美元；裁剪到两千字符后，降到零点零零零九美元左右，大约三分之一，答案依然正确。模型看到省略提示后，自己换了一条更精确的命令。</p>
+<p>先看小实验。任务是运行一个输出三千行的脚本，再回答其中三行是什么。不裁剪时，成本大约零点二六美分；裁剪到两千字符后，降到零点零九美分，只剩三分之一，答案依然正确。模型看到省略提示后，自己换了一条更精确的命令。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>未命中输入 token：6,441 → 1,063，答案都正确</p>
@@ -1910,7 +2002,7 @@
 <span class="go">sphinx-doc__sphinx-9320                     34.9s steps= 15 $0.007211</span>
 <span class="go">pylint-dev__pylint-6903                     67.5s steps= 11 $0.007763</span>
 </code></pre></div>
-<p>然后把它放到真实任务上。课程团队在二十道 SWE bench 题上开着插件完整跑了一遍，阈值设为四千字符。屏幕上是真实运行记录的前八题，每题几美分以内。</p>
+<p>然后把它放到真实任务上。课程团队在二十道 SWE bench 题上开着插件完整跑了一遍，阈值设为四千字符。屏幕上是真实运行记录的前八题，每题从零点二美分到一点五美分不等。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>真实运行记录（前 8 题）</p>
@@ -1928,7 +2020,7 @@
 <li>每题 $0.0170</li>
 <li>缓存命中率 96.1%</li>
 </ul>
-<p>结果是，解决了十七道，每题零点零一七美元，缓存命中率百分之九十六点一。基线也是十七道，每题零点零一八美元。差别几乎为零，完全在运行之间的随机波动范围内。</p>
+<p>结果是，解决了十七道，每题约一点七美分，缓存命中率百分之九十六点一。基线也是十七道，每题约一点八美分。各只跑了一轮，这点差别完全在运行之间的随机波动范围内。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>小实验的收益，不一定能迁移到真实任务</p>
@@ -1937,9 +2029,9 @@
 <p><em>复盘要回答的核心问题</em></p>
 <ul>
 <li>DSH 的 bash 工具本来就会截断输出，插件很少被触发</li>
-<li>模型很少把长输出原样打印出来，会主动用 head、grep</li>
-<li>成本大头在多步累积的上下文，而不是单次长输出</li>
-<li>教训：先测量真实任务里问题出现的频率，再决定优化什么</li>
+<li>模型很少把长输出原样打印，会主动用 head、grep</li>
+<li>小实验刻意放大了问题，真实任务里它并不常见</li>
+<li>教训：先测量问题出现的频率，再决定优化什么</li>
 </ul>
 <p>为什么没效果？第一，DSH 的 bash 工具本来就会截断输出，插件很少有机会触发。第二，模型在真实任务里很少把长输出原样打印出来。所以小实验里放大的问题，在真实任务里并不常见。教训是：先测量问题在真实任务中出现的频率，再决定优化什么。</p>
 <div class="admonition tip">
@@ -1953,7 +2045,7 @@
 <li>成本按高峰价统一计算，单独报告缓存命中率</li>
 <li>负结果也是结果：讲清楚为什么无效</li>
 </ul>
-<p>最后总结一份好报告的标准。每个结论都要有对照，而且只改一个变量。说明你怎么处理随机性。成本按高峰价统一计算，并单独报告缓存命中率。还有，负结果也是结果，只要你讲清楚它为什么无效。</p>
+<p>最后总结一份好报告的标准。每个结论都要有对照，而且只改一个变量。说明你怎么处理随机性，比如重复几次、报告方差。成本按高峰价统一计算，并单独报告缓存命中率。还有，负结果也是结果，只要你讲清楚它为什么无效。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>负结果，写清楚原因，同样有价值</p>
@@ -1962,13 +2054,13 @@
 <ul>
 <li>裁剪插件在小实验中把成本降到约 1/3</li>
 <li>SWE-bench 20 题：17/20，$0.0170 vs 基线 $0.018</li>
-<li>原因：bash 工具自带截断，长输出很少出现</li>
+<li>原因：bash 自带截断，长输出很少出现</li>
 <li>先测量问题频率，再优化</li>
 </ul>
-<p>小结一下。裁剪插件在小实验里很有效，在真实任务上却几乎没有作用。原因是问题本身很少出现。下一讲，我们进入推理服务，从预填充和解码讲起。</p>
+<p>小结一下。裁剪插件在小实验里很有效，在真实任务上却几乎没有作用，原因是问题本身很少出现。练习是在你自己的一份会话日志里，数一数超过四千字符的工具结果占多少，你大概会发现比例很低。下一讲，我们讲推理基础，从预填充和解码讲起。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>统计你自己一轮 SWE-bench 运行中，工具输出超过 4000 字符的次数占比，判断裁剪插件值不值得开</p>
+<p>15 分钟：从作业一或二的一份 DSH 会话日志里，数出工具结果超过 4000 字符的次数和总次数。预期：超长结果占比很低，据此判断裁剪值不值得开</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l16.py">videos/lectures/l16.py</a></em></p>

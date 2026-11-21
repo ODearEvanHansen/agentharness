@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -617,7 +655,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -645,7 +683,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -673,7 +711,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -701,7 +739,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -729,7 +767,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -757,7 +795,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -925,7 +963,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1261,7 +1299,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1509,7 +1547,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        贡献题目（社区题库）
+        贡献题目（选做，加分）
       
     </span>
   </a>
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1767,7 +1859,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        贡献题目（社区题库）
+        贡献题目（选做，加分）
       
     </span>
   </a>
@@ -1815,18 +1907,19 @@
 
 <h1 id="2madsloop-agent-loop">作业 2：madsLoop —— 自己写一个 agent loop<a class="headerlink" href="#2madsloop-agent-loop" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>预计 10–12 小时。对应第 3–5 周的课程（agent loop、工具设计、评测）。</p>
+<p>预计 15–20 小时。第 4 周发布，第 7 周截止。对应第 2 讲（最小 agent 循环）、第 6–10 讲（agent loop、评测基础设施、工具设计、评测）。</p>
 </blockquote>
-<p>所谓 agent，本质上就是"模型 + 循环 + 工具"。在这个作业里，你只用 Python 标准库写一个最小的 agent loop，让它在隔离容器里解真实的 SWE-bench 题目，然后和工业级 harness（DSH）做对照。</p>
-<p><strong>参考数据</strong>（课程 M0 实测，<code>deepseek-flash</code>，20 道分层抽样的 Verified 题）：一个约 110 行的 loop 解决了 18/20，DSH <code>sdk-minimal</code> 解决了 17/20；loop 每题约 $0.026，DSH 每题约 $0.018。所以你写的 loop 有能力解出大部分题，但你得说清楚它为什么更贵。</p>
+<p>agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Python 标准库写一个最小的 agent loop，让它在隔离容器里解真实的 SWE-bench 题目，再和工业级 harness（DSH）做对照。</p>
+<p><strong>参考数据</strong>（课程试做阶段 M0 实测，<code>deepseek-flash</code>，20 道分层抽样的 Verified 题）：一个约 110 行的 loop 解出 18/20，DSH <code>sdk-minimal</code> 解出 17/20；loop 每题约 $0.026，DSH 每题约 $0.018。也就是说，你写的 loop 有能力解出大部分题，但你需要讲清楚它为什么更贵。</p>
 <h2 id="_1">准备<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
-<li>完成<a href="../a0/">作业 0</a>，包括关卡 3（拉取 GHCR 镜像）。</li>
-<li>SWE 题目要在隔离网络中运行：按照 <a href="../../infra/">infra/README.md</a> 建好 <code>agentharness-net</code> 和出网白名单代理 <code>agentharness-egress</code>。</li>
-<li><code>pip install deepseek-harness-sdk==0.2.2rc2 swebench datasets</code>（DSH 对照组和官方评测都要用）</li>
-<li><code>export DEEPSEEK_API_KEY=...</code></li>
+<li>完成<a href="../a0/">作业 0</a>，包括隔离网络、运行器镜像和 GHCR 镜像拉取。</li>
+<li><strong>所有命令都在仓库根目录执行。</strong></li>
+<li>宿主机上需要 <code>deepseek-harness-sdk==0.2.2rc2 swebench==5.0.2 zstandard</code>（作业 0 已经装过）。SWE 模式下运行器在宿主机上启动任务容器，官方评测也在宿主机上运行。</li>
+<li><strong>磁盘</strong>：每道 SWE 题的镜像约 3GB，20 题约 60GB。磁盘紧张时，用 <code>--parallel 1</code>，并在每题评测完后执行 <code>docker rmi</code> 删除镜像。</li>
+<li><strong>内存</strong>：<code>--parallel N</code> 会同时运行 N 个容器，每个上限 8GB。16GB 内存的机器请用 <code>--parallel 1</code>。</li>
 </ul>
-<p><strong>运行器已验证</strong>（课程参考实现）：小题 madsLoop 8/8（$0.0085）、DSH 8/8（$0.0064）；<code>django__django-15467</code> 两边都通过官方评测（madsLoop 24 步 $0.013，DSH $0.008）。</p>
+<p><strong>运行器已验证</strong>（课程参考实现）：小题 madsLoop 8/8（$0.0085）、DSH 8/8（$0.0064）；<code>django__django-15467</code> 两边都通过了官方评测（madsLoop 24 步 $0.013，DSH $0.008）。</p>
 <h2 id="part-a-madsloopmadsloopagentpy">Part A：实现 madsLoop（<code>madsloop/agent.py</code>）<a class="headerlink" href="#part-a-madsloopmadsloopagentpy" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1839,58 +1932,65 @@
 <tbody>
 <tr>
 <td>L1</td>
-<td>写系统提示、定义 4 个工具（bash / read_file / edit_file / done），用 <code>Env</code> 实现 <code>run_tool</code></td>
-<td>单元检查</td>
+<td>写系统提示，定义 4 个工具（bash / read_file / edit_file / done），用 <code>Env</code> 实现 <code>run_tool</code></td>
+<td>由 L2 的小题一并检查</td>
 </tr>
 <tr>
 <td>L2</td>
-<td>主循环：调用模型、执行工具、累加 token 用量、判断停止条件</td>
+<td>主循环：调用模型、执行工具、累加 token 用量、判断何时停止</td>
 <td>课程小题 ≥ 6/8</td>
 </tr>
 <tr>
 <td>L3</td>
-<td>在 SWE 子集（<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/infra/swebench/instances.txt">infra/swebench/instances.txt</a>，20 题）上运行，并用官方评测判分</td>
+<td>在 SWE 子集上运行（<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/infra/swebench/instances.txt">instances.txt</a>，20 题），用官方评测判分</td>
 <td>记录解决率</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>assignment2
-python<span class="w"> </span>make_tasks.py<span class="w">                                   </span><span class="c1"># 生成 8 道课程小题到 tasks/</span>
-python<span class="w"> </span>run.py<span class="w"> </span>--agent<span class="w"> </span>madsloop<span class="w"> </span>--suite<span class="w"> </span>mini<span class="w">            </span><span class="c1"># 小题：运行即判分</span>
-python<span class="w"> </span>run.py<span class="w"> </span>--agent<span class="w"> </span>madsloop<span class="w"> </span>--suite<span class="w"> </span>swe<span class="w"> </span>--parallel<span class="w"> </span><span class="m">3</span>
-python<span class="w"> </span>../infra/swebench/make_dataset_cn.py<span class="w"> </span>--instances<span class="w"> </span>../infra/swebench/instances.txt<span class="w"> </span>--out<span class="w"> </span>ds.json
-python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_evaluation<span class="w"> </span>-d<span class="w"> </span>ds.json<span class="w"> </span>-p<span class="w"> </span>results/predictions-madsloop.jsonl<span class="w"> </span>-id<span class="w"> </span>a2-mine
+<p><strong>小题</strong>会执行模型生成的 shell 命令，所以必须在运行器容器里跑（不在容器里时运行器会拒绝执行）：
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--cpus<span class="w"> </span><span class="m">4</span><span class="w"> </span>--memory<span class="w"> </span>8g<span class="w"> </span>--network<span class="w"> </span>agentharness-net<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://agentharness-egress:8888<span class="w"> </span>-e<span class="w"> </span>DEEPSEEK_API_KEY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/work<span class="w"> </span>agentharness-runner:0.1<span class="w"> </span>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>madsloop<span class="w"> </span>--suite<span class="w"> </span>mini
 </code></pre></div>
+判分在一份干净副本里进行：只采用你对原有源文件的修改。新增的文件（例如 <code>conftest.py</code>）不会带入判分副本，改动 <code>test_task.py</code> 的解答直接判为不通过。</p>
+<p><strong>SWE 题</strong>：运行器在宿主机上为每道题启动一个隔离的任务容器，agent 只在任务容器里执行命令：
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>madsloop<span class="w"> </span>--suite<span class="w"> </span>swe<span class="w"> </span>--parallel<span class="w"> </span><span class="m">1</span>
+python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_evaluation<span class="w"> </span>-d<span class="w"> </span>infra/swebench/dataset.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span>assignment2/results/predictions-madsloop.jsonl<span class="w"> </span>-id<span class="w"> </span>a2-mine
+</code></pre></div>
+数据集 <code>dataset.json</code> 已随仓库提供，<strong>不需要访问 Hugging Face</strong>。单题超时（<code>--timeout</code>，默认 1200 秒）后，运行器会删除该题的任务容器，agent 随之停止。</p>
 <p><strong>容易踩的坑（提前告诉你）</strong>
 1. <strong>思考模式</strong>：DeepSeek 默认开启思考模式。带 <code>tool_calls</code> 的 assistant 消息必须原样带回 <code>reasoning_content</code>，否则下一次请求会返回 400。
-2. <strong>用量字段</strong>：<code>prompt_cache_hit_tokens</code> 是命中缓存的输入，<code>prompt_cache_miss_tokens</code> 是未命中的输入，两者价格相差约 50 倍。
-3. <strong>模型没有调用工具</strong>：这时 loop 该怎么继续？不同的处理方式对步数和成本的影响很大。
-4. <strong>输出截断</strong>：<code>Env.bash</code> 只返回最后 8000 个字符。你要考虑模型读大文件时会发生什么。</p>
+2. <strong>用量字段</strong>：<code>prompt_cache_hit_tokens</code> 是命中缓存的输入，<code>prompt_cache_miss_tokens</code> 是未命中的输入，两者价格相差 50 倍。
+3. <strong>模型没有调用工具</strong>：这时 loop 该怎么继续？不同的处理方式对步数和成本影响很大。
+4. <strong>输出截断</strong>：<code>Env.bash</code> 只返回输出的最后 8000 个字符。想一想模型读大文件时会发生什么。</p>
 <h2 id="part-b-dsh-loop">Part B：阅读 DSH 的 loop<a class="headerlink" href="#part-b-dsh-loop" title="Permanent link">&para;</a></h2>
-<p>回答 <a href="../a2-questions/">QUESTIONS.md</a> 里的 B1–B5。</p>
+<p>回答 <a href="../a2-questions/">QUESTIONS.md</a> 里的 B1–B4。B5 选做（加分）。源码是 TypeScript，只需要能读懂函数结构和控制流，第 6、7 讲会带你读一遍。</p>
 <h2 id="part-c">Part C：对照实验<a class="headerlink" href="#part-c" title="Permanent link">&para;</a></h2>
-<p><div class="highlight"><pre><span></span><code>python<span class="w"> </span>run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>mini
-python<span class="w"> </span>run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>swe<span class="w"> </span>--parallel<span class="w"> </span><span class="m">3</span>
+<p><div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--cpus<span class="w"> </span><span class="m">4</span><span class="w"> </span>--memory<span class="w"> </span>8g<span class="w"> </span>--network<span class="w"> </span>agentharness-net<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://agentharness-egress:8888<span class="w"> </span>-e<span class="w"> </span>DEEPSEEK_API_KEY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/work<span class="w"> </span>agentharness-runner:0.1<span class="w"> </span>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>mini
+python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>swe<span class="w"> </span>--parallel<span class="w"> </span><span class="m">1</span>
 </code></pre></div>
 在同一批题上比较 madsLoop 和 DSH，写一页分析，至少包括：
-- 解决率、平均步数、输入/输出 token、缓存命中率、每题成本、中位耗时（表格）；
-- <strong>一道两边结果不同的题</strong>：用作业 1 的工具对比两边的轨迹，解释差别是怎么来的；
-- 工具设计对步数的影响：DSH 在一次 bash 调用里同时写文件和运行，你的 loop 是怎么做的？</p>
-<h2 id="_2">贡献题目（社区题库）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>每人提交 2–3 道新的小题，格式和 <code>tasks/</code> 一致：<code>PROMPT.txt</code> 加上 <code>test_task.py</code>（退出码 0 表示通过），另外附一句话说明这道题考察什么能力。审核通过的题会进入课程题库，并署名。要求：
+- 一张表：解决率、平均步数、输入/输出 token、缓存命中率、每题成本、中位耗时；
+- <strong>一道两边结果不同的题</strong>：用作业 1 的工具对比两边的轨迹，解释差别从哪里来；
+- 工具设计对步数的影响：DSH 一次 bash 调用就能同时写文件和运行，你的 loop 是怎么做的？</p>
+<h2 id="_2">贡献题目（选做，加分）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>提交 2–3 道新的小题，格式和 <code>tasks/</code> 一致：<code>PROMPT.txt</code> 加 <code>test_task.py</code>（退出码为 0 表示通过），并用一句话说明这道题考察什么能力。审核通过的题会署名进入课程题库。要求：
 - 修复前测试必须失败；
 - 不依赖网络；
 - 正常解法在 10 步以内。</p>
 <h2 id="_3">提交物<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>提交到 <code>assignment2/</code> 目录：
-1. <code>madsloop/agent.py</code>，以及 <code>results/</code> 下的运行记录（jsonl 文件和官方评测报告）；
-2. <code>WRITEUP.md</code>：Part B 的回答 + Part C 的分析，共 2–4 页；
-3. <code>contrib/</code> 目录下你贡献的 2–3 道题。</p>
+1. <code>madsloop/agent.py</code>；
+2. <code>results/</code> 下的 <code>mini-*.jsonl</code>、<code>swe-*.jsonl</code>、<code>predictions-*.jsonl</code>，以及官方评测报告 <code>*.a2-mine.json</code>；
+3. <code>WRITEUP.md</code>：Part B 的回答加 Part C 的分析，共 2–4 页；
+4. （选做）<code>contrib/</code> 下你贡献的题目。</p>
 <h2 id="_4">规则<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ul>
-<li>madsLoop 只能用标准库和起始代码里提供的 <code>chat()</code>，不能用任何 agent 框架。</li>
-<li>禁止针对具体题目硬编码，比如在提示词里写入某个 issue 的修复方法。</li>
-<li>运行器会检查 <code>test_task.py</code> 有没有被修改，改测试文件的解答不算数。</li>
+<li>madsLoop 只能使用标准库和起始代码提供的 <code>chat()</code>，不能使用任何 agent 框架。</li>
+<li>禁止针对具体题目硬编码，例如在提示词里写入某个 issue 的修法。</li>
 </ul>
 
 

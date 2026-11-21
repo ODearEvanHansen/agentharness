@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -930,7 +968,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第二十六讲，系统级优化。当解决率、成本和耗时三个指标同时摆在面前，我们该怎么取舍，又该怎么公平地做排行榜。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第二十六讲，系统级优化。当解决率、成本和耗时三个指标同时摆在面前，我们该怎么取舍，又该怎么公平地做排行榜。</p>
 <h2 id="_1">三个指标<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>作业五排行榜：解决率为主，成本和耗时为第二、第三指标</em></p>
 <ul>
@@ -1853,7 +1945,7 @@
 </tr>
 </tbody>
 </table>
-<p>看一个真实案例。在原来的二十道题上，自写 loop 解决十八道，DSH 解决十七道，几乎一样。但自写 loop 的耗时中位数是一百三十二秒，DSH 只有五十五秒。M0 报告的结论是，自写 loop 解决率不低，但成本和耗时多出约百分之四十三，因为它的请求更多、读写更零碎。</p>
+<p>看一个真实案例。在原来的二十道题上，自写 loop 解决十八道，DSH 解决十七道，几乎一样。但自写 loop 的耗时中位数是一百三十二秒，DSH 只有五十五秒。试做阶段报告的结论是，自写 loop 解决率不低，但成本和耗时多出约百分之四十三，因为它的请求更多、读写更零碎。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>解决率接近，但耗时和成本差别明显</p>
@@ -1893,7 +1985,7 @@
 </tr>
 </tbody>
 </table>
-<p>在难题集上，自写 loop 解决十道，平均每题零点零四五美元；DSH 解决八道，平均每题零点零三七美元。解决率更高的方案也更贵。你愿意为多解出两道题，多付多少钱？这就是系统级优化要回答的问题。</p>
+<p>在难题集上，自写 loop 解决十道，平均每题约四点五美分；DSH 解决八道，平均每题约三点七美分。解决率更高的方案也更贵。你愿意为多解出两道题，多付多少钱？这就是系统级优化要回答的问题。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>解决率高的往往也更贵：这就是取舍</p>
@@ -1919,7 +2011,7 @@
 <li>对策一：换用更难的题集</li>
 <li>对策二：效率赛道，在固定解决率下比成本和耗时</li>
 </ul>
-<p>还要警惕区分度问题。M0 发现，在随机抽的二十道题上，flash 已经达到百分之八十五到九十，大家的分数会挤在一起。而且 Verified 是公开题集，可能被训练数据污染。对策有两个：换更难的题集，或者开设效率赛道，在固定解决率下比较成本和耗时。</p>
+<p>还要警惕区分度问题。试做阶段发现，在随机抽的二十道题上，flash 已经达到百分之八十五到九十，大家的分数会挤在一起。而且 Verified 是公开题集，可能被训练数据污染。对策有两个：换更难的题集，或者开设效率赛道，在固定解决率下比较成本和耗时。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>指标饱和时，换题集或换赛道</p>
@@ -1931,10 +2023,10 @@
 <li>排行榜要固定条件、重复实验、统一计价、设超时</li>
 <li>警惕区分度不足和评测污染</li>
 </ul>
-<p>小结一下。系统级优化就是在解决率、成本和耗时之间做取舍。排行榜要保证可比较，还要警惕区分度和污染问题。练习是完成作业五第二关，比较三种路由配置。下一讲，我们聊聊前沿与开放问题。</p>
+<p>小结一下。系统级优化就是在解决率、成本和耗时之间做取舍。排行榜要保证可比较，还要警惕区分度和污染问题。练习是估算一下全本地基线的耗时：如果前缀复用失效，二十道题光预填充就要大约十个小时。这就是作业五第二关要先想清楚的事。下一讲，我们聊聊前沿与开放问题。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>完成作业五 L2：在 20 题上比较全 DeepSeek、全本地、混合路由三种配置</p>
+<p>估算全本地基线：1 万 token÷120 tok/s≈83 秒/次；若前缀复用失效，21.9 次/题×20 题≈10 小时。预期结论：必须依赖前缀复用</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l26.py">videos/lectures/l26.py</a></em></p>

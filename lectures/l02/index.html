@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -624,6 +662,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#agent-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最小 agent 循环（示意，约 20 行）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#50" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -746,7 +795,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -774,7 +823,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -802,7 +851,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -830,7 +879,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -858,7 +907,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -886,7 +935,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -1054,7 +1103,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1439,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1722,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1753,6 +1856,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#agent-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最小 agent 循环（示意，约 20 行）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#50" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1814,12 +1928,12 @@
 
 
 <h1 id="2-deepseek-api">第 2 讲 · DeepSeek API 入门<a class="headerlink" href="#2-deepseek-api" title="Permanent link">&para;</a></h1>
-<p><em>Chat Completions、工具调用、思考模式与前缀缓存计价</em></p>
+<p><em>Chat Completions、工具调用、思考模式、前缀缓存计价与最小循环</em></p>
 <div class="admonition info">
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第二讲，我们来认识 DeepSeek API。它是整门课所有 agent 的发动机。我们会讲接口格式、工具调用、思考模式，以及决定成本的前缀缓存。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第二讲，我们来认识 DeepSeek API。它是整门课所有 agent 的发动机。我们会讲接口格式、工具调用、思考模式、决定成本的前缀缓存，最后用二十行代码搭一个最小的 agent 循环。</p>
 <h2 id="chat-completions">Chat Completions：一次请求长什么样<a class="headerlink" href="#chat-completions" title="Permanent link">&para;</a></h2>
 <p><em>OpenAI 兼容格式，POST /chat/completions</em></p>
 <ul>
@@ -1841,10 +1955,10 @@
 <span class="go">tool_call: get_time {"tz": "Asia/Shanghai"}</span>
 <span class="go">usage: {"prompt_tokens": 293, "completion_tokens": 41, "prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 293}</span>
 </code></pre></div>
-<p>这是课程组实际调用的一次输出。我们给模型一个 get time 工具。模型没有直接回答，而是返回 finish reason 等于 tool calls，并给出要调用的工具和参数，时区是上海。注意，模型自己并不执行工具，执行是你的代码的事。usage 里这次输入两百九十三个 token，全部没有命中缓存。</p>
+<p>这是课程团队实际调用的一次输出。我们给模型一个 get time 工具。模型没有直接回答，而是返回 finish reason 等于 tool calls，并给出要调用的工具和参数，时区是上海。注意，模型自己并不执行工具，执行是你的代码的事。usage 里这次输入两百九十三个 token，全部没有命中缓存。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>模型不执行工具，只说「我要调用什么、参数是什么」</p>
+<p>模型不执行工具，只说「调用什么、参数是什么」</p>
 </div>
 <h2 id="reasoning_content">思考模式与 reasoning_content<a class="headerlink" href="#reasoning_content" title="Permanent link">&para;</a></h2>
 <p><em>最容易踩的坑</em></p>
@@ -1854,10 +1968,36 @@
 <li>漏掉它，下一次请求会直接报 400</li>
 <li>每个 tool_call_id 都必须有对应的 tool 消息</li>
 </ul>
-<p>DeepSeek 支持思考模式。开启后，回复里会多一个 reasoning content 字段，装着模型的思考过程。这里有一个最容易踩的坑：如果这条 assistant 消息带有工具调用，下一次请求时必须把 reasoning content 原样带回去，否则接口会报四百错误。同样，每一个工具调用的编号，都必须有一条对应的 tool 消息。</p>
+<p>DeepSeek 支持思考模式。开启后，回复里会多一个 reasoning content 字段，装着模型的思考过程。这里有一个最容易踩的坑：如果这条 assistant 消息带有工具调用，下一次请求时必须把 reasoning content 原样带回去，否则接口会返回状态码四百。同样，每一个工具调用的编号，都必须有一条对应的 tool 消息。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>作业二 handout 专门提醒：回传 reasoning_content</p>
+</div>
+<h2 id="agent-20">最小 agent 循环（示意，约 20 行）<a class="headerlink" href="#agent-20" title="Permanent link">&para;</a></h2>
+<p><em>OpenAI 兼容接口；省略了重试、超时和用量统计</em></p>
+<div class="highlight"><pre><span></span><code><span class="n">msgs</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">SYSTEM</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">task</span><span class="p">}]</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_STEPS</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">"deepseek-flash"</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="n">msgs</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">TOOLS</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span>
+    <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                 <span class="s2">"reasoning_content"</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">,</span>
+                 <span class="s2">"tool_calls"</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">})</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>            <span class="c1"># 没有工具调用：任务结束</span>
+        <span class="k">break</span>
+    <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>      <span class="c1"># 每个调用都要回一条 tool 消息</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">arguments</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">run_tool</span><span class="p">(</span><span class="n">call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"tool"</span><span class="p">,</span>
+                     <span class="s2">"tool_call_id"</span><span class="p">:</span> <span class="n">call</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                     <span class="s2">"content"</span><span class="p">:</span> <span class="n">out</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">msgs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"content"</span><span class="p">])</span>
+</code></pre></div>
+<p>把前面几样东西拼起来，就是一个最小的 agent 循环。这段代码是示意，省略了重试和用量统计。先放入系统提示和用户任务；每一步把完整的 messages 和工具定义发给模型；把助手消息原样追加回去，包括思考内容和工具调用；如果没有工具调用，就结束；否则逐个执行工具，每个结果用 tool 角色追加，并填上对应的调用编号。作业二的 mads loop，就是这个骨架的完整版。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>示意代码：作业二的 madsLoop 就是它的完整版</p>
 </div>
 <h2 id="50">计价：命中与未命中相差 50 倍<a class="headerlink" href="#50" title="Permanent link">&para;</a></h2>
 <p><em>deepseek-flash 高峰价，美元 / 百万 token（tools/usage_cost.py）</em></p>
@@ -1893,10 +2033,10 @@
 <ul>
 <li>缓存按前缀匹配：从第一个 token 开始逐个比较</li>
 <li>agent 每一步只在末尾追加，前面的历史都能命中</li>
-<li>M0 实测：SWE-bench 上缓存命中率 96–97%</li>
+<li>M0 实测：原 20 题命中率 DSH 95.8%，自写 loop 97.0%</li>
 <li>但每一步都改开头（比如写入当前时间），缓存就全部失效</li>
 </ul>
-<p>前缀缓存只认开头完全相同的部分。agent 每一步只是在对话末尾追加内容，前面的历史保持不变，所以天然适合缓存。课程的 M0 实测中，在 SWE bench 上缓存命中率达到百分之九十六到九十七。但如果你每一步都去改开头，比如在系统提示里写入当前时间，缓存就会整体失效。这一点我们在第十二讲会详细展开。</p>
+<p>前缀缓存只认开头完全相同的部分。agent 每一步只是在对话末尾追加内容，前面的历史保持不变，所以天然适合缓存。试做阶段在二十道 SWE bench 题上实测，DSH 的缓存命中率是百分之九十五点八，自写 loop 是百分之九十七。但如果你每一步都去改开头，比如在系统提示里写入当前时间，缓存就会整体失效。这一点第十二讲会详细展开。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>保持前缀稳定，是省钱的第一原则</p>
@@ -1914,7 +2054,7 @@
 <li>M0 原 20 题：DSH 高峰 $0.36，低峰 $0.18</li>
 <li>批量实验可以挑低峰时段跑</li>
 </ul>
-<p>DeepSeek 还有高峰价和低峰价，低峰时段价格减半。比如 M0 里 DSH 跑二十道题，按高峰价是零点三六美元，按低峰价是零点一八美元。大批量实验可以挑低峰时段跑，但在报告里比较不同方案时，课程统一按高峰价计算，避免时段带来偏差。</p>
+<p>DeepSeek 还有高峰价和低峰价，低峰时段价格减半。比如试做阶段 DSH 跑二十道题，按高峰价是零点三六美元，按低峰价是零点一八美元。大批量实验可以挑低峰时段跑，但在报告里比较不同方案时，课程统一按高峰价计算，避免时段带来偏差。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>比较方案时统一按高峰价，避免时段带来的偏差</p>
@@ -1926,10 +2066,10 @@
 <li>思考模式下要回传 reasoning_content</li>
 <li>命中与未命中相差 50 倍，保持前缀稳定</li>
 </ul>
-<p>小结一下。API 是无状态的；工具调用由模型提出，由你执行；思考模式下要回传 reasoning content；命中缓存和不命中相差五十倍。课后请自己发一次带工具的请求，连发两次，看看缓存命中有什么变化。下一讲，我们进入 DeepSeek Harness。</p>
+<p>小结一下。API 是无状态的；工具调用由模型提出，由你执行；思考模式下要回传 reasoning content；命中缓存和不命中相差五十倍。课后把示意循环补成能跑的脚本，只给一个 get time 工具，预期两次请求就结束，而且第二次请求的输入 token 比第一次多，因为历史被整段重发了。下一讲，我们讲 DeepSeek Harness，也就是 DSH。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>用标准库写一次带 get_time 工具的请求，打印 finish_reason 和 usage，再连发两次，观察缓存命中变化</p>
+<p>15 分钟：把示意循环补成可运行脚本，给一个 get_time 工具；预期 2 次请求结束，且第 2 次的 prompt_tokens 比第 1 次多（历史被重发）</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l02.py">videos/lectures/l02.py</a></em></p>

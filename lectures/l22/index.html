@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -930,7 +968,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第二十二讲，推测解码。解码受内存带宽限制，每读一遍权重只生成一个 token。推测解码想办法让一次读权重验证多个 token。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第二十二讲，推测解码。解码受内存带宽限制，每读一遍权重只生成一个 token。推测解码想办法让一次读权重验证多个 token。</p>
 <h2 id="_1">思路：小模型猜，大模型验<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>Leviathan 等人提出的方法</em></p>
 <div class="highlight"><pre><span></span><code>草稿模型     猜 t1 | 猜 t2 | 猜 t3
@@ -1850,13 +1942,13 @@
 <span class="p">(</span><span class="s2">"draft_n16"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"-md"</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">draft</span><span class="p">,</span> <span class="s2">"--spec-type"</span><span class="p">,</span> <span class="s2">"draft-simple"</span><span class="p">,</span>
                <span class="s2">"--spec-draft-n-max"</span><span class="p">,</span> <span class="s2">"16"</span><span class="p">,</span> <span class="s2">"--spec-draft-n-min"</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">]),</span>
 </code></pre></div>
-<p>在 llama server 里，用 m d 参数指定草稿模型。这里有个坑：只给 m d 不会生效，必须同时设置 spec type 为 draft simple。M0 里就遇到过草稿模型加载了却没有工作的情况。另外，旧的 draft max 参数已经改名，所以课程锁定了 llama dot cpp 的版本。</p>
+<p>在 llama server 里，用 杠 m d 参数指定草稿模型。这里有个坑：只指定草稿模型还不够，还要把推测类型设成 draft simple，屏幕上这两个参数缺一不可。试做阶段就遇到过草稿模型加载了却没有工作的情况。另外，旧的草稿长度参数已经改名，所以课程锁定了 llama dot cpp 的版本。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>只给 -md 不会生效，必须设 --spec-type</p>
 </div>
 <h2 id="e3-3-16">E3 实测：草稿长度 3 对比 16<a class="headerlink" href="#e3-3-16" title="Permanent link">&para;</a></h2>
-<p><em>Qwen3-8B Q4 主模型 + 0.6B 草稿</em></p>
+<p><em>a4_E3：Qwen3-8B Q4 + 0.6B 草稿，Xeon Gold 6354，-t 16</em></p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>assignment4/engine/bench.py<span class="w"> </span>--exp<span class="w"> </span>E3<span class="w"> </span>--model<span class="w"> </span>models/Qwen3-8B-Q4_K_M.gguf<span class="w"> </span>--draft<span class="w"> </span>models/Qwen3-0.6B-Q8_0.gguf<span class="w"> </span>--server<span class="w"> </span>llama.cpp/build/bin/llama-server
 <span class="go">  "draft_n3": {</span>
 <span class="go">   "tg_tok_s": 20.83,</span>
@@ -1878,7 +1970,7 @@
 <p>draft_n 和 accept_rate 证明草稿确实在工作</p>
 </div>
 <h2 id="_3">生成速度对比<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p><em>E3，tok/s</em></p>
+<p><em>a4_E3，Xeon Gold 6354，-t 16，tok/s</em></p>
 <table>
 <thead>
 <tr>
@@ -1926,10 +2018,10 @@
 <li>必须设 --spec-type draft-simple</li>
 <li>E3：长度 3 → 20.8 tok/s；长度 16 → 11.6 tok/s</li>
 </ul>
-<p>小结一下。推测解码让小模型猜、大模型验，不改变输出质量。但草稿长度要选好，太长反而变慢。下一讲，我们讲量化。</p>
+<p>小结一下。推测解码让小模型猜、大模型验，不改变输出质量。但草稿长度要选好，太长反而变慢。练习是补测两个草稿长度，看接受率和速度怎么变。下一讲，我们讲量化。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>完成 E3，再补测草稿长度 2、5、8，画出接受率和速度随长度变化的曲线</p>
+<p>补测草稿长度 2 和 5（各约 1 分钟），记录 accept_rate 和 tg_tok_s。预期：接受率随长度下降，两者速度都高于基线 17.9</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l22.py">videos/lectures/l22.py</a></em></p>

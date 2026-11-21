@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -930,7 +968,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,19 +1911,19 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第十九讲，批处理与调度。上一讲我们说，解码受内存带宽限制。今天看怎么把多个请求合在一起，分摊这份开销。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第十九讲，批处理与调度。第十七讲我们说过，解码受内存带宽限制。今天看怎么把多个请求合在一起，分摊这份开销。另外，作业三本周截止。</p>
 <h2 id="_1">为什么批处理有效<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>解码时，读一次权重的代价被多个请求分摊</em></p>
 <ul>
 <li>单个请求解码：读全部权重，只算一个 token</li>
 <li>四个请求一起解码：读一次权重，算四个 token</li>
-<li>总吞吐上升；单个请求的延迟未必变差</li>
-<li>代价：每个请求都要自己的 KV cache</li>
+<li>总吞吐上升，但不会是线性的 4 倍</li>
+<li>代价：每个请求要自己的 KV cache，算力也会被抢</li>
 </ul>
-<p>批处理为什么有效？单个请求解码时，要把全部权重读一遍，只算出一个 token。如果四个请求一起解码，权重读一遍就能算出四个 token。所以在访存瓶颈下，批处理几乎是白送的吞吐。代价是每个请求都需要自己的 K V cache。</p>
+<p>批处理为什么有效？单个请求解码时，要把全部权重读一遍，只算出一个 token。如果四个请求一起解码，权重读一遍就能算出四个 token。所以在访存瓶颈下，批处理能明显提升总吞吐。但它不是免费的：每个请求都需要自己的 K V cache，批越大，计算和注意力的开销也越大，提升达不到线性。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>访存瓶颈下，批处理几乎是白送的吞吐</p>
+<p>批处理提升吞吐，但不是免费的</p>
 </div>
 <h2 id="_2">静态批：等最慢的那个<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p><em>一批请求一起开始、一起结束</em></p>
@@ -1866,13 +1958,13 @@
             <span class="n">outs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"# Task </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">CODE_PROMPT</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span>
         <span class="n">wall</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
 </code></pre></div>
-<p>在 llama server 里，并发槽位由 n p 参数控制。作业四的实验一只改这一个变量：同样同时发四个请求，每个生成一百二十八个 token，对比一个槽位和四个槽位。</p>
+<p>在 llama server 里，并发槽位由 杠 n p 参数控制，也就是屏幕上的 -np。作业四的实验一只改这一个变量：同样同时发四个请求，每个生成一百二十八个 token，对比一个槽位和四个槽位。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>同样 4 个并发请求，只改 -np</p>
 </div>
 <h2 id="e1">E1 实测结果<a class="headerlink" href="#e1" title="Permanent link">&para;</a></h2>
-<p><em>Qwen3-8B Q4，32 核 Xeon CPU</em></p>
+<p><em>Qwen3-8B Q4，Xeon Gold 6354，-t 16</em></p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>assignment4/engine/bench.py<span class="w"> </span>--exp<span class="w"> </span>E1<span class="w"> </span>--model<span class="w"> </span>models/Qwen3-8B-Q4_K_M.gguf<span class="w"> </span>--server<span class="w"> </span>llama.cpp/build/bin/llama-server
 <span class="go">  "np1": {</span>
 <span class="go">   "wall_s": 30.9,</span>
@@ -1886,7 +1978,7 @@
 <span class="go">   "agg_tok_s": 41.12,</span>
 <span class="go">   "mean_latency_s": 12.4</span>
 </code></pre></div>
-<p>看真实结果。一个槽位时，四个请求只能排队，总吞吐每秒约十六点六个 token，平均延迟十九点三秒。四个槽位时，总吞吐升到每秒四十一点一个 token，平均延迟反而降到十二点四秒。</p>
+<p>看作业四的真实结果，Qwen3 八 B，十六个线程。一个槽位时，四个请求只能排队，总吞吐每秒约十六点六个 token，平均延迟十九点三秒。四个槽位时，总吞吐升到每秒四十一点一个 token，平均延迟反而降到十二点四秒，约两点五倍。但在试做阶段，三十 B A 三 B 的 MoE 模型同样用四个槽位，吞吐只从三十提到五十四，约一点八倍。收益取决于模型和机器。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>吞吐 16.56 → 41.12 tok/s，平均延迟 19.3 → 12.4 s</p>
@@ -1907,13 +1999,13 @@
 <ul>
 <li>批处理分摊解码时读权重的开销</li>
 <li>静态批等最慢的；连续批按步补位</li>
-<li>E1：-np 4 吞吐 16.56 → 41.12 tok/s</li>
+<li>8B：16.56 → 41.12 tok/s（≈2.5×）；MoE 仅 ×1.8</li>
 <li>agent 要靠并发任务吃满槽位</li>
 </ul>
-<p>小结一下。批处理能分摊解码的访存开销，连续批处理让新请求随时补位。实验一里，四个槽位让吞吐提升到约两点五倍。下一讲，我们讲前缀复用。</p>
+<p>小结一下。批处理能分摊解码的访存开销，连续批处理让新请求随时补位。但它不是免费的：八 B 模型四个槽位提升约两点五倍，MoE 模型只有一点八倍。练习是给实验一加一组两个槽位，你会看到吞吐上升，但增幅越来越小。下一讲，我们讲前缀复用。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>完成 E1，再加一组 -np 2，画出吞吐和平均延迟随槽位数变化的曲线</p>
+<p>20 分钟：跑 E1 并加一组 -np 2。预期总吞吐随槽位数上升但增幅递减，np4 远不到 np1 的 4 倍</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l19.py">videos/lectures/l19.py</a></em></p>

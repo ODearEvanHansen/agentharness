@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -930,7 +968,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>从这一讲开始，我们打开推理服务这个黑盒。今天讲推理的基础：预填充与解码，K V cache，以及算力瓶颈和访存瓶颈。作业四也在今天发布。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第十七讲，推理基础。从这一讲开始，我们打开推理服务这个黑盒。今天讲推理的基础：预填充与解码，K V cache，以及算力瓶颈和访存瓶颈。作业四也在这一周发布。</p>
 <h2 id="_1">一次请求的两个阶段<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>预填充一次处理整个提示；解码每次只生成一个 token</em></p>
 <div class="highlight"><pre><span></span><code>预填充      系统提示 + 工具 + 历史 + 新消息（并行处理）
@@ -1864,7 +1956,7 @@
 <p>解码慢，不是算不动，而是搬不动</p>
 </div>
 <h2 id="_3">实测：预填充远快于解码<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p><em>llama-bench，Qwen3-8B，32 核 Xeon CPU，单位 tok/s</em></p>
+<p><em>作业四 E5：llama-bench pp512/tg128，Qwen3-8B，Xeon Gold 6354，-t 16，单位 tok/s</em></p>
 <table>
 <thead>
 <tr>
@@ -1891,7 +1983,7 @@
 </tr>
 </tbody>
 </table>
-<p>看一组真实数据。在三十二核 CPU 上跑 Qwen3 八 B 的 Q4 版本，预填充每秒处理约一百一十六个 token，解码每秒只有十七个左右。Q8 版本的权重更大，要搬的数据更多，两个阶段都变慢了。这正好印证了解码是访存瓶颈。</p>
+<p>看一组真实数据。这是作业四实验五的结果，在 Xeon Gold 六三五四 上用十六个线程，跑 Qwen3 八 B 的 Q4 版本，预填充每秒处理约一百一十六个 token，解码每秒只有十七个左右。Q8 版本的权重更大，要搬的数据更多，两个阶段都变慢了。这正好印证了解码是访存瓶颈。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>每秒处理的 token 数，预填充是解码的好几倍</p>
@@ -1901,7 +1993,7 @@
 <li>agent 每一步都要预填充越来越长的上下文</li>
 <li>能复用前缀，就能省掉大部分预填充（第 20 讲）</li>
 <li>多个请求一起解码，可以分摊读权重的开销（第 19 讲）</li>
-<li>模型越小、量化越狠，解码越快（第 23、24 讲）</li>
+<li>推测解码、量化、MoE 都在减少每个 token 的搬运（第 22–24 讲）</li>
 </ul>
 <p>这对 agent 意味着什么？agent 每一步都要预填充越来越长的上下文，所以前缀复用非常关键。解码受内存带宽限制，所以把多个请求合在一起解码，可以分摊读权重的开销。后面几讲的批处理、前缀复用、推测解码和量化，全都是从这两种瓶颈出发的。</p>
 <div class="admonition tip">
@@ -1911,12 +2003,12 @@
 <h2 id="dsh-serve">作业四发布：DSH-Serve<a class="headerlink" href="#dsh-serve" title="Permanent link">&para;</a></h2>
 <p><em>在自己的机器上把模型跑起来</em></p>
 <ul>
-<li>L1：Ollama 接入 DSH，并找出一个静默截断的坑</li>
+<li>L1：Ollama 接入 DSH，查清一个反常现象</li>
 <li>L2：llama-server 上做 E1 到 E5 五个实验</li>
 <li>L3：把本地模型接回 madsLoop 和 DSH</li>
-<li>不需要 GPU；30B-A3B 需要 32GB 内存</li>
+<li>每个实验标注了学完哪一讲再做；不需要 GPU</li>
 </ul>
-<p>作业四今天发布。第一关，用 Ollama 把本地模型接到 DSH 上。第二关，在 llama server 上做五个实验。第三关，把本地模型接回你自己的 agent。整个作业不需要 GPU，但想跑三十 B 的 MoE 模型，需要三十二 G 内存。</p>
+<p>作业四这一周发布，每个实验都标注了学完哪一讲再做。第一关，用 Ollama 把本地模型接到 DSH 上，并查清一个反常现象。第二关，在 llama server 上做五个实验。第三关，把本地模型接回你自己的 agent。整个作业不需要 GPU，但想跑三十 B A 三 B 这个 MoE 模型，需要三十二 GB 内存。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>每个实验：可复现命令 + 原始数据 + 一段解释</p>
@@ -1928,10 +2020,10 @@
 <li>8B Q4：预填充约 116 tok/s，解码约 17 tok/s</li>
 <li>作业四发布</li>
 </ul>
-<p>小结一下。一次请求分为预填充和解码，前者受算力限制，后者受内存带宽限制。K V cache 用内存换计算。下一讲，我们动手在本地跑起模型。</p>
+<p>小结一下。一次请求分为预填充和解码，前者受算力限制，后者受内存带宽限制。K V cache 用内存换计算。练习是在你的机器上跑一次 llama bench，看预填充是不是比解码快好几倍，再用内存带宽除以模型大小，估一个解码速度的上限。下一讲，我们讲本地推理入门，动手在本地跑起模型。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>用 llama-bench 在自己机器上测 pp512 和 tg128，用内存带宽估算一下解码速度的上限</p>
+<p>15 分钟：用 llama-bench 测 Qwen3-8B Q4 的 pp512 和 tg128。预期 pp 是 tg 的好几倍；再用 内存带宽 ÷ 5GB 估算 tg 上限，实测应低于它</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l17.py">videos/lectures/l17.py</a></em></p>
@@ -1970,7 +2062,7 @@
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../l16/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 16 案例复盘：作业三的优化方案">
+          <a href="../l16/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 16 课程团队方案复盘">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1980,7 +2072,7 @@
                 上一页
               </span>
               <div class="md-ellipsis">
-                16 案例复盘：作业三的优化方案
+                16 课程团队方案复盘
               </div>
             </div>
           </a>

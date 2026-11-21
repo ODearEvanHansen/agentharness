@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -617,7 +655,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -645,7 +683,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -673,7 +711,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -701,7 +739,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -729,7 +767,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -757,7 +795,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -925,7 +963,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1261,7 +1299,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1431,7 +1469,7 @@
   <a href="#3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关卡 3：拉取评测镜像并跑一道题的测试
+        关卡 3：拉取评测镜像，跑通一道题的评测
       
     </span>
   </a>
@@ -1640,6 +1678,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1712,7 +1804,7 @@
   <a href="#3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关卡 3：拉取评测镜像并跑一道题的测试
+        关卡 3：拉取评测镜像，跑通一道题的评测
       
     </span>
   </a>
@@ -1748,22 +1840,26 @@
 
 
 <h1 id="0">作业 0：环境自检<a class="headerlink" href="#0" title="Permanent link">&para;</a></h1>
-<p>目标：确认你的机器能完成本课程的全部作业。预计 1–2 小时，大部分时间花在下载上。</p>
+<p>目标：确认你的机器能完成本课程的全部作业。预计 1–2 小时，大部分时间花在下载上。<strong>第 1 周周末截止</strong>，作业 1 要求先完成本作业。</p>
+<blockquote>
+<p>本课程所有命令都在<strong>仓库根目录</strong>下执行：<code>git clone https://github.com/ODearEvanHansen/agentharness &amp;&amp; cd agentharness</code>。</p>
+</blockquote>
 <h2 id="1">关卡 1：基础环境<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
 <ol>
 <li>安装 Docker。Linux 用户安装 Docker Engine，并把当前用户加入 <code>docker</code> 组；Windows 用户安装 Docker Desktop 并启用 WSL2 后端，之后<strong>所有操作都在 WSL2 里进行</strong>。</li>
-<li>安装 Python ≥ 3.10，再安装课程锁定版本的 DSH SDK：
+<li>安装 Python ≥ 3.10，以及课程锁定版本的依赖：
    <div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>~/.venvs/agentharness<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.venvs/agentharness/bin/activate
-pip<span class="w"> </span>install<span class="w"> </span>deepseek-harness-sdk<span class="o">==</span><span class="m">0</span>.2.2rc2<span class="w">      </span><span class="c1"># 国内可加 -i https://pypi.tuna.tsinghua.edu.cn/simple</span>
+pip<span class="w"> </span>install<span class="w"> </span>deepseek-harness-sdk<span class="o">==</span><span class="m">0</span>.2.2rc2<span class="w"> </span><span class="nv">swebench</span><span class="o">==</span><span class="m">5</span>.0.2<span class="w"> </span>zstandard<span class="w">   </span><span class="c1"># 国内可加 -i https://pypi.tuna.tsinghua.edu.cn/simple</span>
 </code></pre></div></li>
-<li>在 <a href="https://platform.deepseek.com/">platform.deepseek.com</a> 创建 API key，充值少量金额，建议同时设置消费上限。然后：
-   <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DEEPSEEK_API_KEY</span><span class="o">=</span>...<span class="w">        </span><span class="c1"># 写进 ~/.bashrc 也行，但千万不要提交进任何 git 仓库</span>
+<li><strong>为本课程单独创建一个 API key</strong>：在 <a href="https://platform.deepseek.com/">platform.deepseek.com</a> 新建 key，只充值少量金额，课程结束后删除。原因是 agent 在容器里运行不可信代码时能读到这个 key。然后执行：
+   <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DEEPSEEK_API_KEY</span><span class="o">=</span>...<span class="w">        </span><span class="c1"># 可以写进 ~/.bashrc，但千万不要提交到任何 git 仓库</span>
 </code></pre></div></li>
+<li>搭建隔离网络并构建运行器镜像，详见 <a href="../../infra/">infra/README.md</a>。共四条 <code>docker</code> 命令，再加一条 <code>docker build</code>。之后的作业都会用到它们，<strong>请按 README 里的三条验证逐一确认</strong>。</li>
 </ol>
 <h2 id="2">关卡 2：运行自检<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
 <p><div class="highlight"><pre><span></span><code>python3<span class="w"> </span>assignment0/selfcheck.py
 </code></pre></div>
-所有 ❌ 项必须修好，⚠️ 项按提示处理。常见问题：</p>
+所有 ❌ 都必须修好，⚠️ 按提示处理。常见问题：</p>
 <table>
 <thead>
 <tr>
@@ -1773,42 +1869,55 @@ pip<span class="w"> </span>install<span class="w"> </span>deepseek-harness-sdk<s
 </thead>
 <tbody>
 <tr>
-<td>Docker Hub / PyPI / Hugging Face 慢或不通</td>
-<td>Docker 配置 <code>registry-mirrors</code>；pip 换国内源；设置 <code>HF_ENDPOINT=https://hf-mirror.com</code></td>
+<td>PyPI / Hugging Face 慢或不通</td>
+<td>pip 换国内源；Hugging Face 一般用不到（课程已把数据集随仓库分发），确实需要时设置 <code>HF_ENDPOINT=https://hf-mirror.com</code></td>
+</tr>
+<tr>
+<td>GHCR 不通或很慢</td>
+<td>见 <a href="../../infra/">infra/README.md</a> 的"国内访问"一节</td>
+</tr>
+<tr>
+<td>Docker Hub 不通</td>
+<td>只影响自检里的探测镜像，可以忽略；关卡 3 会用 GHCR 镜像再验证一次</td>
 </tr>
 <tr>
 <td><code>DEEPSEEK_API_KEY</code> 格式警告</td>
-<td>官方 key 以 <code>sk-</code> 开头，检查是不是复制成了其他平台的 key</td>
+<td>官方 key 以 <code>sk-</code> 开头，检查是不是误复制了其他平台的 key</td>
+</tr>
+<tr>
+<td>内存 ⚠️（16–32GB）</td>
+<td>可以完成 A0–A3，以及 A4 的 8B 实验；A4 L3 和 A5 需要 32GB，A5 可以改用课程提供的本地基线数据</td>
 </tr>
 <tr>
 <td>macOS</td>
-<td>不支持，请使用 x86_64 Linux 云主机或 Windows + WSL2</td>
+<td>不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2</td>
 </tr>
 </tbody>
 </table>
-<h2 id="3">关卡 3：拉取评测镜像并跑一道题的测试<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<p>课程把 SWE-bench 评测镜像同步到了 GHCR（无需登录）：<code>ghcr.io/odearevanhansen/swebench-x86_64:&lt;实例&gt;</code>。</p>
+<h2 id="3">关卡 3：拉取评测镜像，跑通一道题的评测<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>课程已把 SWE-bench 评测镜像同步到 GHCR，拉取无需登录：<code>ghcr.io/odearevanhansen/swebench-x86_64:&lt;实例&gt;</code>。</p>
 <ol>
 <li>拉取示例镜像（约 3GB）：
    <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>ghcr.io/odearevanhansen/swebench-x86_64:django_1776_django-15467
 </code></pre></div></li>
-<li>在<strong>断网</strong>容器里确认环境可用：仓库位于 <code>/testbed</code>，Python 环境名为 <code>testbed</code>。
+<li>在<strong>断网</strong>容器里确认环境可用。仓库位于 <code>/testbed</code>，Python 环境名为 <code>testbed</code>：
    <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>none<span class="w"> </span>--cpus<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>4g<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>ghcr.io/odearevanhansen/swebench-x86_64:django_1776_django-15467<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>bash<span class="w"> </span>-lc<span class="w"> </span><span class="s1">'source /opt/miniconda3/bin/activate testbed &amp;&amp; cd /testbed &amp;&amp; git log --oneline -1 &amp;&amp; python -c "import django; print(django.get_version())"'</span>
 </code></pre></div>
    能打印出一条 commit 和 Django 版本号，就算通过。</li>
-<li>（可选）用官方评测工具验证"金标准补丁"能通过测试。这一步会测通整条评测链路：
-   <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>swebench
-python<span class="w"> </span>infra/swebench/make_dataset_cn.py<span class="w"> </span>--instances<span class="w"> </span>&lt;<span class="o">(</span><span class="nb">echo</span><span class="w"> </span>django__django-15467<span class="o">)</span><span class="w"> </span>--out<span class="w"> </span>/tmp/one.json
-python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_evaluation<span class="w"> </span>-d<span class="w"> </span>/tmp/one.json<span class="w"> </span>-p<span class="w"> </span>gold<span class="w"> </span>-id<span class="w"> </span>a0-check
+<li>用官方评测工具验证"标准答案补丁"（gold patch）能通过测试，这一步会把整条评测链路跑一遍。第一次运行要准备评测环境，大约需要 5–10 分钟：
+   <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_evaluation<span class="w"> </span>-d<span class="w"> </span>infra/swebench/dataset.json<span class="w"> </span>-p<span class="w"> </span>gold<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-i<span class="w"> </span>django__django-15467<span class="w"> </span>-id<span class="w"> </span>a0-check
 </code></pre></div>
-   输出中出现 <code>Instances resolved: 1</code> 即为通过。</li>
+   输出里出现 <code>Instances resolved: 1</code> 就算通过。</li>
+<li>清理（可选）：<code>docker rmi ghcr.io/odearevanhansen/swebench-x86_64:django_1776_django-15467</code>。之后每道题的镜像都按需拉取，用完就删，100GB 磁盘就够用。</li>
 </ol>
 <h2 id="_1">完成标准<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>在课程讨论区的"作业 0 打卡"帖里贴出：
+<p>在课程讨论区的"作业 0 打卡"帖里贴出以下内容：
 - <code>selfcheck.py</code> 的完整输出（不要包含 key）；
-- 关卡 3 第 2 步的输出。</p>
+- 关卡 3 第 2 步和第 3 步的输出；
+- <code>infra/README.md</code> 中白名单三条验证的输出。</p>
 
 
 
@@ -1844,7 +1953,7 @@ python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_eva
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../../lectures/l28/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 28 期末项目指南">
+          <a href="../../lectures/l28/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 28 期末项目答疑与展示安排">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1854,7 +1963,7 @@ python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_eva
                 上一页
               </span>
               <div class="md-ellipsis">
-                28 期末项目指南
+                28 期末项目答疑与展示安排
               </div>
             </div>
           </a>

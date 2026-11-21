@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -617,7 +655,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -645,7 +683,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -673,7 +711,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -701,7 +739,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -729,7 +767,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -757,7 +795,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -925,7 +963,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1261,7 +1299,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1526,7 +1564,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        方法要求
+        预算建议
       
     </span>
   </a>
@@ -1537,7 +1575,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        运行与提交排行榜
+        方法要求
       
     </span>
   </a>
@@ -1546,6 +1584,17 @@
       
         <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行与提交排行榜
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         提交物
@@ -1662,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1745,7 +1848,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        方法要求
+        预算建议
       
     </span>
   </a>
@@ -1756,7 +1859,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        运行与提交排行榜
+        方法要求
       
     </span>
   </a>
@@ -1765,6 +1868,17 @@
       
         <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行与提交排行榜
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         提交物
@@ -1791,86 +1905,56 @@
 
 
 
-<h1 id="3dsh-opt-agent">作业 3：DSH-Opt —— 让 agent 又好又省（草稿）<a class="headerlink" href="#3dsh-opt-agent" title="Permanent link">&para;</a></h1>
+<h1 id="3dsh-opt-agent">作业 3：DSH-Opt —— 让 agent 又好又省<a class="headerlink" href="#3dsh-opt-agent" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>🚧 草稿：插件机制和第一个模板已经实测可用（数据见下文），排行榜和难题集还在建设中。
-预计 10–15 小时，对应第 6–8 周课程（上下文工程、前缀缓存、成本与可靠性）。</p>
+<p>预计 12–18 小时，第 7 周发布、第 10 周截止。对应第 11–15 讲：上下文工程、前缀缓存、插件开发、成本与可靠性、实验方法。
+插件机制、模板插件、运行器和排行榜流程，课程团队都已经从头到尾实际跑通过（数据见下文）。</p>
 </blockquote>
-<p>在 DSH 上，你不改 DSH 的源码，只通过<strong>配置补丁</strong>和<strong>自写插件</strong>来优化 agent。目标有两条赛道（二选一，也可以都参加）：</p>
+<p>这个作业不改 DSH 源码，只用<strong>配置补丁</strong>和<strong>自己写的插件</strong>来优化 agent。有两条赛道，选一条即可，也可以两条都参加：</p>
 <table>
 <thead>
 <tr>
 <th>赛道</th>
 <th>题集</th>
-<th>指标</th>
+<th>排名方式</th>
+<th>基线（试做阶段 M0 实测，<code>deepseek-flash</code>）</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>解决率赛道</strong></td>
-<td><a href="https://github.com/ODearEvanHansen/agentharness/blob/main/infra/swebench/instances_hard.txt">infra/swebench/instances_hard.txt</a>（20 题，Verified 1–4h/&gt;4h；M0 基线：自写 loop 10/20、DSH 8/20，每题约 $0.04）</td>
-<td>解决数；预算硬上限</td>
+<td><a href="https://github.com/ODearEvanHansen/agentharness/blob/main/infra/swebench/instances_hard.txt">instances_hard.txt</a>：难题集，20 道 Verified 题，预计修复耗时 1–4 小时及以上</td>
+<td>解决数优先，其次是每题成本</td>
+<td>自写 loop 10/20（每题 $0.045）；DSH <code>sdk-minimal</code> 8/20（每题 $0.037）</td>
 </tr>
 <tr>
 <td><strong>效率赛道</strong></td>
-<td><a href="https://github.com/ODearEvanHansen/agentharness/blob/main/infra/swebench/instances.txt">infra/swebench/instances.txt</a>（20 题）</td>
-<td>解决率不低于基线的前提下，比每题成本和中位耗时</td>
+<td><a href="https://github.com/ODearEvanHansen/agentharness/blob/main/infra/swebench/instances.txt">instances.txt</a>：原 20 题</td>
+<td>解决数不低于 17 的前提下，比每题成本</td>
+<td>DSH <code>sdk-minimal</code> 17/20，每题 $0.018，中位耗时 55 s，缓存命中率 95.8%</td>
 </tr>
 </tbody>
 </table>
-<p><strong>基线</strong>（M0 实测，<code>deepseek-flash</code>，DSH <code>sdk-minimal</code>）：17/20，每题 $0.018，中位耗时 55 s，缓存命中率 95.8%。</p>
 <h2 id="_1">你可以改什么<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>配置</strong>（<code>cordis.patch.yml</code>）：preset（Standard / PTC / Minimal）、工具集与工具描述、系统提示、压缩策略、<code>maxParallelToolCalls</code>、推理强度、输出上限。用 <code>dsh --profile &lt;p&gt; --dump-config</code> 可以查看所有插件 id 和当前配置。</li>
-<li><strong>插件</strong>（TypeScript，<strong>不需要编译、不需要 Node</strong>）：DSH 运行时可以直接按绝对路径加载 <code>.ts</code> 文件。常用的挂载点：</li>
-<li><code>tools/post-execute</code>（waterfall）：在工具结果进入上下文之前，替换或裁剪它</li>
-<li><code>tools/pre-execute</code>（waterfall）：在工具调用分发前拒绝或放行</li>
-<li><code>agent/pre-step</code>（waterfall）：在每一步进入前修改或拒绝本步消息；可以声明 <code>startsRequestSeries</code></li>
-<li><code>agent/request-error</code>（waterfall）：模型请求失败后决定是否重试</li>
-<li><code>session/event</code>（emit）：观察会话事件，可用于统计</li>
-<li>⚠️ <code>agent/request</code> 已被弃用，不要基于它开发。</li>
-<li>你也可以继续使用作业 2 的 madsLoop 参赛。</li>
+<li><strong>配置</strong>（patch 文件）：preset、工具集与工具描述、系统提示、压缩策略、<code>maxParallelToolCalls</code>、思考强度、输出上限。用 DSH 运行时的 <code>--dump-config</code> 可以列出所有插件 id 和当前配置。</li>
+<li><strong>插件</strong>（TypeScript，<strong>无需编译，也不用装 Node</strong>）：DSH 运行时可以按绝对路径直接加载 <code>.ts</code> 文件（第 13 讲）。常用的挂载点：</li>
+<li><code>tools/post-execute</code>（waterfall）：工具结果进入上下文之前，替换或裁剪它</li>
+<li><code>tools/pre-execute</code>（waterfall）：工具调用分发之前，决定拒绝还是放行</li>
+<li><code>agent/pre-step</code>（waterfall）：每一步开始前修改或拒绝本步消息，可以声明 <code>startsRequestSeries</code></li>
+<li><code>agent/request-error</code>（waterfall）：模型请求失败后，决定是否重试</li>
+<li><code>session/event</code>（emit）：观察会话事件，可以用来做统计</li>
+<li>⚠️ <code>agent/request</code> 已弃用，不要基于它开发。</li>
+<li>也可以继续用作业 2 的 madsLoop 参赛（<code>--agent madsloop</code>）。</li>
 </ul>
 <h2 id="_2">插件模板（已验证）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/ODearEvanHansen/agentharness/blob/main/assignment3/templates/trim-tool-output.ts"><code>templates/trim-tool-output.ts</code></a>：工具输出超过阈值时，只保留开头和结尾。</p>
-<p>加载方式（在你的 patch 文件里插入；路径必须是绝对路径）：
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">session-log-deepseek</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> enabled</span><span class="p">:</span><span class="w"> </span><span class="nv">false</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">insert</span><span class="p">:</span>
+<p><a href="https://github.com/ODearEvanHansen/agentharness/blob/main/assignment3/templates/trim-tool-output.ts"><code>templates/trim-tool-output.ts</code></a>：工具输出超过阈值时，只保留开头和结尾。在你的 patch 里这样插入（路径必须是绝对路径）：
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">insert</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trim-tool-output</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'/abs/path/to/assignment3/templates/trim-tool-output.ts'</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'/abs/path/to/assignment3/submission/&lt;昵称&gt;/trim-tool-output.ts'</span>
 <span class="w">      </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> maxChars</span><span class="p">:</span><span class="w"> </span><span class="nv">2000</span><span class="w"> </span><span class="p p-Indicator">}</span>
-</code></pre></div></p>
-<p>M0 实测（<code>sdk-minimal</code>，任务：运行一个输出 3000 行的脚本，再回答第 1、1500、3000 行分别是什么）：</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>第一次工具结果</th>
-<th>未命中输入 token</th>
-<th>成本</th>
-<th>答案</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>不裁剪</td>
-<td>17,174 字符</td>
-<td>6,441</td>
-<td>$0.00259</td>
-<td>正确</td>
-</tr>
-<tr>
-<td>裁剪（2000 字符）</td>
-<td>2,500 字符</td>
-<td>1,063</td>
-<td>$0.00088</td>
-<td>正确（模型看到省略提示后，自己用了一条更精确的命令）</td>
-</tr>
-</tbody>
-</table>
-<p>成本降到约 1/3。<strong>但是放到 SWE-bench 上，效果几乎为零</strong>：课程团队在 20 题上开着这个插件（<code>maxChars: 4000</code>）完整跑了一遍，结果是 17/20、每题 $0.0170、缓存命中率 96.1%，基线是 17/20、每题 $0.018。为什么？提示：DSH 的 bash 工具本来就会截断输出，而且模型很少把长输出原样打印出来。小实验里的收益，不一定能迁移到真实任务上，这正是本作业要你练的。</p>
-<p>这一轮也验证了排行榜流程：<code>run.py --patch</code> → 官方评测 → <code>score.py</code> → <code>leaderboard.json</code>。</p>
+</code></pre></div>
+在小实验里，它让成本降到约三分之一；放到 20 道 SWE-bench 题上，效果几乎为零。完整的复盘见第 16 讲。</p>
 <h2 id="_3">关卡<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1882,43 +1966,54 @@
 <tbody>
 <tr>
 <td>L1</td>
-<td>在 20 题上复现基线（用自己的 key 跑一轮，约 $0.4），报告和基线的差异，并分析差异来自哪里（随机性？）</td>
+<td>先在 8 道小题上跑通（几美分），再在效率赛道的 20 题上复现基线（约 $0.4）。报告你的结果和基线差多少，并分析原因</td>
 </tr>
 <tr>
 <td>L2</td>
-<td>加载模板插件，在 20 题上对比打开和关闭两种情况，报告解决率、成本、缓存命中率的变化</td>
+<td>加载模板插件，在 20 题上分别跑开启和关闭两种情况，报告解决率、成本和缓存命中率的变化</td>
 </tr>
 <tr>
 <td>L3</td>
-<td>至少实现 2 个自己的优化（插件或配置均可），每个都要有独立的对照实验</td>
+<td>至少实现 2 个你自己的优化（插件或配置都可以），每个都要有单独的对照实验</td>
 </tr>
 <tr>
 <td>L4</td>
-<td>选一个赛道提交排行榜（提交格式即将公布）</td>
+<td>选一条赛道，按下面的流程提交排行榜</td>
 </tr>
 </tbody>
 </table>
-<h2 id="_4">方法要求<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="_4">预算建议<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>单次运行的成本约为：小题 8 道 $0.01，效率赛道 20 题 $0.4，难题集 20 题 $0.8。例如 2 个优化，每个做开、关两组，每组重复 3 次，在效率赛道上总共约 $5（约 35 元）。<strong>先在小题上调试，确认能跑通后再上 20 题。</strong></p>
+<h2 id="_5">方法要求<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>每个结论都要有对照</strong>：只改一个变量，并说明你如何处理运行之间的随机性，比如重复运行几次、报告方差。</li>
-<li>成本按官方<strong>高峰价</strong>计算（<code>tools/usage_cost.py</code>），并单独报告缓存命中率。</li>
-<li>不允许针对具体题目做特殊处理：插件不能读取题号或 issue 文本来走特殊分支。</li>
+<li><strong>每个结论都要有对照</strong>：一次只改一个变量，并说明你如何处理运行间的随机性（重复了几次、方差多大）。见第 15 讲。</li>
+<li>成本按官方<strong>高峰价</strong>计算（<code>tools/usage_cost.py</code>），缓存命中率单独报告。</li>
+<li>不允许针对具体题目特殊处理：插件不能读取题号或 issue 文本来走特殊分支。</li>
 </ul>
-<h2 id="_5">运行与提交排行榜<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p><div class="highlight"><pre><span></span><code><span class="c1"># 1. 把你的 patch 和插件放进同一个目录（SWE 模式下这个目录会只读挂载进任务容器），patch 里用绝对路径引用插件</span>
-python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>swe<span class="w"> </span>--parallel<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--patch<span class="w"> </span><span class="nv">$PWD</span>/assignment3/submission/my.patch.yml<span class="w"> </span>--tag<span class="w"> </span>mine<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--instances<span class="w"> </span>infra/swebench/instances.txt<span class="w">          </span><span class="c1"># 解决率赛道改为 instances_hard.txt</span>
-<span class="c1"># 2. 官方判分</span>
-python<span class="w"> </span>infra/swebench/make_dataset_cn.py<span class="w"> </span>--instances<span class="w"> </span>infra/swebench/instances.txt<span class="w"> </span>--out<span class="w"> </span>ds.json
-python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_evaluation<span class="w"> </span>-d<span class="w"> </span>ds.json<span class="w"> </span>-p<span class="w"> </span>assignment2/results/predictions-dsh-mine.jsonl<span class="w"> </span>-id<span class="w"> </span>mine
-<span class="c1"># 3. 生成提交文件，然后发起 PR</span>
-python<span class="w"> </span>assignment3/score.py<span class="w"> </span>--run<span class="w"> </span>assignment2/results/swe-dsh-mine.jsonl<span class="w"> </span>--report<span class="w"> </span>dsh-mine.mine.json<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--track<span class="w"> </span>efficiency<span class="w"> </span>--config-dir<span class="w"> </span>assignment3/submission<span class="w"> </span>--name<span class="w"> </span>你的昵称<span class="w"> </span>&gt;<span class="w"> </span>assignment3/submission/leaderboard.json
+<h2 id="_6">运行与提交排行榜<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>所有命令都在仓库根目录执行。把你的 patch 和插件放在 <code>assignment3/submission/&lt;昵称&gt;/</code> 下：SWE 模式会把这个目录只读挂载进任务容器，所以 patch 里要用绝对路径引用插件。</p>
+<p><div class="highlight"><pre><span></span><code><span class="nv">NICK</span><span class="o">=</span>你的昵称
+<span class="nv">TRACK</span><span class="o">=</span>efficiency<span class="p">;</span><span class="w"> </span><span class="nv">SET</span><span class="o">=</span>infra/swebench/instances.txt<span class="p">;</span><span class="w">      </span><span class="nv">DS</span><span class="o">=</span>infra/swebench/dataset.json
+<span class="c1"># 解决率赛道改用：TRACK=accuracy; SET=infra/swebench/instances_hard.txt; DS=infra/swebench/dataset_hard.json</span>
+
+<span class="c1"># 1. 运行</span>
+python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>dsh<span class="w"> </span>--suite<span class="w"> </span>swe<span class="w"> </span>--parallel<span class="w"> </span><span class="m">1</span><span class="w"> </span>--instances<span class="w"> </span><span class="nv">$SET</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--patch<span class="w"> </span><span class="nv">$PWD</span>/assignment3/submission/<span class="nv">$NICK</span>/my.patch.yml<span class="w"> </span>--tag<span class="w"> </span><span class="nv">$NICK</span>
+<span class="c1"># 2. 官方判分（报告文件名为 dsh-$NICK.$NICK.json）</span>
+python<span class="w"> </span>-m<span class="w"> </span>swebench.harness.run_evaluation<span class="w"> </span>-d<span class="w"> </span><span class="nv">$DS</span><span class="w"> </span>-p<span class="w"> </span>assignment2/results/predictions-dsh-<span class="nv">$NICK</span>.jsonl<span class="w"> </span>-id<span class="w"> </span><span class="nv">$NICK</span>
+<span class="c1"># 3. 生成提交文件，然后发起 PR（提交 leaderboard/ 下的 JSON 和 submission/$NICK/ 目录）</span>
+python<span class="w"> </span>assignment3/score.py<span class="w"> </span>--run<span class="w"> </span>assignment2/results/swe-dsh-<span class="nv">$NICK</span>.jsonl<span class="w"> </span>--report<span class="w"> </span>dsh-<span class="nv">$NICK</span>.<span class="nv">$NICK</span>.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--track<span class="w"> </span><span class="nv">$TRACK</span><span class="w"> </span>--config-dir<span class="w"> </span>assignment3/submission/<span class="nv">$NICK</span><span class="w"> </span>--name<span class="w"> </span><span class="nv">$NICK</span><span class="w"> </span>&gt;<span class="w"> </span>leaderboard/<span class="nv">$NICK</span>-<span class="nv">$TRACK</span>.json
 </code></pre></div>
-维护者会抽查复现：用你的配置重跑一遍，解决数允许相差 ±2。<code>config_sha</code> 用来核对配置是否一致。</p>
-<h2 id="_6">提交物<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p><code>assignment3/</code> 目录：patch 文件、插件源码、运行记录，以及一篇博客形式的报告（<code>BLOG.md</code>，介绍你的优化思路和数据），可选一段视频。</p>
+<code>score.py</code> 会做以下检查：运行记录是否覆盖整个题集、评测报告是否与运行记录对应、有没有运行出错的题。维护者会抽查复现：用你的配置重跑一遍，解决数允许相差 ±2；<code>config_sha</code> 用来核对配置是否一致。提交后的结果显示在<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/docs/leaderboard.md">排行榜</a>页面。</p>
+<h2 id="_7">提交物<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>assignment3/submission/&lt;昵称&gt;/</code>：patch 文件和插件源码；</li>
+<li><code>leaderboard/&lt;昵称&gt;-&lt;赛道&gt;.json</code>；</li>
+<li><code>assignment2/results/</code> 下对应的运行记录和评测报告；</li>
+<li>一篇博客形式的报告 <code>assignment3/submission/&lt;昵称&gt;/BLOG.md</code>，写你的优化思路和数据；</li>
+<li>视频可选。</li>
+</ul>
 
 
 

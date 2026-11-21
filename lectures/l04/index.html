@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -680,6 +718,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        子 agent 事件：最小示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#vs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -746,7 +795,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -774,7 +823,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -802,7 +851,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -830,7 +879,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -858,7 +907,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -886,7 +935,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -1054,7 +1103,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1439,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1722,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1753,6 +1856,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        子 agent 事件：最小示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#vs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1819,7 +1933,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第四讲，我们讲 DSH 的两种数据源：实时推送的事件，和落盘的会话日志。作业一的观察工具，就建立在它们之上。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第四讲，我们讲 DSH 的两种数据源：实时推送的事件，和落盘的会话日志。作业一的观察工具，就建立在它们之上。</p>
 <h2 id="turnsteptool">一轮对话的层次：turn、step、tool<a class="headerlink" href="#turnsteptool" title="Permanent link">&para;</a></h2>
 <p><em>一个 turn 包含多个 step，一个 step 可能有多个工具调用</em></p>
 <div class="highlight"><pre><span></span><code>turn     turn/start | ……若干个 step…… | turn/end
@@ -1838,7 +1952,7 @@ tool     tool/call | tool/result
 <li>tool/call、tool/result：靠 callId 配对</li>
 <li>approval/<em>、job/</em>、subagent.started|finished、session.status</li>
 </ul>
-<p>M0 实测，SDK 推送的事件包括：轮次和步骤的开始与结束；助手消息，其中区分普通文本和思考内容；工具调用和结果；还有审批、后台任务、子 agent 的开始与结束，以及会话状态。有了这些，你就能画出完整的执行轨迹和子 agent 树。</p>
+<p>试做阶段实测，SDK 推送的事件包括：轮次和步骤的开始与结束；助手消息，其中区分普通文本和思考内容；工具调用和结果；还有审批、后台任务、子 agent 的开始与结束，以及会话状态。有了这些，你就能画出完整的执行轨迹和子 agent 树。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>事件足够画出完整轨迹和子 agent 树</p>
@@ -1853,6 +1967,23 @@ tool     tool/call | tool/result
 <p class="admonition-title">要点</p>
 <p>要监听 session/event，再看 event.type</p>
 </div>
+<h2 id="agent">子 agent 事件：最小示例<a class="headerlink" href="#agent" title="Permanent link">&para;</a></h2>
+<p><em>SubagentStartedNotification（packages/sdk/protocol/src/types.ts）</em></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 父会话派出子 agent 时，SDK 推送：</span>
+<span class="p">{</span><span class="s2">"method"</span><span class="o">:</span><span class="w"> </span><span class="s2">"subagent.started"</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">"params"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"parentSessionId"</span><span class="o">:</span><span class="w"> </span><span class="s2">"S-root"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"childSessionId"</span><span class="o">:</span><span class="w">  </span><span class="s2">"S-child-1"</span><span class="p">}}</span>
+
+<span class="c1">// 之后子 agent 自己的 step/tool 事件带 sessionId = "S-child-1"</span>
+<span class="c1">// 结束时推送 subagent.finished（只报告进程内子 agent）</span>
+
+<span class="nx">tree</span><span class="p">[</span><span class="s2">"S-root"</span><span class="p">].</span><span class="nx">children</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">"S-child-1"</span><span class="p">)</span><span class="w">  </span><span class="c1">// 建树只需这一步</span>
+</code></pre></div>
+<p>子 agent 的事件值得单独看一眼。父会话派出子 agent 时，SDK 推送一个子 agent 开始事件，里面只有两个字段：父会话编号和子会话编号。之后，子 agent 自己的步骤和工具事件，都带着子会话的编号，按这个编号把事件归到对应节点就行。结束时还有一个结束事件。注意，普通的会话分叉不会产生这个开始事件。作业一的 agent 树，就靠它来建。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>父子关系只看 started 事件；普通 fork 不产生它</p>
+</div>
 <h2 id="vs">事件流 vs 会话日志<a class="headerlink" href="#vs" title="Permanent link">&para;</a></h2>
 <p><strong>事件流</strong></p>
 <ul>
@@ -1866,7 +1997,7 @@ tool     tool/call | tool/result
 <li>usage 字段，含 cacheReadTokens</li>
 <li>算成本只能读它</li>
 </ul>
-<p>两种数据源各有分工。事件流是实时推送的，适合做界面，但 M0 发现，事件里没有 token 用量，step end 只有轮次和步骤编号。用量只记录在会话日志里，也就是 session v4 jsonl 文件的 usage 字段，其中包括缓存命中的 token 数。日志可能是 zstd 压缩的。所以作业一要显示成本，必须在每轮结束后去读会话日志。</p>
+<p>两种数据源各有分工。事件流是实时推送的，适合做界面，但试做阶段发现，事件里没有 token 用量，步骤结束事件只有轮次和步骤编号。用量只记录在会话日志里，也就是第四版的 session jsonl 文件，其中包括缓存命中的 token 数。日志可能是 zstd 压缩的。所以作业一要显示成本，必须在每轮结束后去读会话日志。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>作业一的坑：成本数据不在事件里</p>
@@ -1895,7 +2026,7 @@ tool     tool/call | tool/result
 </tr>
 </tbody>
 </table>
-<p>举个例子。M0 用 sdk minimal 跑了三轮对话，共五次请求。从会话日志里统计出来：未命中的输入一千五百六十八 token，缓存命中两千五百六十 token，输出两百三十六 token，命中率百分之六十二，按高峰价大约零点零零零八美元，不到一分钱。</p>
+<p>举个例子。试做阶段用 sdk minimal 跑了三轮对话，共五次请求。从会话日志里统计出来：未命中的输入一千五百六十八 token，缓存命中两千五百六十 token，输出两百三十六 token，命中率百分之六十二，按高峰价大约零点零八美分。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>命中率 62%，按高峰价约 $0.0008</p>
@@ -1917,13 +2048,13 @@ tool     tool/call | tool/result
 <ul>
 <li>turn ⊃ step ⊃ tool 调用</li>
 <li>事件流实时但无用量</li>
-<li>会话日志有 usage，算成本靠它</li>
-<li>子 agent 成本要一并汇总</li>
+<li>subagent.started 给出父子会话 id</li>
+<li>会话日志有 usage，子会话成本一并汇总</li>
 </ul>
-<p>小结一下。一个 turn 包含多个 step，step 里有工具调用；事件流是实时的但没有用量；成本要从会话日志里读，子 agent 也要算进去。请继续完成作业一的轨迹、状态和成本关卡。下一讲，我们深入 agent loop 的源码。</p>
+<p>小结一下。一个 turn 包含多个 step，step 里有工具调用；事件流是实时的但没有用量；子 agent 开始事件给出父子会话编号；成本要从会话日志里读，子会话也要算进去。课后用 sdk minimal 跑两轮对话，再用用量脚本统计，预期请求数和步骤开始事件的个数一致。下一讲，我们讲子 agent 与编排。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>作业一 L2–L4：渲染轨迹和工具卡片，显示状态，并从会话日志计算成本和缓存命中率</p>
+<p>15 分钟：用 sdk-minimal 跑两轮对话，再对 DSH_HOME 运行 tools/usage_cost.py；预期请求数与 step/start 事件数一致（无重试时），命中率大于 0</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l04.py">videos/lectures/l04.py</a></em></p>
@@ -1979,13 +2110,13 @@ tool     tool/call | tool/result
         
         
           
-          <a href="../l05/" class="md-footer__link md-footer__link--next" aria-label="下一页: 05 Agent loop 剖析（上）">
+          <a href="../l05/" class="md-footer__link md-footer__link--next" aria-label="下一页: 05 子 agent 与编排">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                05 Agent loop 剖析（上）
+                05 子 agent 与编排
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -617,7 +655,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -645,7 +683,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -673,7 +711,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -701,7 +739,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -729,7 +767,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -757,7 +795,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -925,7 +963,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1261,7 +1299,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1712,6 +1750,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1893,7 +1985,7 @@
 
 <h1 id="1dsh-lens-agent">作业 1：DSH-Lens —— 观察 agent 在做什么<a class="headerlink" href="#1dsh-lens-agent" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>预计 4–6 小时。对应第 2–3 周课程（DSH 导论、agent loop）。</p>
+<p>预计 6–10 小时。第 2 周发布，第 4 周截止，对应第 3–5 讲（DSH 导论、事件与会话日志、子 agent）。需要先完成作业 0。</p>
 </blockquote>
 <p>用别人写的 agent 很容易，但想看清它每一步在干什么、为什么花这么多钱，就难多了。这个作业要你做一个网页，用 <a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a>（DSH）的 Python SDK 驱动 agent，并<strong>实时</strong>把它的执行过程展示出来。后面几个作业都要靠这个工具来分析 agent 的行为。</p>
 <h2 id="_1">你会学到<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
@@ -1904,15 +1996,19 @@
 </ul>
 <h2 id="_2">准备<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
-<li>完成<a href="../a0/">作业 0</a>。</li>
-<li><code>pip install fastapi uvicorn</code></li>
-<li><strong>在 Docker 容器或一次性虚拟机里运行。</strong> 起始代码用的是 DSH 完整 profile，并设置了 <code>DSH_PERMISSION_MODE=danger-full-access</code>，也就是说 agent 能执行任意 shell 命令。隔离靠容器来做（第 1 讲讲过原因）。</li>
+<li>完成<a href="../a0/">作业 0</a>，包括关卡 1 第 4 步（隔离网络和运行器镜像）。</li>
+<li><strong>必须在容器里运行。</strong> 起始代码用的是 DSH 完整 profile，并设置了 <code>DSH_PERMISSION_MODE=danger-full-access</code>，agent 能执行任意 shell 命令，隔离全靠容器（第 1 讲讲过原因）。如果不在容器里，<code>app.py</code> 会拒绝启动。</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>assignment1/starter
-<span class="nb">export</span><span class="w"> </span><span class="nv">DEEPSEEK_API_KEY</span><span class="o">=</span>...
-python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>app:app<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
-<span class="c1"># 浏览器打开 http://127.0.0.1:8765</span>
+<p><strong>启动</strong>（在仓库根目录执行）：
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>agentharness-a1<span class="w"> </span>--cpus<span class="w"> </span><span class="m">4</span><span class="w"> </span>--memory<span class="w"> </span>8g<span class="w"> </span>--network<span class="w"> </span>agentharness-net<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://agentharness-egress:8888<span class="w"> </span>-e<span class="w"> </span>DEEPSEEK_API_KEY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/work<span class="w"> </span>agentharness-runner:0.1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>--app-dir<span class="w"> </span>assignment1/starter<span class="w"> </span>app:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
 </code></pre></div>
+<code>--internal</code> 网络里的容器不能做端口映射。浏览器访问有两种方式：
+- 查到容器的 IP（<code>docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' agentharness-a1</code>），在宿主机上打开 <code>http://&lt;IP&gt;:8765</code>。Linux 上可以直接访问，WSL2 下要在 WSL 里的浏览器或用 curl 访问。
+- 或者启动一个只做端口转发的小容器，同时接入两个网络。<strong>不要</strong>把 agent 容器本身接到普通网络上，那样做会让第三条白名单验证失效。</p>
+<p>前端会用到少量 HTML/JavaScript：<code>EventSource</code>（SSE）、<code>fetch</code> 和简单的 DOM 操作。不熟悉的话，先读 MDN 的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events">Server-sent events</a>（约 20 分钟）。</p>
 <h2 id="_3">起始代码里已经有的<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>app.py</code>：启动 DSH（加载课程配置，<strong>关闭会话日志上传</strong>）；<code>POST /api/run</code> 提交 prompt 或续聊；<code>GET /api/stream/{sid}</code> 用 SSE 按顺序推送这个会话树的全部原始事件，支持 <code>?since=N</code> 断点续传。</li>
@@ -1974,7 +2070,7 @@ python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> 
 </code></pre></div>
 <code>usage</code> 要把根会话和所有子会话加起来，价格按 DeepSeek 官方高峰价计算（<code>usage_cost.PRICES</code>）。</p>
 <h3 id="_6">运行自动检查<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code>python<span class="w"> </span>assignment1/check.py<span class="w"> </span>--url<span class="w"> </span>http://127.0.0.1:8765<span class="w"> </span>--dsh-home<span class="w"> </span>assignment1/starter/.dsh-home
+<p><div class="highlight"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>agentharness-a1<span class="w"> </span>python<span class="w"> </span>assignment1/check.py<span class="w"> </span>--url<span class="w"> </span>http://127.0.0.1:8765<span class="w"> </span>--dsh-home<span class="w"> </span>assignment1/starter/.dsh-home
 </code></pre></div>
 检查会真实调用 API，跑 2 轮对话，其中包括一次子 agent，花费约 0.003 美元。全部 ✅ 才算通过 L1–L5。</p>
 <h2 id="_7">你会踩的坑（提前告诉你）<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>

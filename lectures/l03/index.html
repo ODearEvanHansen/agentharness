@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -746,7 +784,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -774,7 +812,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -802,7 +840,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -830,7 +868,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -858,7 +896,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -886,7 +924,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -1054,7 +1092,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第三讲，我们来认识 DeepSeek Harness，简称 DSH。它是本课作业一、三、五都会用到的工业级 agent 框架。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第三讲，我们来认识 DeepSeek Harness，简称 DSH。它是本课作业一、三、五都会用到的工业级 agent 框架。</p>
 <h2 id="dsh">DSH 是什么<a class="headerlink" href="#dsh" title="Permanent link">&para;</a></h2>
 <p><em>一个由插件拼起来的 agent 运行时</em></p>
 <ul>
@@ -1834,12 +1926,12 @@
 <p>理解 DSH，就是理解「插件 + profile + patch」</p>
 </div>
 <h2 id="sdk">SDK 与运行时<a class="headerlink" href="#sdk" title="Permanent link">&para;</a></h2>
-<p><em>pip install deepseek-harness-sdk 一条命令</em></p>
+<p><em>pip install deepseek-harness-sdk==0.2.2rc2</em></p>
 <div class="highlight"><pre><span></span><code>你的代码     Python SDK | Session.run()
 通信       stdin / stdout 上的 JSON-RPC
 运行时      dsh 二进制 | 插件 + profile + patch
 </code></pre></div>
-<p>使用方式很简单，pip 安装 deepseek harness sdk 就行，它会自动装上原生运行时，自带 dsh 二进制，不需要 Node，也不需要编译。你的 Python 代码通过 SDK 启动运行时，两者之间走标准输入输出上的 JSON RPC 通信。注意，课程锁定的是 PyPI 上实际能装的版本，也就是零点二点二 rc 二。</p>
+<p>使用方式很简单，pip 安装 deepseek harness sdk 就行，它会自动装上原生运行时，自带 dsh 二进制，不需要 Node，也不需要编译。你的 Python 代码通过 SDK 启动运行时，两者之间走标准输入输出上的 JSON RPC 通信。注意，课程锁定的是 PyPI 上实际能装的版本：零点二点二的第二个候选版，也就是 rc 二，后面简称课程锁定版本。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>运行时是自包含二进制，不需要 Node，也不需要编译</p>
@@ -1862,7 +1954,7 @@
 <p>DeepSeek 会话日志贡献器默认随 DeepSeek 请求上传未接受的日志事件，每次请求最多 maxBytes（8 MiB）；在 profile patch 中设置 session-log-deepseek.enabled: false 可将其关闭。</p>
 <p>—— docs/user/guide/python-sdk.zh.md @ dsh-v0.2.2-rc.2</p>
 </blockquote>
-<p>第一讲提到过的隐私问题，官方文档里写得很清楚：会话日志插件默认会随请求上传日志事件，每次最多八兆。在 profile patch 里把 session log deepseek 的 enabled 设为 false，就能关闭。M0 实测发现，连 sdk minimal 也默认开着。</p>
+<p>第一讲提到过的隐私问题，官方文档里写得很清楚：会话日志插件默认会随请求上传日志事件，每次最多八兆字节。在 profile patch 里把这个插件的 enabled 设为 false，就能关闭。试做阶段发现，连 sdk minimal 也默认开着。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>sdk-minimal 也默认开着上传</p>
@@ -1874,7 +1966,7 @@
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
-<p>这就是课程统一使用的补丁文件，只有四行：找到 id 为 session log deepseek 的插件，把它的 enabled 配置改成 false。通过 SDK 的 patches 参数加载它。M0 验证过，加载之后，事件流里再也没有出现日志上传成功的事件。这也是 patch 机制最简单的一个例子。</p>
+<p>这就是课程统一使用的补丁文件，只有四行：找到会话日志插件，把它的 enabled 配置改成 false，通过 SDK 的 patches 参数加载。试做阶段验证过，加载之后，事件流里再也没有出现日志上传成功的事件。这也是 patch 机制最简单的一个例子。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>加载后，事件里不再出现 delivery-accepted</p>
@@ -1887,7 +1979,7 @@
 <li>沙箱模式由环境变量 DSH_PERMISSION_MODE 控制</li>
 <li>课程方案：容器负责隔离，容器内设为 danger-full-access</li>
 </ul>
-<p>还有一个坑。完整 profile 的 bash 默认运行在沙箱里，需要 bubblewrap 或者 Landlock，而普通容器里两样都没有，结果所有命令都被拒绝。沙箱模式由环境变量 DSH permission mode 控制。课程的方案是：所有作业都在 Docker 容器里跑，由容器负责隔离，容器内部把这个变量设为 danger full access。</p>
+<p>还有一个坑。完整 profile 的 bash 默认运行在沙箱里，需要 bubblewrap 或者 Landlock，而普通容器里两样都没有，结果所有命令都被拒绝。沙箱模式由一个权限模式环境变量控制，名字见屏幕。课程的方案是：所有作业都在 Docker 容器里跑，由容器负责隔离，只在容器内部把权限模式设为完全放开。千万不要在宿主机上这样设置。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>隔离交给 Docker，而不是交给 harness</p>
@@ -1899,10 +1991,10 @@
 <li>用 course.patch.yml 关闭会话日志上传</li>
 <li>隔离交给容器，容器内放开沙箱</li>
 </ul>
-<p>小结一下。DSH 由插件、profile 和 patch 组成；Python SDK 通过 JSON RPC 驱动运行时；课程补丁关闭了日志上传；隔离交给容器。作业一现在发布，先跑通起始代码。下一讲，我们看 DSH 产生的事件和会话日志。</p>
+<p>小结一下。DSH 由插件、profile 和 patch 组成；Python SDK 通过 JSON RPC 驱动运行时；课程补丁关闭了日志上传；隔离交给容器。作业一本周发布。课后花十五分钟，在容器里用 sdk minimal 跑一个小任务，对比加不加课程补丁，预期只有不加补丁时，事件里会出现日志上传成功的事件。下一讲，我们讲 DSH 产生的事件和会话日志。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>完成作业一 L1：跑通起始代码，在页面上看到原始事件，并确认没有 session-log-deepseek 上传事件</p>
+<p>15 分钟：在容器里用 sdk-minimal 跑一句「创建 hello.py 并运行」，分别加载和不加载 course.patch.yml；预期只有不加载时事件里出现 delivery-accepted</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l03.py">videos/lectures/l03.py</a></em></p>

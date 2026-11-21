@@ -27,7 +27,7 @@
     
     
       
-        <title>10 子 agent 与编排 - AgentHarness · Agent 系统公开课</title>
+        <title>10 评测 - AgentHarness · Agent 系统公开课</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#10-agent" class="md-skip">
+        <a href="#10" class="md-skip">
           跳转至
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              10 子 agent 与编排
+              10 评测
             
           </span>
         </div>
@@ -290,6 +290,44 @@
         </a>
       </li>
     
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
   
 
       
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -771,7 +809,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -789,7 +827,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -815,10 +853,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#dsh-agent" class="md-nav__link">
+  <a href="#swe-bench-issue-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        DSH 怎么定义子 agent
+        SWE-bench：用真实 issue 考 agent
       
     </span>
   </a>
@@ -826,10 +864,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#spawn-fork" class="md-nav__link">
+  <a href="#20" class="md-nav__link">
     <span class="md-ellipsis">
       
-        spawn 还是 fork
+        课程的 20 题基线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方 harness 与踩坑
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解决率：原 20 题接近饱和
       
     </span>
   </a>
@@ -840,7 +900,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        深度和并发：防止失控
+        为什么分数这么高：数据污染
       
     </span>
   </a>
@@ -851,7 +911,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        结果怎么回传
+        难题集的真实运行日志
       
     </span>
   </a>
@@ -860,28 +920,6 @@
       
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        一个真实例子：把子任务交给本地模型
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        子 agent 什么时候值得用
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         小结
@@ -1054,7 +1092,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1720,10 +1812,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#dsh-agent" class="md-nav__link">
+  <a href="#swe-bench-issue-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        DSH 怎么定义子 agent
+        SWE-bench：用真实 issue 考 agent
       
     </span>
   </a>
@@ -1731,10 +1823,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#spawn-fork" class="md-nav__link">
+  <a href="#20" class="md-nav__link">
     <span class="md-ellipsis">
       
-        spawn 还是 fork
+        课程的 20 题基线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方 harness 与踩坑
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解决率：原 20 题接近饱和
       
     </span>
   </a>
@@ -1745,7 +1859,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        深度和并发：防止失控
+        为什么分数这么高：数据污染
       
     </span>
   </a>
@@ -1756,7 +1870,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        结果怎么回传
+        难题集的真实运行日志
       
     </span>
   </a>
@@ -1765,28 +1879,6 @@
       
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        一个真实例子：把子任务交给本地模型
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        子 agent 什么时候值得用
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         小结
@@ -1813,69 +1905,53 @@
 
 
 
-<h1 id="10-agent">第 10 讲 · 子 agent 与编排<a class="headerlink" href="#10-agent" title="Permanent link">&para;</a></h1>
-<p><em>spawn 与 fork、深度限制、结果回传</em></p>
+<h1 id="10">第 10 讲 · 评测<a class="headerlink" href="#10" title="Permanent link">&para;</a></h1>
+<p><em>SWE-bench、Verified 子集、官方 harness、数据污染与难题集</em></p>
 <div class="admonition info">
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第十讲，我们讲子 agent 与编排。一个 agent 能不能把任务拆开，交给别的 agent 去做？什么时候值得这么做？本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
-<h2 id="dsh-agent">DSH 怎么定义子 agent<a class="headerlink" href="#dsh-agent" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>The subagent package family lets an agent delegate a task to a child, continue the child's work, and discover every child it created.</p>
-<p>—— packages/subagent/README.md @ dsh-v0.2.2-rc.2</p>
-</blockquote>
-<p>先看 DSH 文档的定义：子 agent 模块让一个 agent 把任务委派给子级，继续子级的工作，并且能发现它创建过的所有子级。委派、继续、发现，这就是子 agent 的三个基本动作。</p>
+<p>第十讲，我们讲评测。没有可靠的评测，所有优化都只是感觉。我们先看清 SWE bench 的一道题长什么样，再看数字。</p>
+<h2 id="swe-bench-issue-agent">SWE-bench：用真实 issue 考 agent<a class="headerlink" href="#swe-bench-issue-agent" title="Permanent link">&para;</a></h2>
+<ul>
+<li>题目来自 GitHub 上真实 Python 仓库的 issue</li>
+<li>agent 拿到仓库和 issue 描述，产出一个补丁</li>
+<li>判分：打上补丁跑隐藏测试；FAIL_TO_PASS 要变绿，PASS_TO_PASS 不能变红</li>
+<li>Verified：经过人工筛选、描述清楚可解的子集，带难度标注</li>
+</ul>
+<p>SWE bench 的题目来自 GitHub 上真实 Python 仓库的 issue。agent 拿到仓库和问题描述，产出一个补丁。判分时把补丁打上，运行 agent 看不到的测试：原来失败、修好后应该通过的测试必须通过，原来就通过的测试也不能被改坏。Verified 是经过人工筛选、描述清晰可解的子集，并且标注了预计的修复耗时。关键在于：判分看测试，而不是看 agent 自己说完成了。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>委派、继续、发现：子 agent 的三个动作</p>
+<p>判分看测试，而不是看 agent 自己说完成了</p>
 </div>
-<h2 id="spawn-fork">spawn 还是 fork<a class="headerlink" href="#spawn-fork" title="Permanent link">&para;</a></h2>
-<p><strong>spawn：全新的子 agent</strong></p>
+<h2 id="20">课程的 20 题基线<a class="headerlink" href="#20" title="Permanent link">&para;</a></h2>
+<p><em>M0 第 5 步，种子 2680 分层抽样</em></p>
 <ul>
-<li>从空白上下文开始</li>
-<li>只拿到任务描述</li>
-<li>适合独立、边界清楚的子任务</li>
+<li>&lt;15 min 10 题，15 min–1 h 8 题，1–4 h 2 题</li>
+<li>覆盖 9 个仓库，每个仓库最多 3 题</li>
+<li>deepseek-flash，3 路并发，每题限时 20 分钟</li>
+<li>20 题、3 路并发约需 40 分钟</li>
 </ul>
-<p><strong>fork：带历史的子 agent</strong></p>
-<ul>
-<li>以父级已完成的历史为起点</li>
-<li>知道前面聊过什么</li>
-<li>适合需要前文背景的任务</li>
-</ul>
-<p>DSH 提供两种进程内的子 agent。spawn 从空白的上下文开始，只拿到任务描述，适合边界清楚、彼此独立的子任务。fork 以父级已经完成的对话历史为起点，适合需要前文背景的任务。此外，还可以通过 ACP 等协议，把别的 agent 程序当作进程外的子 agent。</p>
+<p>课程的基线题集是从 Verified 里分层抽样的二十道题：十五分钟以内的十道，十五分钟到一小时的八道，一到四小时的两道，覆盖九个仓库，每个仓库最多三道。模型用 deepseek flash，三路并发，每题限时二十分钟，跑完一轮大约四十分钟。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>还可以把 ACP、Codex、Claude Code 当作进程外子 agent</p>
+<p>分层抽样：难度分布和仓库分布都要可控</p>
 </div>
-<h2 id="_1">深度和并发：防止失控<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p><em>见 docs/subsystems/subagent.zh.md</em></p>
+<h2 id="harness">官方 harness 与踩坑<a class="headerlink" href="#harness" title="Permanent link">&para;</a></h2>
+<p><em>swebench 5.0.2</em></p>
 <ul>
-<li>子 agent 还能再派子 agent：maxDepth 给委派深度设上限</li>
-<li>后端要声明 depthLimit 能力，否则带 maxDepth 的请求会被拒绝</li>
-<li>多个子 agent 可以并行跑：M0 原型里派 2 个并行子 agent，树上挂 2 个子节点</li>
-<li>每个子级对父级可见，无论运行中还是已存储</li>
+<li>每题一个预构建镜像 sweb.eval.x86_64.<id></li>
+<li>数据集名必须写 SWE-bench/SWE-bench_Verified，旧名会 KeyError</li>
+<li>镜像每个约 3GB，20 题约 60GB，国内需要镜像源</li>
+<li>agent 运行时长尾明显：必须设每题超时</li>
 </ul>
-<p>子 agent 自己还能再派子 agent，所以必须限制深度。DSH 用 max depth 设定委派深度的上限，后端如果不支持这个能力，请求会直接被拒绝。子 agent 也可以并行，M0 的原型里同时派了两个子 agent，agent 树上就挂出两个子节点。而且每个子级对父级始终可见。</p>
+<p>判分用官方的 swebench harness，五点零点二版。每道题有一个预构建的 Docker 镜像。试做阶段踩过几个坑：数据集名必须用新名字，见屏幕，用旧名会报错；每个镜像大约三个 G，二十题合计约六十个 G，国内学员需要镜像源；agent 的耗时长尾明显，最长的一题约八分钟，评测脚本一定要设超时。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>不设深度上限，递归委派会把预算吃光</p>
+<p>用官方 harness 判分，结果才能和别人比较</p>
 </div>
-<h2 id="_2">结果怎么回传<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p><em>delivery 字段决定结果送到哪里</em></p>
-<ul>
-<li>parent：结果作为消息通知父级模型，面向模型的工具都用这种方式</li>
-<li>caller：只把结果返回给调用方，不往父级注入消息</li>
-<li>观察时用 subagent.started 和 finished 事件建立父子关系</li>
-<li>成本要把子 agent 的会话一起汇总，否则会低估</li>
-</ul>
-<p>结果怎么回传？DSH 有两种方式。parent 方式把结果作为消息通知父级模型；caller 方式只把结果交给调用方，不往父级的对话里塞消息。在作业一里观察时，要靠 subagent started 事件建立父子关系，算成本时也要把子 agent 的会话一并汇总，否则会低估花费。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>子 agent 的成本藏在另一个会话日志里</p>
-</div>
-<h2 id="_3">一个真实例子：把子任务交给本地模型<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p><em>作业五 M0 实测：主 agent 用 deepseek-flash，子 agent 用本机 Qwen3-Coder-30B-A3B</em></p>
+<h2 id="20_1">解决率：原 20 题接近饱和<a class="headerlink" href="#20_1" title="Permanent link">&para;</a></h2>
+<p><em>deepseek-flash，官方评测</em></p>
 <table>
 <thead>
 <tr>
@@ -1885,44 +1961,67 @@
 </thead>
 <tbody>
 <tr>
-<td>主 agent 请求数</td>
-<td>7</td>
+<td>自写 loop · 原 20 题</td>
+<td>18 / 20</td>
 </tr>
 <tr>
-<td>子 agent 请求数</td>
-<td>6</td>
+<td>DSH · 原 20 题</td>
+<td>17 / 20</td>
+</tr>
+<tr>
+<td>自写 loop · 难题集</td>
+<td>10 / 20</td>
+</tr>
+<tr>
+<td>DSH · 难题集</td>
+<td>8 / 20</td>
 </tr>
 </tbody>
 </table>
-<p>来看作业五的一个实测例子。主 agent 用 deepseek flash，把统计文件的子任务交给本机的一个开源模型。主 agent 发了七次请求，花了零点零零四六美元；子 agent 发了六次请求，本地运行，不花 API 费用。答案是对的。但有个问题：主 agent 拿到结果后，自己又算了一遍来复核。</p>
+<p>结果是这样的。原二十题上，自写 loop 解决十八道，DSH 解决十七道，已经接近饱和，作业的排行榜会缺乏区分度。换成难题集，也就是 Verified 中一到四小时和四小时以上的二十道题，两边降到十道和八道，差距拉开了。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>主 agent $0.0046，子 agent 本地 $0；答案正确</p>
+<p>题太简单，排行榜就没有区分度</p>
 </div>
-<h2 id="agent">子 agent 什么时候值得用<a class="headerlink" href="#agent" title="Permanent link">&para;</a></h2>
+<h2 id="_1">为什么分数这么高：数据污染<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><em>M0 给出的三种可能</em></p>
 <ul>
-<li>值得：子任务独立、输出可以压缩成短结论，例如搜索代码、总结日志</li>
-<li>值得：想把脏活交给便宜的模型，同时不污染主 agent 的上下文</li>
-<li>不值得：父级不信任结果、要自己复核，省下的钱又花回去</li>
-<li>不值得：任务紧密耦合，来回传递上下文比自己做还贵</li>
+<li>flash 本身很强</li>
+<li>抽到的题偏简单</li>
+<li>Verified 是公开题集，可能进入了模型训练数据</li>
+<li>对策：用更难或更新的题，或改成「固定解决率比成本」的效率赛道</li>
 </ul>
-<p>那么子 agent 什么时候值得用？当子任务独立，结果可以压缩成一句短结论时，比如搜代码、总结日志，子 agent 能让主 agent 的上下文保持干净，还能交给更便宜的模型。反过来，如果父级不信任结果，要自己复核，或者任务耦合太紧，来回传上下文的代价就会超过收益。</p>
+<p>为什么分数这么高？可能有三个原因：flash 本身很强；抽到的题偏简单；还有一个评测里绕不开的问题，数据污染。Verified 是公开题集，题目和标准答案可能已经进入了模型的训练数据。对策是使用更难或更新的题，或者干脆改成效率赛道，在固定解决率下比成本和耗时。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>衡量标准：总成本和解决率，而不是看起来更高级</p>
+<p>公开基准的高分，不一定代表真实能力</p>
 </div>
-<h2 id="_4">小结<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="_2">难题集的真实运行日志<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><em>M0 难题集 runner 输出（节选）</em></p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>run_swe.py<span class="w"> </span>loop,dsh<span class="w"> </span><span class="m">3</span><span class="w">   </span><span class="c1"># M0 hard set, 20 tasks x 2 agents</span>
+<span class="go">loop django__django-10554                       247.4s req= 60 tools= 60 $0.056254  patch=   0 err=None</span>
+<span class="go">loop django__django-11885                       337.3s req= 60 tools= 65 $0.079887  patch=  41 err=None</span>
+<span class="go">dsh  django__django-10554                       365.4s req= 68 tools= 67 $0.086062  patch=  13 err=None</span>
+<span class="go">loop django__django-12325                        33.1s req= 12 tools= 17 $0.005867  patch=  13 err=None</span>
+<span class="go">dsh  django__django-11885                       146.3s req= 29 tools= 28 $0.036837  patch=  52 err=None</span>
+<span class="go">dsh  django__django-12325                        75.7s req= 23 tools= 22 $0.014035  patch=  17 err=None</span>
+</code></pre></div>
+<p>这是难题集的真实运行日志。可以看到，有的题目 loop 跑满了六十次请求，有一题甚至没有产出补丁；同一道题，两个 agent 的耗时和成本也差别很大。难题集每题大约四美分，是原题集的两倍，全集跑一轮约零点八美元，学员完全能够承受，所以它被选作作业三解决率赛道的题集。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>原 20 题约 2 美分/题，难题集约 4 美分/题</p>
+</div>
+<h2 id="_3">小结<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
-<li>spawn 空白开始，fork 带着历史</li>
-<li>maxDepth 限制委派深度</li>
-<li>delivery：parent 或 caller</li>
-<li>成本要连子会话一起算</li>
-<li>不信任结果，就省不了钱</li>
+<li>SWE-bench：真实 issue，按隐藏测试判分</li>
+<li>用官方 harness，注意数据集名和镜像体积</li>
+<li>原 20 题 18/17 接近饱和，难题集 10/8</li>
+<li>警惕数据污染，选有区分度的题集</li>
 </ul>
-<p>小结一下：spawn 从空白开始，fork 带着历史；用最大深度防止失控；结果可以回给父级或调用方；成本要连子会话一起算。课后练习：用作业一的工具派两个并行子 agent，检查树和总成本。下一讲，上下文工程。</p>
+<p>小结一下。SWE bench 用真实 issue 和隐藏测试判分；要用官方 harness，注意数据集名和镜像体积；原二十题已接近饱和，难题集才有区分度；还要警惕数据污染。课后挑两道原题跑 mads loop，用官方 harness 判分，预期每题两到三美分。下一讲，我们讲上下文工程。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>用作业一的 DSH-Lens 派 2 个并行子 agent，核对 agent 树和包含子会话的总成本</p>
+<p>20 分钟：用 run.py 在原 20 题中挑 2 题跑 madsLoop，用官方 harness 判分；预期每题约 2–3 美分，报告里出现 resolved 数</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l10.py">videos/lectures/l10.py</a></em></p>
@@ -1961,7 +2060,7 @@
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../l09/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 09 评测基础设施">
+          <a href="../l09/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 09 工具设计">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1971,7 +2070,7 @@
                 上一页
               </span>
               <div class="md-ellipsis">
-                09 评测基础设施
+                09 工具设计
               </div>
             </div>
           </a>

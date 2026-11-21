@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -746,7 +784,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -774,7 +812,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -802,7 +840,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -830,7 +868,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -858,7 +896,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -886,7 +924,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -1054,7 +1092,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>欢迎来到 Agent Harness 公开课。第一讲，我们先回答三个问题：agent 系统是什么，这门课怎么学，以及为什么从第一天起就要重视安全。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第一讲，欢迎来到 Agent Harness 公开课。这一讲回答三个问题：agent 系统是什么，这门课怎么学，以及为什么从第一天起就要重视安全。本视频由程序合成，配音来自 DeepSeek 语音合成，演示数据都来自真实运行。</p>
 <h2 id="agent">agent = 模型 + 循环 + 工具<a class="headerlink" href="#agent" title="Permanent link">&para;</a></h2>
 <p><em>模型负责决定下一步做什么，循环负责把结果喂回去，工具负责真正动手</em></p>
 <div class="highlight"><pre><span></span><code>第 1 步    用户任务 | 模型思考 | 调用 bash | 工具结果
@@ -1829,24 +1921,24 @@
 <p>一个编码 agent 的结构其实很简单。用户给出任务，模型思考之后，选择调用一个工具，比如执行一条 bash 命令。工具的结果被追加回对话，再交给模型决定下一步。如此循环，直到模型认为任务完成。模型、循环、工具，这就是 agent 的全部骨架。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>agent 的本质：在一个循环里反复调用模型，并执行模型选择的工具</p>
+<p>agent：在循环里反复调用模型，执行它选的工具</p>
 </div>
 <h2 id="_1">这门课的路线：自上而下<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>参考哈佛 CS2680 的结构，全部换成 DeepSeek 生态</em></p>
 <ul>
 <li>作业一 观察：做一个网页，实时看清 agent 每一步的上下文、工具调用和成本</li>
-<li>作业二 从零实现：用约一百行 Python 写一个能解 SWE-bench 的 agent loop</li>
+<li>作业二 从零实现：用约 110 行 Python 写一个能解 SWE-bench 的 agent loop</li>
 <li>作业三 优化：在 DeepSeek Harness 上用配置和插件，让 agent 又好又省</li>
 <li>作业四 本地推理：在自己机器上部署模型，做批处理、前缀复用、推测解码实验</li>
 <li>作业五 全栈：云端模型与本地模型混合路由，三项指标一起优化</li>
 </ul>
-<p>这门课的路线是自上而下。作业一，你先做一个观察工具，看清 agent 每一步在做什么、花了多少钱。作业二，从零写一个一百行左右的 agent loop，去解真实的 SWE bench 题目。作业三，在 DeepSeek Harness 上优化 agent。作业四，深入到推理服务，在自己的机器上部署模型。作业五，把 agent 和推理服务放在一起做全栈优化。</p>
+<p>这门课的路线是自上而下。作业一，你先做一个观察工具，看清 agent 每一步在做什么、花了多少钱。作业二，从零写一个一百一十行左右的 agent loop，去解真实的 SWE bench 题目。作业三，在 DeepSeek Harness 上优化 agent。作业四，深入到推理服务，在自己的机器上部署模型。作业五，把 agent 和推理服务放在一起做全栈优化。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>先看清，再动手，再优化，最后打通推理服务</p>
 </div>
 <h2 id="agent_1">先给你一个直觉：真实的 agent 有多强、多贵<a class="headerlink" href="#agent_1" title="Permanent link">&para;</a></h2>
-<p><em>课程 M0 实测，deepseek-flash，SWE-bench Verified</em></p>
+<p><em>试做阶段（M0）实测，deepseek-flash，SWE-bench Verified</em></p>
 <table>
 <thead>
 <tr>
@@ -1856,11 +1948,11 @@
 </thead>
 <tbody>
 <tr>
-<td>自写 loop · 20 题</td>
+<td>自写 loop · 原 20 题</td>
 <td>18 / 20</td>
 </tr>
 <tr>
-<td>DSH · 20 题</td>
+<td>DSH · 原 20 题</td>
 <td>17 / 20</td>
 </tr>
 <tr>
@@ -1873,10 +1965,10 @@
 </tr>
 </tbody>
 </table>
-<p>先给你一个直觉。课程组用 deepseek flash 做了实测：一个一百多行的自写 loop，在二十道 SWE bench 题上解决了十八道，工业级的 DSH 解决了十七道，每道题的成本只有两美分左右。换成更难的题集，两者分别降到十道和八道。也就是说，简单的 loop 已经很强，但想在难题上更进一步，就需要这门课讲的那些工程手段。</p>
+<p>先给你一个直觉。开课前，课程团队把所有作业自己试做了一遍，这个阶段叫试做阶段，代号 M 零，后面的很多数据都来自它。试做阶段用 deepseek flash 实测：一个一百一十行左右的自写 loop，在二十道 SWE bench 题上解决了十八道，工业级的 DSH 解决了十七道，每道题大约两美分。换成更难的难题集，两者分别降到十道和八道，每题大约四美分。简单的 loop 已经很强，但想在难题上更进一步，就需要这门课讲的工程手段。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>一百行的 loop 就能解掉大部分题；每题成本只有几美分</p>
+<p>原 20 题约 2 美分/题，难题集约 4 美分/题</p>
 </div>
 <h2 id="agent_2">安全：agent 会在你的机器上执行命令<a class="headerlink" href="#agent_2" title="Permanent link">&para;</a></h2>
 <p><em>这是本课最重要的一条纪律</em></p>
@@ -1884,12 +1976,12 @@
 <li>误操作：模型可能删除文件、改坏配置，甚至执行你没想到的命令</li>
 <li>泄露：API key 写进仓库、打印到日志，或被 agent 读出来发给外部</li>
 <li>提示注入：题目、网页或代码注释里藏着指令，诱导 agent 越权</li>
-<li>对策：所有作业都在 Docker 容器里运行；网络只放行 DeepSeek API；key 只通过环境变量传入</li>
+<li>对策：作业都在 Docker 容器里跑；出网只放行 DeepSeek API；key 只走环境变量</li>
 </ul>
-<p>接下来讲安全，这是本课最重要的一条纪律。agent 会在你的机器上执行真实的命令。它可能误删文件，可能把 API key 打印出来，也可能被题目里藏着的恶意指令诱导。所以课程的所有作业都在 Docker 容器里运行，容器的网络只放行 DeepSeek 的 API，key 只通过环境变量传入，永远不要提交进仓库。</p>
+<p>接下来讲安全，这是本课最重要的一条纪律。agent 会在你的机器上执行真实的命令。它可能误删文件，可能把 API key 打印出来，也可能被题目里藏着的恶意指令诱导。所以课程的所有作业都在 Docker 容器里运行，容器的网络只放行 DeepSeek 的 API，key 只通过环境变量传入，永远不要提交进仓库。白名单能防什么、防不住什么，第八讲会细讲。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>隔离不是可选项：所有作业都在容器里跑，出网走白名单</p>
+<p>隔离不是可选项：作业都在容器里跑，出网走白名单</p>
 </div>
 <h2 id="dsh">隐私：DSH 默认会上传会话日志<a class="headerlink" href="#dsh" title="Permanent link">&para;</a></h2>
 <p><em>课程配置 infra/course.patch.yml 默认关闭</em></p>
@@ -1898,22 +1990,22 @@
 <li>课程统一使用补丁：session-log-deepseek → enabled: false</li>
 <li>自己写配置时，第一件事就是检查这个开关</li>
 </ul>
-<p>还有一个隐私问题需要提前说明。DSH 默认会通过一个叫 session log deepseek 的插件，把会话日志上传给 DeepSeek。课程提供的配置补丁已经把它关掉了。以后你自己写配置时，第一件事就是检查这个开关。使用任何 harness 之前，都应该先弄清楚它把你的数据发到了哪里。</p>
+<p>还有一个隐私问题需要提前说明。DSH 默认会通过一个会话日志插件，把会话日志上传给 DeepSeek。课程提供的配置补丁已经把它关掉了。以后你自己写配置时，第一件事就是检查这个开关。使用任何 harness 之前，都应该先弄清楚它把你的数据发到了哪里。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>用任何 harness 之前，先弄清它把你的数据发到了哪里</p>
+<p>用任何 harness 之前，先弄清它把数据发到了哪里</p>
 </div>
 <h2 id="_2">你需要准备什么<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
-<li>一台 x86_64 Linux，或 Windows 加 WSL2；内存至少 16GB，作业四和五推荐 32GB；Docker</li>
-<li>自己的 DeepSeek API key：整门课的 API 费用预计在一百元以内</li>
-<li>不需要 GPU：本地推理部分全部在 CPU 上可以完成</li>
-<li>从作业零开始：环境自检，拉取评测镜像，跑通第一道题</li>
+<li>x86_64 Linux 或 Windows + WSL2；Docker；内存 16GB 起</li>
+<li>作业四 L3 和作业五需要 32GB 内存；不需要 GPU</li>
+<li>自己的 DeepSeek API key：原 20 题一轮约 $0.4–0.5（高峰价）</li>
+<li>作业三两周调试估计 50–100 元；全课总额待外部试学后校准</li>
 </ul>
-<p>最后看看你需要准备什么。一台 x86 的 Linux 电脑，或者 Windows 加 WSL2，内存至少十六 G，后两个作业推荐三十二 G，再装好 Docker。你还需要自己的 DeepSeek API key，整门课的 API 费用预计在一百元以内。不需要 GPU。现在就去完成作业零的环境自检吧。</p>
+<p>最后看看你需要准备什么。一台 x 八六架构的 Linux 电脑，或者 Windows 加 WSL 二，装好 Docker，内存至少十六个 G；作业四的第三关和作业五需要三十二个 G。不需要 GPU。你还需要自己的 DeepSeek API key。原二十题跑一轮，按高峰价大约零点四到零点五美元；作业三两周调试，估计五十到一百元人民币；全课总额要等外部学员试学之后再校准。作业零本周发布，本周末截止。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>下一步：完成作业零的环境自检</p>
+<p>本周：完成作业零的环境自检（本周末截止）</p>
 </div>
 <h2 id="_3">小结<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1922,10 +2014,10 @@
 <li>所有作业在容器中运行，出网白名单，key 不进仓库</li>
 <li>使用 DSH 先关闭会话日志上传</li>
 </ul>
-<p>小结一下。agent 就是模型、循环和工具。课程从观察开始，一路走到推理服务和全栈优化。所有作业都要在容器里运行，并且关闭会话日志上传。下一讲，我们来认识 DeepSeek API。</p>
+<p>小结一下。agent 就是模型、循环和工具。课程从观察开始，一路走到推理服务和全栈优化。所有作业都要在容器里运行，并且关闭会话日志上传。课后花十五分钟运行作业零的自检脚本，直到每一项都通过。下一讲，我们讲 DeepSeek API。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>完成作业零：运行 selfcheck.py，并在断网容器里跑通一道 SWE-bench 题的标准答案评测</p>
+<p>15 分钟：运行作业零的 selfcheck.py，预期各项检查都显示通过；如有失败，按提示修好再跑一遍</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l01.py">videos/lectures/l01.py</a></em></p>

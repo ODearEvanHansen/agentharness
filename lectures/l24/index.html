@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -930,7 +968,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第二十四讲，我们讲 MoE，也就是混合专家模型。我们要回答一个问题：为什么一个三十 B 的模型，生成速度反而比八 B 的模型快？本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第二十四讲，我们讲 MoE，也就是混合专家模型。我们要回答一个问题：为什么一个三十 B 的模型，生成速度反而比八 B 的模型快？</p>
 <h2 id="moe">MoE 的结构<a class="headerlink" href="#moe" title="Permanent link">&para;</a></h2>
 <p><em>每层有很多个前馈“专家”，路由器为每个 token 只挑几个</em></p>
 <div class="highlight"><pre><span></span><code>token A  路由器 | 专家 2 | 专家 7 | 其余专家不计算
@@ -1844,7 +1936,7 @@ token B  路由器 | 专家 1 | 专家 5 | 其余专家不计算
 <p>总参数看内存，激活参数看速度</p>
 </div>
 <h2 id="moe-8b-2">实测：MoE 生成速度约为 8B 的 2 倍<a class="headerlink" href="#moe-8b-2" title="Permanent link">&para;</a></h2>
-<p><em>M0 报告，32 核 Xeon CPU，生成速度 tok/s</em></p>
+<p><em>M0 llama-bench pp512/tg64, -t 16；生成速度 tok/s</em></p>
 <table>
 <thead>
 <tr>
@@ -1867,7 +1959,7 @@ token B  路由器 | 专家 1 | 专家 5 | 其余专家不计算
 </tr>
 </tbody>
 </table>
-<p>来看 M0 的实测。在三十二核的 CPU 上，三十 B A 三 B 的 Q 四版本，生成速度每秒约三十五点六个 token。稠密的八 B 模型 Q 四版本只有十八点六个。MoE 的生成速度差不多是八 B 的两倍。原因和上一讲一样：每个 token 只需读取约三 B 的激活权重，访存量更小。</p>
+<p>来看试做阶段用 llama-bench、十六线程的实测。三十 B A 三 B 的 Q 四版本，生成速度每秒约三十五点六个 token。稠密的八 B 模型 Q 四版本只有十八点六个。MoE 的生成速度差不多是八 B 的两倍。原因和上一讲一样：每个 token 只需读取约三 B 的激活权重，访存量更小。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>激活 3B 的 MoE，比稠密 8B 生成还快</p>
@@ -1892,7 +1984,7 @@ token B  路由器 | 专家 1 | 专家 5 | 其余专家不计算
 </tr>
 </tbody>
 </table>
-<p>但是代价也很明显。三十 B A 三 B 的 Q 四权重文件有十八点六 G，而八 B 只有五 G。运行时加上 K V cache，在三十二 K 上下文下常驻内存大约二十八 G。所以这门课推荐三十二 G 内存的机器。</p>
+<p>但是代价也很明显。三十 B A 三 B 的 Q 四权重文件有十八点六 G 字节，而八 B 只有五 G 字节。运行时加上 K V cache，在三万两千 token 的上下文下，常驻内存大约二十八 G 字节。所以这门课推荐三十二 G 字节内存的机器。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>运行时 RSS 约 28GB（32k 上下文），需要 32GB 内存</p>
@@ -1905,7 +1997,7 @@ token B  路由器 | 专家 1 | 专家 5 | 其余专家不计算
 <li>所以：速度看激活参数，内存看总参数</li>
 <li>对 agent 的意义：32GB 机器上能跑能用工具的本地模型</li>
 </ul>
-<p>为什么不能只加载激活的那三 B 呢？因为每个 token 选中的专家都不一样，事先无法预知，所有专家都必须常驻内存，否则就要频繁从磁盘换入，速度会崩溃。这也是作业四的一道必答题。对我们的 agent 来说，MoE 的意义在于：在一台三十二 G 的机器上，可以跑一个又快、又会用工具的本地模型。</p>
+<p>为什么不能只加载激活的那三 B 呢？因为每个 token 选中的专家都不一样，事先无法预知，所有专家都必须常驻内存，否则就要频繁从磁盘换入，速度会崩溃。这也是作业四的一道必答题。对我们的 agent 来说，MoE 的意义在于：在一台三十二 G 字节内存的机器上，可以跑一个又快、又会用工具的本地模型。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>MoE 把“算得快”和“装得下”拆成了两个问题</p>
@@ -1934,7 +2026,7 @@ token B  路由器 | 专家 1 | 专家 5 | 其余专家不计算
 </tr>
 </tbody>
 </table>
-<p>最后回到 agent。M0 把本地模型接入 agent，跑八道课程小题。三十 B A 三 B 全部解出，八 B 只解了四道，而且思考链太长、又慢又不稳定，零点六 B 一道也没解出，只适合当推测解码的草稿模型。</p>
+<p>最后回到 agent。试做阶段把本地模型接入 agent，跑八道课程小题。三十 B A 三 B 全部解出，八 B 只解了四道，而且思考链太长、又慢又不稳定，零点六 B 一道也没解出，只适合当推测解码的草稿模型。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>30B-A3B 可用；8B 慢且不稳定；0.6B 只适合当草稿模型</p>
@@ -1946,10 +2038,10 @@ token B  路由器 | 专家 1 | 专家 5 | 其余专家不计算
 <li>实测生成 35.6 tok/s，约为 8B 的 2 倍；权重 18.6GB</li>
 <li>32GB 机器上可用的本地 agent 模型</li>
 </ul>
-<p>小结一下。MoE 为每个 token 只激活少数专家，所以生成快，但所有专家都要装进内存。练习是回答作业四的必答题。作业四也在本周截止。下一讲，我们进入全栈部分：多模型路由。</p>
+<p>小结一下。MoE 为每个 token 只激活少数专家，所以生成快，但所有专家都要装进内存。练习是用上一讲的带宽算法，验证速度看的是激活参数。作业四在本周截止。下一讲，我们进入全栈部分：多模型路由。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>回答作业四 E5 必答题：MoE 只激活约 3B 参数，为什么内存要按 30B 算？</p>
+<p>算 30B-A3B 的 速度×读取量：按全部 18.6GB 是 662 GB/s，按激活约 1.9GB 是 68 GB/s。预期只有后者接近上讲的约 90 GB/s</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l24.py">videos/lectures/l24.py</a></em></p>

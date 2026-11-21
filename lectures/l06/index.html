@@ -27,7 +27,7 @@
     
     
       
-        <title>06 Agent loop 剖析（下） - AgentHarness · Agent 系统公开课</title>
+        <title>06 Agent loop 剖析（上） - AgentHarness · Agent 系统公开课</title>
       
     
     
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              06 Agent loop 剖析（下）
+              06 Agent loop 剖析（上）
             
           </span>
         </div>
@@ -290,6 +290,44 @@
         </a>
       </li>
     
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
   
 
       
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -659,7 +697,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -677,7 +715,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -703,10 +741,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tool_call" class="md-nav__link">
+  <a href="#step" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心约束：tool_call 必须配对
+        一个 step 的生命周期
       
     </span>
   </a>
@@ -717,7 +755,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        取消：没分发的调用补一对合成记录
+        源码怎么说
       
     </span>
   </a>
@@ -728,7 +766,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        失败：结果未知，就如实说未知
+        请求组装的细节
       
     </span>
   </a>
@@ -736,10 +774,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vs-loop" class="md-nav__link">
+  <a href="#madsloop" class="md-nav__link">
     <span class="md-ellipsis">
       
-        重试：请求层 vs loop 层
+        madsLoop 的主循环骨架
       
     </span>
   </a>
@@ -750,7 +788,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        并行工具调用
+        工具分发：错误也是结果
       
     </span>
   </a>
@@ -758,10 +796,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#exclusive-barrier" class="md-nav__link">
+  <a href="#madsloop-8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        exclusive barrier：把一批调用切成几段
+        跑起来：madsLoop 在 8 道小题上
       
     </span>
   </a>
@@ -802,7 +840,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -830,7 +868,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -858,7 +896,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -886,7 +924,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -1054,7 +1092,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1720,10 +1812,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tool_call" class="md-nav__link">
+  <a href="#step" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心约束：tool_call 必须配对
+        一个 step 的生命周期
       
     </span>
   </a>
@@ -1734,7 +1826,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        取消：没分发的调用补一对合成记录
+        源码怎么说
       
     </span>
   </a>
@@ -1745,7 +1837,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        失败：结果未知，就如实说未知
+        请求组装的细节
       
     </span>
   </a>
@@ -1753,10 +1845,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vs-loop" class="md-nav__link">
+  <a href="#madsloop" class="md-nav__link">
     <span class="md-ellipsis">
       
-        重试：请求层 vs loop 层
+        madsLoop 的主循环骨架
       
     </span>
   </a>
@@ -1767,7 +1859,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        并行工具调用
+        工具分发：错误也是结果
       
     </span>
   </a>
@@ -1775,10 +1867,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#exclusive-barrier" class="md-nav__link">
+  <a href="#madsloop-8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        exclusive barrier：把一批调用切成几段
+        跑起来：madsLoop 在 8 道小题上
       
     </span>
   </a>
@@ -1813,97 +1905,105 @@
 
 
 
-<h1 id="6-agent-loop">第 6 讲 · Agent loop 剖析（下）<a class="headerlink" href="#6-agent-loop" title="Permanent link">&para;</a></h1>
-<p><em>取消、失败恢复、配对补齐、并行工具调用</em></p>
+<h1 id="6-agent-loop">第 6 讲 · Agent loop 剖析（上）<a class="headerlink" href="#6-agent-loop" title="Permanent link">&para;</a></h1>
+<p><em>一个 step 的生命周期、请求组装、工具分发</em></p>
 <div class="admonition info">
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第六讲，我们继续剖析 agent loop，这次关注出问题的时候：用户取消了怎么办，请求失败了怎么办，多个工具能不能并行。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
-<h2 id="tool_call">核心约束：tool_call 必须配对<a class="headerlink" href="#tool_call" title="Permanent link">&para;</a></h2>
-<p><em>协议层面的硬规则</em></p>
-<ul>
-<li>assistant 消息里的每个 tool_call_id，都要有对应的 tool 消息</li>
-<li>缺一条，下一次请求就返回 400</li>
-<li>取消和失败，恰恰最容易留下「没有结果的调用」</li>
-<li>所以 loop 必须在收尾时补齐配对</li>
-</ul>
-<p>先记住一条硬规则：助手消息里的每个工具调用编号，都必须有对应的 tool 消息，少一条，下一次请求就会返回四百。而取消和失败，恰恰最容易留下没有结果的调用。所以 agent loop 的恢复逻辑，核心目标就是让历史始终合法。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>恢复逻辑的目标：让历史始终是合法的</p>
-</div>
-<h2 id="_1">取消：没分发的调用补一对合成记录<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>Undispatched model tool calls after cancellation receive synthetic tool/call plus ABORTED_BEFORE_DISPATCH result pairs.</p>
-<p>—— packages/core/agent-loop/README.md L130 @ dsh-v0.2.2-rc.2</p>
-</blockquote>
-<p>先看取消。DSH 的取消是协作式的。README 第一百三十行写道：取消之后，模型已经提出、但还没分发的工具调用，会收到一对合成的 tool call 加 tool result，错误码是 ABORTED BEFORE DISPATCH。这样历史依然是配对的。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>取消是协作式的：agent.cancel() 中止当前活动</p>
-</div>
-<h2 id="_2">失败：结果未知，就如实说未知<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>A recorded tool/call without a committed result receives TOOL_OUTCOME_UNKNOWN; a request without a call record receives TOOL_NOT_STARTED. … These results let later requests use paired tool history without automatically retrying uncertain operations.</p>
-<p>—— packages/core/agent-loop/README.md L132 @ dsh-v0.2.2-rc.2</p>
-</blockquote>
-<p>再看失败。第一百三十二行写道：在关闭失败的 step 之前，已经记录了调用但还没提交结果的，补 TOOL OUTCOME UNKNOWN；连调用记录都没有的，补 TOOL NOT STARTED。已经开始执行的分发会先等它结束。为什么要区分未知？因为它告诉模型，这个操作可能已经产生了副作用，不要不加判断地自动重试。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>UNKNOWN 提醒模型：这个操作可能已经有副作用</p>
-</div>
-<h2 id="vs-loop">重试：请求层 vs loop 层<a class="headerlink" href="#vs-loop" title="Permanent link">&para;</a></h2>
-<p><em>入口是 agent/request-error 钩子，返回 { kind: 'retry' }</em></p>
-<p><strong>请求层重试</strong></p>
-<ul>
-<li>历史、前缀、工具状态都不变</li>
-<li>幂等，复用已渲染的组装</li>
-<li>madsLoop 的 chat() 对 429/5xx 退避</li>
-</ul>
-<p><strong>loop 层重试</strong></p>
-<ul>
-<li>可能已执行的调用要先补结果</li>
-<li>由插件或策略决定</li>
-<li>可换模型、先压缩再重试</li>
-</ul>
-<p>关于重试，DSH 留给插件的入口是 agent request error 钩子，插件返回 kind 等于 retry 就会重试，没人处理的失败则直接结束本轮。要区分两种重试。请求层重试，历史和前缀都不变，是幂等的，mads loop 的 chat 函数对四二九和五百系列错误做指数退避就属于这种。loop 层重试，则要先给可能执行过的调用补上结果，再由策略决定，比如换一个模型，或者先压缩上下文。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>插件失败只结束这一轮，不会结束整个 loop</p>
-</div>
-<h2 id="_3">并行工具调用<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>maxParallelToolCalls remains a volatile positive-integer Config field with default 10; 1 selects serial execution. … Live edits apply to the next batch.</p>
-<p>—— packages/core/agent-loop/README.md L55 @ dsh-v0.2.2-rc.2</p>
-</blockquote>
-<p>接下来是并行。模型一次可能提出好几个工具调用。DSH 用 max parallel tool calls 控制并行上限，默认是十，设为一就是串行，而且可以热更新，从下一批开始生效。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>默认最多 10 个并行，设为 1 就是串行</p>
-</div>
-<h2 id="exclusive-barrier">exclusive barrier：把一批调用切成几段<a class="headerlink" href="#exclusive-barrier" title="Permanent link">&para;</a></h2>
-<p><em>parallel 调用进入有界并发池；exclusive 调用单独执行，形成顺序屏障</em></p>
-<div class="highlight"><pre><span></span><code>模型顺序     grep | read | edit | read | grep
-执行       并行段 | 单独执行 | 并行段
-回填       结果始终按模型给出的顺序
+<p>第六讲，我们打开 agent loop，看一个 step 从头到尾经历了什么。我们会对照 DSH 的源码，也对照作业二你要写的 mads loop。</p>
+<h2 id="step">一个 step 的生命周期<a class="headerlink" href="#step" title="Permanent link">&para;</a></h2>
+<p><em>每一步都从会话日志重新推导出请求</em></p>
+<div class="highlight"><pre><span></span><code>组装       派生历史 | 有效系统提示 | 可见工具 schema
+请求       调用模型 | 文本或 tool_calls
+分发       工具流水线 | 按模型顺序回填结果
+记录       追加进会话日志 | 下一步从这里推导
 </code></pre></div>
-<p>并行的关键是 exclusive barrier。每个调用被标记为 parallel 或 exclusive。exclusive 的调用单独执行，像一道屏障把整批调用切成几段，段与段之间严格按顺序，段内的并行调用进入有界的并发池。结果总是按模型给出的顺序回填。是否并行安全，只根据调用自身判断，不做两两比较，这样规则简单、可审计。</p>
+<p>一个 step 大致分四个阶段。第一是组装：从会话历史推导出要发送的消息，确定有效的系统提示和模型可见的工具。第二是请求模型，得到文本或者工具调用。第三是分发：工具调用经过工具流水线执行，结果按模型给出的顺序回填。第四是记录：所有被接受的事实追加进会话日志，下一步再从日志重新推导。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>每个调用只看自己判断是否并行安全（unary classification）</p>
+<p>组装 → 请求 → 分发 → 记录，然后进入下一步</p>
+</div>
+<h2 id="_1">源码怎么说<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Each step sends the session's derived history — with the latest non-empty system/message node as the effective prompt … — and its visible tool schemas; the model's tool calls run through the guarded tool pipeline and every accepted fact is appended to the session log before the next step derives from it.</p>
+<p>—— packages/core/agent-loop/README.md L75 @ dsh-v0.2.2-rc.2</p>
+</blockquote>
+<p>这是 DSH agent loop README 里的原文。每个 step 发送的是会话的派生历史，以最新的非空系统消息节点作为有效提示，再加上可见的工具 schema；模型的工具调用经过受保护的工具流水线执行，每一个被接受的事实，都会在下一步推导之前追加到会话日志。换句话说，会话日志是唯一的事实来源。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>会话日志是唯一的事实来源</p>
+</div>
+<h2 id="_2">请求组装的细节<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li>系统提示也是历史里的一个节点：取最新的非空 system/message</li>
+<li>提示为空时，干脆不发系统消息</li>
+<li>工具 schema 只发「当前可见」的那些</li>
+<li>重试时复用已渲染好的组装结果，不重复执行 pre-step</li>
+</ul>
+<p>组装阶段有几个细节值得注意。系统提示在 DSH 里也是历史中的一个节点，取最新的那个非空节点。提示为空时，就不发系统消息。工具只发送当前可见的那些。另外，README 里还提到，请求失败重试时，会复用已经渲染好的组装结果，不会重新执行步骤前的钩子。组装决定了请求的前缀，而前缀决定了缓存能不能命中。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>组装决定了前缀，前缀决定了缓存</p>
+</div>
+<h2 id="madsloop">madsLoop 的主循环骨架<a class="headerlink" href="#madsloop" title="Permanent link">&para;</a></h2>
+<p><em>assignment2/madsloop/agent.py（节选，主循环由你实现）</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"deepseek-flash"</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">SYSTEM</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}]</span>
+    <span class="n">usage</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"requests"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"input_miss"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"cache_read"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"output"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">tool_calls</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># TODO(A2-L2): main loop</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"steps"</span><span class="p">:</span> <span class="n">steps</span><span class="p">,</span> <span class="s2">"tool_calls"</span><span class="p">:</span> <span class="n">tool_calls</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="n">usage</span><span class="p">,</span> <span class="s2">"finished"</span><span class="p">:</span> <span class="n">finished</span><span class="p">}</span>
+</code></pre></div>
+<p>再看作业二的起始代码，作业二下一讲发布。mads loop 的 solve 函数用一个 messages 列表保存全部历史。主循环要你自己实现：调用 chat，累加用量；把助手消息追加进去，记得带回 reasoning content；对每个工具调用执行 run tool，追加 tool 消息；遇到 done 或者步数用完就结束。和 DSH 一样，也是组装、请求、分发、记录四步，只是 messages 列表就是你的会话日志。它其实就是第二讲那个示意循环的完整版。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>同样四步：组装、请求、分发、记录</p>
+</div>
+<h2 id="_3">工具分发：错误也是结果<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<ul>
+<li>run_tool 出错时返回错误文本，而不是抛异常</li>
+<li>让模型看到错误，自己纠正</li>
+<li>edit_file 的 old 必须恰好出现一次，否则返回说明</li>
+<li>DSH 把整批调用交给 ctx.tools.execute()，结果保持模型顺序</li>
+</ul>
+<p>工具分发有一条重要原则：错误也是结果。作业二要求 run tool 出错时返回错误文本，而不是抛出异常，这样模型能看到错误并自己纠正。比如 edit file 要替换的旧文本必须恰好出现一次，否则就告诉模型原因。DSH 也是把整批调用交给工具执行器，结果始终按模型给出的顺序回填。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>异常让 loop 崩溃，错误文本让模型学会改正</p>
+</div>
+<h2 id="madsloop-8">跑起来：madsLoop 在 8 道小题上<a class="headerlink" href="#madsloop-8" title="Permanent link">&para;</a></h2>
+<p><em>参考实现的真实输出</em></p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>madsloop<span class="w"> </span>--suite<span class="w"> </span>mini
+<span class="go">t03_reverse_words                        solved=True      6.3s steps=  5 $0.000842</span>
+<span class="go">t02_fizzbuzz                             solved=True      6.7s steps=  5 $0.000964</span>
+<span class="go">t01_sum_range                            solved=True      7.3s steps=  5 $0.000909</span>
+<span class="go">t04_merge_no_mutate                      solved=True     10.7s steps=  7 $0.001716</span>
+<span class="go">t06_fib_memo                             solved=True      6.8s steps=  4 $0.000734</span>
+<span class="go">t07_rename_import                        solved=True      6.4s steps=  5 $0.000829</span>
+<span class="go">t05_parse_duration                       solved=True      8.8s steps=  5 $0.001578</span>
+<span class="go">t08_csv_quotes                           solved=True      8.1s steps=  6 $0.000949</span>
+
+<span class="go">madsloop: solved 8/8  $0.0085</span>
+</code></pre></div>
+<p>这是参考实现在八道小题上的真实输出。每道题四到七步，八道全部解决，总花费大约零点八五美分。同一批题 DSH 每题只要三到四步，合计零点六四美分。你写完自己的 loop 之后，应该能得到类似的结果。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>8 题全对，合计 $0.0085，不到 1 美分</p>
 </div>
 <h2 id="_4">小结<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ul>
-<li>tool_call 必须配对，否则 400</li>
-<li>取消补 ABORTED_BEFORE_DISPATCH</li>
-<li>失败补 TOOL_OUTCOME_UNKNOWN / TOOL_NOT_STARTED</li>
-<li>并行默认 10，exclusive 形成屏障</li>
+<li>step = 组装 → 请求 → 分发 → 记录</li>
+<li>会话日志是唯一事实来源</li>
+<li>工具错误以文本返回给模型</li>
+<li>madsLoop 的 messages 就是你的会话日志</li>
 </ul>
-<p>小结一下。工具调用必须配对；取消和失败时，DSH 用不同的错误码补齐结果；并行默认上限是十，exclusive 调用形成顺序屏障。课后请完成作业二 Part B 的前两题，答案要标出源码行号。下一讲，我们讨论工具设计。</p>
+<p>小结一下。一个 step 就是组装、请求、分发、记录；会话日志是唯一的事实来源；工具出错要以文本返回。课后用 sdk minimal 跑一个小任务，在会话日志里数一数步骤和工具调用，预期两到四步，每个调用都有配对的结果。下一讲，我们讲 agent loop 的下半部分：取消、失败恢复和并行工具调用。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>作业二 Part B：回答 B1、B2，指出 madsLoop 被 Ctrl-C 中断后若要续跑，需要补齐什么，并标出 README 行号</p>
+<p>15 分钟：在容器里用 sdk-minimal 跑「写 fib.py 并运行」，在会话日志里数 step 和 tool/call；预期 2–4 个 step，每个 tool/call 都有配对的 tool/result</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l06.py">videos/lectures/l06.py</a></em></p>
@@ -1942,7 +2042,7 @@
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../l05/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 05 Agent loop 剖析（上）">
+          <a href="../l05/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 05 子 agent 与编排">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1952,20 +2052,20 @@
                 上一页
               </span>
               <div class="md-ellipsis">
-                05 Agent loop 剖析（上）
+                05 子 agent 与编排
               </div>
             </div>
           </a>
         
         
           
-          <a href="../l07/" class="md-footer__link md-footer__link--next" aria-label="下一页: 07 工具设计">
+          <a href="../l07/" class="md-footer__link md-footer__link--next" aria-label="下一页: 07 Agent loop 剖析（下）">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                07 工具设计
+                07 Agent loop 剖析（下）
               </div>
             </div>
             <div class="md-footer__button md-icon">

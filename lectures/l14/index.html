@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -1054,7 +1092,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第十四讲，成本与可靠性。agent 要跑很多步，每一步都可能失败，每一步都在花钱。这一讲讲三件事：重试、预算和模型选择。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第十四讲，成本与可靠性。agent 要跑很多步，每一步都可能失败，每一步都在花钱。这一讲讲三件事：重试、预算和模型选择。</p>
 <h2 id="_1">重试：只重试可恢复的错误<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>assignment2/madsloop/agent.py 中已提供的 chat()</em></p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
@@ -1832,7 +1924,7 @@
             <span class="k">continue</span>
         <span class="k">raise</span>
 </code></pre></div>
-<p>先看重试。作业二提供的 chat 函数里，只对四二九限流和五百系列的服务端错误重试，每次等待时间翻倍，最多五次。其他错误，比如参数写错，直接抛出，重试也没有用。</p>
+<p>先看重试。作业二提供的 chat 函数里，只对状态码四二九的限流，和五百系列的服务端错误重试，每次等待时间翻倍，最多五次。其他错误，比如参数写错，直接抛出，重试也没有用。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>限流和服务端错误才重试，指数退避，最多 5 次</p>
@@ -1851,7 +1943,7 @@
 <p>重试模型请求可以，重试不确定的工具调用要小心</p>
 </div>
 <h2 id="_2">成本长尾：最贵的题是平均的两倍多<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p><em>M0 实测，SWE-bench 20 题，每题成本（高峰价）</em></p>
+<p><em>试做阶段（M0）实测，SWE-bench 20 题，每题成本（高峰价）</em></p>
 <table>
 <thead>
 <tr>
@@ -1878,7 +1970,7 @@
 </tr>
 </tbody>
 </table>
-<p>再看预算。M0 的二十道题里，自写 loop 每题平均零点零二五七美元，最贵的一题零点零五八；DSH 平均零点零一八，最贵零点零四四。最贵的题是平均的两倍多，耗时也有长尾，最长的一题跑了大约八分钟。</p>
+<p>再看预算。试做阶段的二十道题里，自写 loop 每题平均约二点六美分，最贵的一题约五点八美分；DSH 平均一点八美分，最贵四点四美分。最贵的题是平均的两倍多，耗时也有长尾，最长的一题跑了大约八分钟。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>耗时同样有长尾：最长约 8 分钟</p>
@@ -1887,10 +1979,10 @@
 <ul>
 <li>步数上限：madsLoop 的 solve() 默认 max_steps=50</li>
 <li>每题超时：M0 每题限时 20 分钟</li>
-<li>输出上限和推理强度：DSH 默认 maxTokens 256000、reasoningEffort high，要显式设置</li>
+<li>输出上限和思考强度：DSH 默认 maxTokens 256000、reasoningEffort high，要显式设置</li>
 <li>解决率赛道有预算硬上限</li>
 </ul>
-<p>所以每一层都要设上限。步数有上限，作业二的 loop 默认最多五十步；时间有上限，M0 每题限时二十分钟。还有一个容易忽略的点：DSH 默认的最大输出是二十五万六千 token，推理强度是 high，课程要求显式设置这两个参数，否则成本不可控。</p>
+<p>所以每一层都要设上限。步数有上限，作业二的 loop 默认最多五十步；时间有上限，试做阶段每题限时二十分钟。还有一个容易忽略的点：DSH 默认的最大输出是二十五万六千 token，思考强度是 high，课程要求显式设置这两个参数，否则成本不可控。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>不设上限，成本就不可控</p>
@@ -1904,11 +1996,11 @@
 </ul>
 <p><strong>deepseek-v4-pro</strong></p>
 <ul>
-<li>输入价格约为 flash 的四倍多</li>
-<li>留给困难步骤</li>
-<li>在 DSH 里用多模型路由混用</li>
+<li>未命中输入单价约 flash 的 4.4 倍</li>
+<li>按 M0 基线 token 结构估算，总成本约 4 倍</li>
+<li>留给难的步骤，用多模型路由混用</li>
 </ul>
-<p>最后是模型选择。flash 是课程的默认模型，在二十道题上每题大约两美分。pro 更强，但输入价格是 flash 的四倍多。比较合理的做法是简单步骤给 flash，困难步骤再交给 pro，在 DSH 里可以用多模型路由实现。具体怎么分，要用数据说话。</p>
+<p>最后是模型选择。flash 是课程的默认模型，在二十道题上每题大约两美分。pro 更强，但更贵：未命中输入的单价是 flash 的四点四倍，命中和输出的倍数又各不相同；按 DSH 基线的 token 结构估算，同样的任务总成本大约是四倍。比较合理的做法是简单步骤给 flash，难的步骤再交给 pro，在 DSH 里可以用多模型路由实现。具体怎么分，要用数据说话。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>先用 flash 跑通，再决定哪些步骤值得用 pro</p>
@@ -1916,11 +2008,11 @@
 <h2 id="_4">隐性成本：钱花回去的地方<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ul>
 <li>请求更多、读写更零碎：自写 loop 成本比 DSH 多约 43%</li>
-<li>不信任子 agent，自己再算一遍（作业五实测）</li>
+<li>不信任子 agent，自己再算一遍（第 25 讲）</li>
 <li>提示开头放了会变的内容，缓存全部失效</li>
 <li>省钱建议：默认 flash、低峰跑全量、先用 5 题子集调试</li>
 </ul>
-<p>还要警惕隐性成本。自写 loop 请求更多、读写更零碎，成本比 DSH 多出约百分之四十三。主 agent 不信任子 agent、自己复核，也会把钱花回去。提示开头放了会变的内容，缓存就全部失效。几个省钱建议：默认用 flash，在低峰时段跑全量，先用五道题的小子集调试。</p>
+<p>还要警惕隐性成本。自写 loop 请求更多、读写更零碎，成本比 DSH 多出约百分之四十三。主 agent 不信任子 agent、自己复核，也会把钱花回去，第二十五讲会看到实测例子。提示开头放了会变的内容，缓存就全部失效。几个省钱建议：默认用 flash，在低峰时段跑全量，先用五道题的小子集调试。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>省钱先看步数和缓存，再看单价</p>
@@ -1932,10 +2024,10 @@
 <li>步数、时间、输出都要设上限</li>
 <li>默认 flash，困难步骤再考虑 pro</li>
 </ul>
-<p>小结：只重试可恢复的错误；结果不确定的工具调用不要自动重试；步数、时间和输出都要设上限；默认用 flash。课后练习：统计你一轮二十道题的成本分布，找出最贵的三道题，分析原因。</p>
+<p>小结一下。只重试可恢复的错误；结果不确定的工具调用不要自动重试；步数、时间和输出都要设上限；默认用 flash。课后小练习：用课程的计价脚本，给你最近一次会话分别按高峰价和低峰价算一遍，预期低峰价正好是高峰价的一半左右。下一讲，我们讲实验方法。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>用 tools/usage_cost.py 统计你一轮 20 题的成本分布，找出最贵的 3 题并分析原因</p>
+<p>10 分钟：用 tools/usage_cost.py 给你最近一次 DSH 会话分别按 peak 和 offpeak 计价；预期 offpeak 恰好约为 peak 的一半</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l14.py">videos/lectures/l14.py</a></em></p>

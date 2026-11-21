@@ -27,7 +27,7 @@
     
     
       
-        <title>05 Agent loop 剖析（上） - AgentHarness · Agent 系统公开课</title>
+        <title>05 子 agent 与编排 - AgentHarness · Agent 系统公开课</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#5-agent-loop" class="md-skip">
+        <a href="#5-agent" class="md-skip">
           跳转至
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              05 Agent loop 剖析（上）
+              05 子 agent 与编排
             
           </span>
         </div>
@@ -290,6 +290,44 @@
         </a>
       </li>
     
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
   
 
       
@@ -631,7 +669,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -649,7 +687,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -675,10 +713,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step" class="md-nav__link">
+  <a href="#dsh-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        一个 step 的生命周期
+        DSH 怎么定义子 agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spawn-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spawn 还是 fork
       
     </span>
   </a>
@@ -689,7 +738,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        源码怎么说
+        深度和并发：防止失控
       
     </span>
   </a>
@@ -700,18 +749,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        请求组装的细节
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#madsloop" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        madsLoop 的主循环骨架
+        结果怎么回传
       
     </span>
   </a>
@@ -722,7 +760,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        工具分发：错误也是结果
+        预告：把子任务交给本地模型
       
     </span>
   </a>
@@ -730,10 +768,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#madsloop-8" class="md-nav__link">
+  <a href="#agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跑起来：madsLoop 在 8 道小题上
+        子 agent 什么时候值得用
       
     </span>
   </a>
@@ -774,7 +812,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -802,7 +840,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -830,7 +868,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -858,7 +896,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -886,7 +924,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -1054,7 +1092,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1720,10 +1812,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step" class="md-nav__link">
+  <a href="#dsh-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        一个 step 的生命周期
+        DSH 怎么定义子 agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spawn-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spawn 还是 fork
       
     </span>
   </a>
@@ -1734,7 +1837,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        源码怎么说
+        深度和并发：防止失控
       
     </span>
   </a>
@@ -1745,18 +1848,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        请求组装的细节
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#madsloop" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        madsLoop 的主循环骨架
+        结果怎么回传
       
     </span>
   </a>
@@ -1767,7 +1859,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        工具分发：错误也是结果
+        预告：把子任务交给本地模型
       
     </span>
   </a>
@@ -1775,10 +1867,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#madsloop-8" class="md-nav__link">
+  <a href="#agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跑起来：madsLoop 在 8 道小题上
+        子 agent 什么时候值得用
       
     </span>
   </a>
@@ -1813,105 +1905,104 @@
 
 
 
-<h1 id="5-agent-loop">第 5 讲 · Agent loop 剖析（上）<a class="headerlink" href="#5-agent-loop" title="Permanent link">&para;</a></h1>
-<p><em>一个 step 的生命周期、请求组装、工具分发</em></p>
+<h1 id="5-agent">第 5 讲 · 子 agent 与编排<a class="headerlink" href="#5-agent" title="Permanent link">&para;</a></h1>
+<p><em>spawn 与 fork、深度限制、结果回传</em></p>
 <div class="admonition info">
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第五讲，我们打开 agent loop，看一个 step 从头到尾经历了什么。我们会对照 DSH 的源码，也对照作业二你要写的 mads loop。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
-<h2 id="step">一个 step 的生命周期<a class="headerlink" href="#step" title="Permanent link">&para;</a></h2>
-<p><em>每一步都从会话日志重新推导出请求</em></p>
-<div class="highlight"><pre><span></span><code>组装       派生历史 | 有效系统提示 | 可见工具 schema
-请求       调用模型 | 文本或 tool_calls
-分发       工具流水线 | 按模型顺序回填结果
-记录       追加进会话日志 | 下一步从这里推导
-</code></pre></div>
-<p>一个 step 大致分四个阶段。第一是组装：从会话历史推导出要发送的消息，确定有效的系统提示和模型可见的工具。第二是请求模型，得到文本或者工具调用。第三是分发：工具调用经过工具流水线执行，结果按模型给出的顺序回填。第四是记录：所有被接受的事实追加进会话日志，下一步再从日志重新推导。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>组装 → 请求 → 分发 → 记录，然后进入下一步</p>
-</div>
-<h2 id="_1">源码怎么说<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>第五讲，我们讲子 agent 与编排。一个 agent 能不能把任务拆开，交给别的 agent 去做？什么时候值得这么做？</p>
+<h2 id="dsh-agent">DSH 怎么定义子 agent<a class="headerlink" href="#dsh-agent" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>Each step sends the session's derived history — with the latest non-empty system/message node as the effective prompt … — and its visible tool schemas; the model's tool calls run through the guarded tool pipeline and every accepted fact is appended to the session log before the next step derives from it.</p>
-<p>—— packages/core/agent-loop/README.md L75 @ dsh-v0.2.2-rc.2</p>
+<p>The subagent package family lets an agent delegate a task to a child, continue the child's work, and discover every child it created.</p>
+<p>—— packages/subagent/README.md @ dsh-v0.2.2-rc.2</p>
 </blockquote>
-<p>这是 DSH agent loop README 第七十五行的原文。每个 step 发送的是会话的派生历史，以最新的非空系统消息节点作为有效提示，再加上可见的工具 schema；模型的工具调用经过受保护的工具流水线执行，每一个被接受的事实，都会在下一步推导之前追加到会话日志。换句话说，会话日志是唯一的事实来源。</p>
+<p>先看 DSH 文档的定义：子 agent 模块让一个 agent 把任务委派给子级，继续子级的工作，并且能发现它创建过的所有子级。委派、继续、发现，这就是子 agent 的三个基本动作。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>会话日志是唯一的事实来源</p>
+<p>委派、继续、发现：子 agent 的三个动作</p>
 </div>
-<h2 id="_2">请求组装的细节<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="spawn-fork">spawn 还是 fork<a class="headerlink" href="#spawn-fork" title="Permanent link">&para;</a></h2>
+<p><strong>spawn：全新的子 agent</strong></p>
 <ul>
-<li>系统提示也是历史里的一个节点：取最新的非空 system/message</li>
-<li>提示为空时，干脆不发系统消息</li>
-<li>工具 schema 只发「当前可见」的那些</li>
-<li>重试时复用已渲染好的组装结果，不重复执行 pre-step</li>
+<li>从空白上下文开始</li>
+<li>只拿到任务描述</li>
+<li>适合独立、边界清楚的子任务</li>
 </ul>
-<p>组装阶段有几个细节值得注意。系统提示在 DSH 里也是历史中的一个节点，取最新的那个非空节点。提示为空时，就不发系统消息。工具只发送当前可见的那些。另外，README 第一百二十行提到，请求失败重试时，会复用已经渲染好的组装结果，不会重新执行 pre step 钩子。组装决定了请求的前缀，而前缀决定了缓存能不能命中。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>组装决定了前缀，前缀决定了缓存</p>
-</div>
-<h2 id="madsloop">madsLoop 的主循环骨架<a class="headerlink" href="#madsloop" title="Permanent link">&para;</a></h2>
-<p><em>assignment2/madsloop/agent.py（节选，主循环由你实现）</em></p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"deepseek-flash"</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
-    <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">SYSTEM</span><span class="p">},</span>
-                <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}]</span>
-    <span class="n">usage</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"requests"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"input_miss"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"cache_read"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"output"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-    <span class="n">steps</span> <span class="o">=</span> <span class="n">tool_calls</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="c1"># TODO(A2-L2): main loop</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">"steps"</span><span class="p">:</span> <span class="n">steps</span><span class="p">,</span> <span class="s2">"tool_calls"</span><span class="p">:</span> <span class="n">tool_calls</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="n">usage</span><span class="p">,</span> <span class="s2">"finished"</span><span class="p">:</span> <span class="n">finished</span><span class="p">}</span>
-</code></pre></div>
-<p>再看作业二的起始代码。mads loop 的 solve 函数用一个 messages 列表保存全部历史。主循环要你自己实现：调用 chat，累加用量；把助手消息追加进去，记得带回 reasoning content；对每个工具调用执行 run tool，追加 tool 消息；遇到 done 或者步数用完就结束。和 DSH 一样，也是组装、请求、分发、记录四步，只是 messages 列表就是你的会话日志。</p>
-<div class="admonition tip">
-<p class="admonition-title">要点</p>
-<p>同样四步：组装、请求、分发、记录</p>
-</div>
-<h2 id="_3">工具分发：错误也是结果<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><strong>fork：带历史的子 agent</strong></p>
 <ul>
-<li>run_tool 出错时返回错误文本，而不是抛异常</li>
-<li>让模型看到错误，自己纠正</li>
-<li>edit_file 的 old 必须恰好出现一次，否则返回说明</li>
-<li>DSH 把整批调用交给 ctx.tools.execute()，结果保持模型顺序</li>
+<li>以父级已完成的历史为起点</li>
+<li>知道前面聊过什么</li>
+<li>适合需要前文背景的任务</li>
 </ul>
-<p>工具分发有一条重要原则：错误也是结果。作业二要求 run tool 出错时返回错误文本，而不是抛出异常，这样模型能看到错误并自己纠正。比如 edit file 要替换的旧文本必须恰好出现一次，否则就告诉模型原因。DSH 也是把整批调用交给工具执行器，结果始终按模型给出的顺序回填。</p>
+<p>DSH 提供两种进程内的子 agent。spawn 从空白的上下文开始，只拿到任务描述，适合边界清楚、彼此独立的子任务。fork 以父级已经完成的对话历史为起点，适合需要前文背景的任务。此外，还可以通过 ACP 等协议，把别的 agent 程序当作进程外的子 agent。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>异常让 loop 崩溃，错误文本让模型学会改正</p>
+<p>还可以把 ACP、Codex、Claude Code 当作进程外子 agent</p>
 </div>
-<h2 id="madsloop-8">跑起来：madsLoop 在 8 道小题上<a class="headerlink" href="#madsloop-8" title="Permanent link">&para;</a></h2>
-<p><em>参考实现的真实输出</em></p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>madsloop<span class="w"> </span>--suite<span class="w"> </span>mini
-<span class="go">t03_reverse_words                        solved=True      6.3s steps=  5 $0.000842</span>
-<span class="go">t02_fizzbuzz                             solved=True      6.7s steps=  5 $0.000964</span>
-<span class="go">t01_sum_range                            solved=True      7.3s steps=  5 $0.000909</span>
-<span class="go">t04_merge_no_mutate                      solved=True     10.7s steps=  7 $0.001716</span>
-<span class="go">t06_fib_memo                             solved=True      6.8s steps=  4 $0.000734</span>
-<span class="go">t07_rename_import                        solved=True      6.4s steps=  5 $0.000829</span>
-<span class="go">t05_parse_duration                       solved=True      8.8s steps=  5 $0.001578</span>
-<span class="go">t08_csv_quotes                           solved=True      8.1s steps=  6 $0.000949</span>
-
-<span class="go">madsloop: solved 8/8  $0.0085</span>
-</code></pre></div>
-<p>这是参考实现在八道小题上的真实输出。每道题四到七步，八道全部解决，总花费零点零零八五美元，不到一美分。你写完自己的 loop 之后，应该能得到类似的结果。</p>
+<h2 id="_1">深度和并发：防止失控<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><em>packages/subagent/tool-subagent/README.md</em></p>
+<ul>
+<li>maxDepth 默认 1：只允许直接子级；设为 0 禁止委派</li>
+<li>数值深度要求后端声明 depthLimit 能力，否则挂载失败</li>
+<li>maxActiveSubagents 默认 8：限制同一棵树里活跃的子级数</li>
+<li>M0 原型：派 2 个并行子 agent，树上挂 2 个子节点</li>
+</ul>
+<p>子 agent 自己还能再派子 agent，所以必须限制深度。DSH 用最大深度这个配置设上限，默认值是一，也就是只允许直接子级，子级不能再往下派；设为零就禁止委派。设置数值深度时，后端必须声明支持深度限制，否则直接失败。并发方面，同一棵树里活跃的子级默认最多八个。试做阶段的原型同时派了两个子 agent，agent 树上就挂出两个子节点。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>8 题全对，总共不到一美分</p>
+<p>不设深度上限，递归委派会把预算吃光</p>
+</div>
+<h2 id="_2">结果怎么回传<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><em>delivery 字段决定结果送到哪里</em></p>
+<ul>
+<li>parent：结果作为消息通知父级模型，面向模型的工具都用这种方式</li>
+<li>caller：只把结果返回给调用方，不往父级注入消息</li>
+<li>观察时用 subagent.started 事件建立父子关系（第四讲）</li>
+<li>成本要把子 agent 的会话一起汇总，否则会低估</li>
+</ul>
+<p>结果怎么回传？DSH 有两种方式。parent 方式把结果作为消息通知父级模型；caller 方式只把结果交给调用方，不往父级的对话里塞消息。观察时，要靠第四讲讲过的子 agent 开始事件建立父子关系，算成本时也要把子 agent 的会话一并汇总，否则会低估花费。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>子 agent 的成本藏在另一个会话日志里</p>
+</div>
+<h2 id="_3">预告：把子任务交给本地模型<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><em>作业五的雏形，完整实验见第 25 讲</em></p>
+<ul>
+<li>主 agent 用 deepseek-flash，子 agent 用本机 Qwen3-Coder-30B-A3B</li>
+<li>子 agent 跑在本地，不花 API 费用，答案正确</li>
+<li>但主 agent 拿到结果后又自己复核了一遍</li>
+<li>「不信任」带来的重复劳动，是第 25 讲的主题</li>
+</ul>
+<p>先预告一个作业五的例子。主 agent 用 deepseek flash，把一个统计文件的子任务交给本机的开源模型，三十 B A 三 B。子 agent 在本地运行，不花 API 费用，答案也是对的。但主 agent 拿到结果后，自己又算了一遍来复核。这种不信任带来的重复劳动，第二十五讲会拿完整数据细讲。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>子 agent 省不省钱，取决于父级信不信它</p>
+</div>
+<h2 id="agent">子 agent 什么时候值得用<a class="headerlink" href="#agent" title="Permanent link">&para;</a></h2>
+<ul>
+<li>值得：子任务独立、输出可以压缩成短结论，例如搜索代码、总结日志</li>
+<li>值得：想把脏活交给便宜的模型，同时不污染主 agent 的上下文</li>
+<li>不值得：父级不信任结果、要自己复核，省下的钱又花回去</li>
+<li>不值得：任务紧密耦合，来回传递上下文比自己做还贵</li>
+</ul>
+<p>那么子 agent 什么时候值得用？当子任务独立，结果可以压缩成一句短结论时，比如搜代码、总结日志，子 agent 能让主 agent 的上下文保持干净，还能交给更便宜的模型。反过来，如果父级不信任结果，要自己复核，或者任务耦合太紧，来回传上下文的代价就会超过收益。</p>
+<div class="admonition tip">
+<p class="admonition-title">要点</p>
+<p>衡量标准：总成本和解决率，而不是看起来更高级</p>
 </div>
 <h2 id="_4">小结<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ul>
-<li>step = 组装 → 请求 → 分发 → 记录</li>
-<li>会话日志是唯一事实来源</li>
-<li>工具错误以文本返回给模型</li>
-<li>madsLoop 的 messages 就是你的会话日志</li>
+<li>spawn 空白开始，fork 带着历史</li>
+<li>maxDepth 默认 1，只允许直接子级</li>
+<li>delivery：parent 或 caller</li>
+<li>成本要连子会话一起算</li>
+<li>不信任结果，就省不了钱</li>
 </ul>
-<p>小结一下。一个 step 就是组装、请求、分发、记录；会话日志是唯一的事实来源；工具出错要以文本返回。作业二现在发布，先把 mads loop 在小题集上跑通。下一讲，我们看取消、失败恢复和并行工具调用。</p>
+<p>小结一下。spawn 从空白开始，fork 带着历史；最大深度默认是一，只允许直接子级；结果可以回给父级或调用方；成本要连子会话一起算。课后用作业一的观察工具派两个并行子 agent，预期树上挂出两个子节点，总成本比根会话单独算的更高。下一讲，我们打开 agent loop，看一个 step 的生命周期。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>作业二 Part A：实现 madsLoop 的四个工具和主循环，在 mini 题集上跑通 8/8</p>
+<p>15 分钟：用作业一的 DSH-Lens 让 agent 派 2 个并行子 agent 各数一个目录的文件；预期树上 root 下 2 个子节点，总成本大于根会话成本</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l05.py">videos/lectures/l05.py</a></em></p>
@@ -1967,13 +2058,13 @@
         
         
           
-          <a href="../l06/" class="md-footer__link md-footer__link--next" aria-label="下一页: 06 Agent loop 剖析（下）">
+          <a href="../l06/" class="md-footer__link md-footer__link--next" aria-label="下一页: 06 Agent loop 剖析（上）">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                06 Agent loop 剖析（下）
+                06 Agent loop 剖析（上）
               </div>
             </div>
             <div class="md-footer__button md-icon">

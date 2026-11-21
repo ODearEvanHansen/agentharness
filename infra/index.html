@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://odearevanhansen.github.io/agentharness/infra/">
       
       
-        <link rel="prev" href="../assignments/a2-questions/">
+        <link rel="prev" href="../leaderboard/">
       
       
       
@@ -286,6 +286,44 @@
         </a>
       </li>
     
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
   
 
       
@@ -615,7 +653,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -643,7 +681,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -671,7 +709,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -699,7 +737,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -727,7 +765,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -755,7 +793,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -923,7 +961,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1259,7 +1297,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1539,6 +1577,60 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -1605,7 +1697,18 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        出网白名单用法（示例）
+        隔离网络与出网白名单
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行器镜像
       
     </span>
   </a>
@@ -1661,7 +1764,18 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        出网白名单用法（示例）
+        隔离网络与出网白名单
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行器镜像
       
     </span>
   </a>
@@ -1697,6 +1811,7 @@
 
 
 <h1 id="infra">infra：课程基础设施<a class="headerlink" href="#infra" title="Permanent link">&para;</a></h1>
+<p><strong>本仓库的所有命令都在仓库根目录执行。</strong></p>
 <table>
 <thead>
 <tr>
@@ -1707,35 +1822,48 @@
 <tbody>
 <tr>
 <td><code>course.patch.yml</code></td>
-<td>DSH 课程配置补丁，默认<strong>关闭会话日志上传</strong>（<code>session-log-deepseek.enabled: false</code>）。通过 SDK 的 <code>patches=("/abs/path/course.patch.yml",)</code> 加载</td>
+<td>DSH 课程配置补丁，默认<strong>关闭会话日志上传</strong>（<code>session-log-deepseek.enabled: false</code>）。课程脚本会自动加载它；你自己用 SDK 时，通过 <code>patches=("/abs/path/course.patch.yml",)</code> 加载</td>
 </tr>
 <tr>
 <td><code>egress/</code></td>
-<td>出网白名单代理（tinyproxy），只放行 <code>api.deepseek.com</code>。作业容器接入 <code>--internal</code> 网络，并设置 <code>HTTPS_PROXY</code> 指向这个代理</td>
+<td>出网白名单代理（tinyproxy），只放行 <code>api.deepseek.com</code>。作业容器接入 <code>--internal</code> 网络，并把 <code>HTTPS_PROXY</code> 指向这个代理</td>
+</tr>
+<tr>
+<td><code>runner/</code></td>
+<td>课程运行器镜像：Python 3.12 加课程锁定版本的 DSH SDK。A1 的 DSH-Lens、A2 和 A5 的小题都在这个镜像里运行</td>
 </tr>
 <tr>
 <td><code>swebench/</code></td>
-<td>SWE-bench 镜像工具：<code>pick_subset.py</code>（分层抽样，固定随机种子）、<code>make_dataset_cn.py</code>（生成镜像地址指向课程仓库的本地数据集 JSON）、<code>push_to_acr.sh</code>（旧的 ACR 方案）、<code>instances.txt</code>（当前 20 道题）</td>
+<td><code>instances.txt</code>（原 20 题）和 <code>instances_hard.txt</code>（难题集 20 题），以及对应的数据集 <code>dataset.json</code> / <code>dataset_hard.json</code>。数据集里的镜像地址已经改为 GHCR，可以直接交给官方评测，<strong>不需要访问 Hugging Face</strong>。另外还有 <code>make_dataset_cn.py</code>（为其他题目生成同样格式的 JSON）和 <code>pick_subset.py</code>（分层抽样，固定随机种子）</td>
 </tr>
 </tbody>
 </table>
-<h2 id="_1">出网白名单用法（示例）<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h2 id="_1">隔离网络与出网白名单<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>agentharness-egress:0.1<span class="w"> </span>infra/egress
 docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>--internal<span class="w"> </span>agentharness-net
 docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>agentharness-egress<span class="w"> </span>agentharness-egress:0.1
 docker<span class="w"> </span>network<span class="w"> </span>connect<span class="w"> </span>agentharness-net<span class="w"> </span>agentharness-egress
-<span class="c1"># 作业容器：</span>
-docker<span class="w"> </span>run<span class="w"> </span>--network<span class="w"> </span>agentharness-net<span class="w"> </span>-e<span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://agentharness-egress:8888<span class="w"> </span>...
 </code></pre></div>
-验证：容器内 <code>curl https://api.deepseek.com/</code> 应返回 401，说明已连通，只是没带 key；<code>curl https://github.com/</code> 应失败。</p>
+搭好后在容器内验证，下面三条都必须满足：
+1. <code>curl https://api.deepseek.com/</code> 返回 401：说明通过代理已经连通，只是请求没带 key。
+2. <code>curl https://github.com/</code> 失败：代理拒绝了白名单以外的域名。
+3. <code>curl --noproxy '*' https://example.com/</code> 失败：说明网络本身是 <code>--internal</code>，绕过代理也出不去。<strong>如果这一条能成功，白名单就形同虚设。</strong></p>
+<p>白名单有一种情况<strong>防不住</strong>：容器里的 agent 能拿到你的 API key，它可以通过 <code>api.deepseek.com</code> 本身把数据发出去，比如发到攻击者自己的 DeepSeek 账号。所以请<strong>为本课程单独创建一个 key，只充值少量余额，课程结束后删除</strong>。</p>
+<h2 id="_2">运行器镜像<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>agentharness-runner:0.1<span class="w"> </span>infra/runner<span class="w">        </span><span class="c1"># 需要正常网络，只构建一次</span>
+<span class="c1"># 之后在隔离网络中运行，以作业 2 的小题为例：</span>
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--cpus<span class="w"> </span><span class="m">4</span><span class="w"> </span>--memory<span class="w"> </span>8g<span class="w"> </span>--network<span class="w"> </span>agentharness-net<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://agentharness-egress:8888<span class="w"> </span>-e<span class="w"> </span>DEEPSEEK_API_KEY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/work<span class="w"> </span>agentharness-runner:0.1<span class="w"> </span>python<span class="w"> </span>assignment2/run.py<span class="w"> </span>--agent<span class="w"> </span>madsloop<span class="w"> </span>--suite<span class="w"> </span>mini
+</code></pre></div>
 <h2 id="swe-bench-ghcr">SWE-bench 评测镜像（GHCR）<a class="headerlink" href="#swe-bench-ghcr" title="Permanent link">&para;</a></h2>
 <ul>
-<li>仓库：<code>ghcr.io/odearevanhansen/swebench-x86_64</code>。所有实例放在同一个 package 里，每个实例一个 tag，tag 取官方镜像名中的实例部分，例如 <code>django_1776_django-15467</code>。</li>
-<li>同步方式：由 GitHub Actions 工作流 <a href="https://github.com/ODearEvanHansen/agentharness/blob/main/.github/workflows/sync-swebench-images.yml"><code>.github/workflows/sync-swebench-images.yml</code></a> 用 crane 直接从 Docker Hub 复制到 GHCR，不在本地中转。修改 <code>infra/swebench/instances*.txt</code> 并推送到 main 后会自动触发；也可以在 Actions 页面手动运行。</li>
-<li>官方评测：先运行 <code>python infra/swebench/make_dataset_cn.py --instances infra/swebench/instances.txt --out swe_mirror.json</code>，再执行 <code>python -m swebench.harness.run_evaluation -d swe_mirror.json -p preds.jsonl -id run1</code>。</li>
-<li>注意：<code>swebench</code> 5.x 必须使用数据集名 <code>SWE-bench/SWE-bench_Verified</code>。</li>
-<li>国内访问：ghcr.io 在国内的速度不稳定，必要时请使用 GHCR 代理/镜像加速，具体方案待实测。</li>
-<li><code>push_to_acr.sh</code> 是之前 ACR 方案留下的脚本，暂时保留。</li>
+<li><strong>仓库</strong>：<code>ghcr.io/odearevanhansen/swebench-x86_64</code>。所有题目共用这一个仓库，每题对应一个 tag，例如 <code>django_1776_django-15467</code>。</li>
+<li><strong>同步方式</strong>：GitHub Actions 工作流 <a href="https://github.com/ODearEvanHansen/agentharness/blob/main/.github/workflows/sync-swebench-images.yml"><code>.github/workflows/sync-swebench-images.yml</code></a> 用 crane 把镜像从 Docker Hub 复制到 GHCR。修改 <code>infra/swebench/instances*.txt</code> 并推送到 main 分支后会自动运行。</li>
+<li><strong>官方评测</strong>：<code>python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json -p preds.jsonl -id run1</code>，难题集改用 <code>dataset_hard.json</code>。评测要调用宿主机上的 Docker，所以请在宿主机上运行，并先执行 <code>pip install swebench==5.0.2</code>。</li>
+<li><strong>来源与许可</strong>：镜像原样复制自 Docker Hub 上 SWE-bench 官方的 <code>swebench/sweb.eval.x86_64.*</code>，没有做任何修改。SWE-bench 的数据集和工具采用 MIT 许可；镜像中的各上游项目（django、sympy 等）和系统软件包遵循它们各自的许可证。课程转存这些镜像只是为了方便国内访问，不主张任何额外权利。</li>
+<li><strong>国内访问</strong>：课程团队在国内机器上实测过，GHCR 的下载速度可以接受。如果你那里很慢，可以把环境变量 <code>SWE_IMAGE_REPO</code> 和数据集 JSON 中的 <code>image</code> 字段改成你自己的镜像仓库（用 <code>make_dataset_cn.py --repo</code> 重新生成）。</li>
+<li><strong>注意</strong>：<code>swebench</code> 5.x 必须使用数据集名 <code>SWE-bench/SWE-bench_Verified</code>。</li>
 </ul>
 
 
@@ -1772,7 +1900,7 @@ docker<span class="w"> </span>run<span class="w"> </span>--network<span class="w
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../assignments/a2-questions/" class="md-footer__link md-footer__link--prev" aria-label="上一页: A2 源码阅读题">
+          <a href="../leaderboard/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 排行榜">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1782,7 +1910,7 @@ docker<span class="w"> </span>run<span class="w"> </span>--network<span class="w
                 上一页
               </span>
               <div class="md-ellipsis">
-                A2 源码阅读题
+                排行榜
               </div>
             </div>
           </a>

@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -930,7 +968,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第二十五讲，我们进入全栈部分：多模型路由。主 agent 用云端的 DeepSeek，子任务交给本机托管的模型。这也是作业五的核心。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第二十五讲，我们进入全栈部分：多模型路由。主 agent 用云端的 DeepSeek，子任务交给本机托管的模型。这是本周发布的作业五的核心。</p>
 <h2 id="_1">架构：一主一从<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>主 agent 规划和决策，local_worker 子 agent 做具体子任务</em></p>
 <div class="highlight"><pre><span></span><code>主 agent  deepseek-flash | 调用 local_worker | 拿到结果继续
@@ -1875,7 +1967,7 @@
 </tr>
 </tbody>
 </table>
-<p>M0 做了一个实测。任务是：派子 agent 统计一个文件里大于五十的数有多少个。答案正确，是二百四十五。主 agent 发了七次请求，花费零点零零四六美元。子 agent 发了六次请求，全部打到本地模型，成本为零。路由机制确实打通了。</p>
+<p>试做阶段做了一个实测。任务是：派子 agent 统计一个文件里大于五十的数有多少个。答案正确，是二百四十五。主 agent 发了七次请求，花费约零点四六美分。子 agent 发了六次请求，全部打到本地模型，成本为零。路由机制确实打通了。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>路由确实打通：子 agent 的 6 次请求全部走本地</p>
@@ -1901,7 +1993,7 @@
 <li>让子 agent 返回证据（命令和输出），而不只是结论</li>
 <li>注意冷启动：约 1 万 token 的系统提示，预填充约 120 tok/s</li>
 </ul>
-<p>那什么样的子任务适合交给本地模型呢？作业五给出的方向是搜索代码、运行测试、总结日志这类结果容易验证的任务。最好让子 agent 返回命令和输出作为证据，主 agent 核对证据即可，不必重做。还要注意，子 agent 每次请求带着约一万 token 的系统提示，CPU 预填充每秒只有约一百二十个 token，冷启动要上百秒，必须依赖前缀复用。</p>
+<p>那什么样的子任务适合交给本地模型呢？作业五给出的方向是搜索代码、运行测试、总结日志这类结果容易验证的任务。最好让子 agent 返回命令和输出作为证据，主 agent 核对证据即可，不必重做。还要注意，子 agent 每次请求带着约一万 token 的系统提示，CPU 预填充每秒只有约一百二十个 token，光预填充就要八十秒以上，必须依赖前缀复用。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>选易验证的任务，返回可核对的证据</p>
@@ -1913,10 +2005,10 @@
 <li>隐性成本：主 agent 复核导致重复劳动</li>
 <li>选易验证的子任务，并依赖前缀复用降低冷启动</li>
 </ul>
-<p>小结一下。通过多实例挂载 tool subagent，我们把子 agent 路由到本地模型。路由本身不难，难的是让主 agent 信任子 agent，避免重复劳动。练习是完成作业五第一关，复现这个实验。下一讲，我们讨论系统级优化。</p>
+<p>小结一下。通过多实例挂载 tool subagent，我们把子 agent 路由到本地模型。路由本身不难，难的是让主 agent 信任子 agent，避免重复劳动。练习是按模板挂上本地子 agent，复现这个计数任务，并在日志里确认子 agent 的请求确实打到了本地。下一讲，我们讨论系统级优化。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>完成作业五 L1：复现路由实验，用会话日志的 message.source.model 确认子 agent 走了本地</p>
+<p>按模板挂载 local_worker，跑同款计数任务。预期：答案 245；子 agent 的 message.source.model 为本地模型，llama-server 日志有约 6 次请求</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l25.py">videos/lectures/l25.py</a></em></p>

@@ -299,6 +299,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  期末项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leaderboard/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  排行榜
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../infra/" class="md-tabs__link">
         
   
@@ -622,7 +660,7 @@
   <span class="md-ellipsis">
     
   
-    05 Agent loop 剖析（上）
+    05 子 agent 与编排
   
 
     
@@ -650,7 +688,7 @@
   <span class="md-ellipsis">
     
   
-    06 Agent loop 剖析（下）
+    06 Agent loop 剖析（上）
   
 
     
@@ -678,7 +716,7 @@
   <span class="md-ellipsis">
     
   
-    07 工具设计
+    07 Agent loop 剖析（下）
   
 
     
@@ -706,7 +744,7 @@
   <span class="md-ellipsis">
     
   
-    08 评测
+    08 评测基础设施
   
 
     
@@ -734,7 +772,7 @@
   <span class="md-ellipsis">
     
   
-    09 评测基础设施
+    09 工具设计
   
 
     
@@ -762,7 +800,7 @@
   <span class="md-ellipsis">
     
   
-    10 子 agent 与编排
+    10 评测
   
 
     
@@ -930,7 +968,7 @@
   <span class="md-ellipsis">
     
   
-    16 案例复盘：作业三的优化方案
+    16 课程团队方案复盘
   
 
     
@@ -1390,7 +1428,7 @@
   <span class="md-ellipsis">
     
   
-    28 期末项目指南
+    28 期末项目答疑与展示安排
   
 
     
@@ -1673,6 +1711,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    期末项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    排行榜
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../infra/" class="md-nav__link">
         
   
@@ -1819,7 +1911,7 @@
 <p class="admonition-title">视频制作中</p>
 <p>本讲视频将发布在 B 站，届时在这里嵌入播放。下面是讲稿正文。</p>
 </div>
-<p>第二十三讲，我们讲量化。为什么同一个模型会有好几个版本的文件，它们的大小、速度和质量有什么区别。本视频由程序合成，配音来自 DeepSeek 语音合成。</p>
+<p>第二十三讲，我们讲量化。为什么同一个模型会有好几个版本的文件，它们的大小、速度和质量有什么区别。</p>
 <h2 id="_1">量化是什么<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><em>用更少的比特存储权重</em></p>
 <ul>
@@ -1834,7 +1926,7 @@
 <p>量化 = 用精度换内存和带宽</p>
 </div>
 <h2 id="qwen3-8b-q4-q8">实测：Qwen3-8B 的 Q4 和 Q8<a class="headerlink" href="#qwen3-8b-q4-q8" title="Permanent link">&para;</a></h2>
-<p><em>作业四 E5，llama-bench，32 核 Xeon</em></p>
+<p><em>a4_E5，llama-bench，Xeon Gold 6354，-t 16</em></p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>assignment4/engine/bench.py<span class="w"> </span>--exp<span class="w"> </span>E5<span class="w"> </span>--model<span class="w"> </span>models/Qwen3-8B-Q4_K_M.gguf<span class="w"> </span>--model<span class="w"> </span>models/Qwen3-8B-Q8_0.gguf
 <span class="go">  "Qwen3-8B-Q4_K_M.gguf": {</span>
 <span class="go">   "pp512": 116.02,</span>
@@ -1846,13 +1938,13 @@
 <span class="go">   "tg128": 10.67,</span>
 <span class="go">   "size_gb": 8.7</span>
 </code></pre></div>
-<p>来看作业四第五个实验的真实数据。同一个 Qwen3 八 B 模型，Q 四版本文件约五 G，Q 八版本约八点七 G。预填充速度，Q 四每秒约一百一十六个 token，Q 八约六十一个。生成速度，Q 四每秒约十七个 token，Q 八只有十点七个左右。</p>
+<p>来看作业四第五个实验的真实数据。同一个 Qwen3 八 B 模型，Q 四版本文件约五 G 字节，Q 八版本约八点七 G 字节。预填充速度，Q 四每秒约一百一十六个 token，Q 八约六十一个。生成速度，Q 四每秒约十七个 token，Q 八只有十点七个左右。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
 <p>pp512 = 预填充速度，tg128 = 生成速度（tok/s）</p>
 </div>
 <h2 id="q4">生成速度：Q4 明显更快<a class="headerlink" href="#q4" title="Permanent link">&para;</a></h2>
-<p><em>Qwen3-8B，tg128（tok/s），数据来自 a4_E5.json</em></p>
+<p><em>a4_E5，Qwen3-8B，tg128 tok/s，Xeon Gold 6354，-t 16</em></p>
 <table>
 <thead>
 <tr>
@@ -1871,10 +1963,10 @@
 </tr>
 </tbody>
 </table>
-<p>把生成速度画成柱状图就很直观。M0 报告的结论是，Q 八比 Q 四慢大约百分之四十。注意，计算量其实差不多，慢的原因在别处。</p>
+<p>把生成速度画成柱状图就很直观。这组数据里，Q 八比 Q 四慢大约百分之三十八；试做阶段用 llama-bench 测的结论是慢百分之四十左右，两者一致。注意，计算量其实差不多，慢的原因在别处。</p>
 <div class="admonition tip">
 <p class="admonition-title">要点</p>
-<p>M0 结论：Q8 比 Q4 慢约 40%</p>
+<p>本机 Q8 比 Q4 慢约 38%；M0 llama-bench 约 40%</p>
 </div>
 <h2 id="_2">为什么权重越大越慢<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p><em>回顾第十七讲：解码阶段受访存限制</em></p>
@@ -1927,10 +2019,10 @@
 <li>CPU 解码受内存带宽限制，权重越小越快</li>
 <li>质量代价要用自己的任务来测</li>
 </ul>
-<p>小结一下。量化用更少的比特存储权重。实测中，Q 四比 Q 八更小也更快，原因是 CPU 解码受内存带宽限制。质量代价，需要用你自己的任务来衡量。练习是完成作业四的第五个实验。下一讲，我们讲 MoE。</p>
+<p>小结一下。量化用更少的比特存储权重。实测中，Q 四比 Q 八更小也更快，原因是 CPU 解码受内存带宽限制。质量代价，需要用你自己的任务来衡量。练习是用实验五的数据，把速度乘以文件大小，看两个档位算出的带宽是不是差不多。下一讲，我们讲 MoE。</p>
 <div class="admonition example">
 <p class="admonition-title">课后练习</p>
-<p>完成作业四 E5：用 bench.py 对比 Q4 和 Q8，并用带宽解释速度差</p>
+<p>用 E5 数据算 速度×文件大小：Q4 17.25×5.02≈87 GB/s，Q8 10.67×8.7≈93 GB/s。预期两者接近，说明解码受带宽限制</p>
 </div>
 <hr />
 <p><em>本讲视频由程序合成（画面、字幕与 DeepSeek TTS 配音），演示数据均为真实运行结果。讲稿源文件：<a href="https://github.com/ODearEvanHansen/agentharness/blob/main/videos/lectures/l23.py">videos/lectures/l23.py</a></em></p>
