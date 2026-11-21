@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write   # 推送 gh-pages 分支
+  pages: write      # 请求 Pages 构建
 
 concurrency:
   group: pages
@@ -29,3 +30,19 @@ jobs:
           python scripts/build_site.py
           mkdocs gh-deploy --force --strict
         env: {NO_MKDOCS_2_WARNING: "1"}
+      # GITHUB_TOKEN 推送 gh-pages 不会触发 Pages 构建，需要显式请求一次
+      - run: |
+          curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/pages/builds
+        env: {GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+      # 冒烟检查：等待部署后逐页确认 200
+      - run: |
+          base=https://odearevanhansen.github.io/agentharness
+          for i in $(seq 1 30); do
+            ok=1
+            for p in "" syllabus/ project/ leaderboard/ assignments/a5/ lectures/l28/; do
+              c=$(curl -s -o /dev/null -w "%{http_code}" "$base/$p"); [ "$c" = 200 ] || ok=0
+            done
+            [ $ok = 1 ] && { echo all pages 200; exit 0; }; sleep 20
+          done
+          echo "pages not all 200 after 10 min"; exit 1
