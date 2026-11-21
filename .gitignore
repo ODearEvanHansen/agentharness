@@ -22,3 +22,6 @@ workspace/
 assignment2/results/
 assignment4/results/
 videos/out/
+site_src/
+mkdocs.yml
+_site/

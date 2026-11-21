@@ -1,0 +1,41 @@
+site_name: AgentHarness · Agent 系统公开课
+site_description: 基于 DeepSeek Harness 的中文 Agent 系统公开课：观察、实现、优化 agent，并动手部署推理服务
+site_url: https://odearevanhansen.github.io/agentharness/
+repo_url: https://github.com/ODearEvanHansen/agentharness
+repo_name: ODearEvanHansen/agentharness
+edit_uri: ""
+docs_dir: site_src
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle: {icon: material/weather-night, name: 切换深色}
+    - scheme: slate
+      primary: indigo
+      toggle: {icon: material/weather-sunny, name: 切换浅色}
+  font: false
+plugins:
+  - search:
+      lang: [zh, en]
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - tables
+  - toc: {permalink: true}
+extra_css:
+  - assets/extra.css
+extra:
+  generator: false
+copyright: 代码 MIT · 讲义 CC BY-SA 4.0 · 结构参考 Harvard CS2680，内容独立编写

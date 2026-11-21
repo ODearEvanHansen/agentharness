@@ -1,6 +1,6 @@
 # AgentHarness：基于 DeepSeek Harness 的 Agent 系统公开课
 
-> 🚧 建设中，当前处于 M1 阶段（课程基础设施）。课程设计见 [docs/design/plan.md](docs/design/plan.md)。
+> 🚧 建设中。课程网站：<https://odearevanhansen.github.io/agentharness/>　课程大纲：[docs/syllabus.md](docs/syllabus.md)
 
 本课程是一门中文在线公开课，围绕一个 agent 系统，从上到下逐层拆开：
 
