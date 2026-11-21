@@ -55,7 +55,7 @@ docker run -d --name agentharness-ollama --cpus 16 --memory 30g --network agenth
 # --internal 网络不能出网，模型要先在能联网的地方拉好放进 ~/.ollama，例如临时起一个普通网络的容器：
 #   docker run --rm -v "$HOME/.ollama":/root/.ollama --entrypoint sh ollama/ollama:0.12.6 -c 'ollama serve & sleep 3; ollama pull qwen3:8b'
 ```
-agent 容器里：`-e NO_PROXY=agentharness-ollama`，provider 地址 `http://agentharness-ollama:11434/v1`。镜像锁定 `0.12.6` 标签，换版本后行为可能不同。
+agent 容器里：`-e NO_PROXY=agentharness-ollama`，provider 地址 `http://agentharness-ollama:11434/v1`。镜像锁定 `0.12.6` 标签，换版本后行为可能不同。课程团队实测过这条链路（GHCR 运行器镜像以普通用户身份 → 隔离网络 → `ollama/ollama:0.12.6` 容器 + `qwen3:0.6b`），能正常返回。注意 Qwen3 默认先思考：`max_tokens` 设得太小（例如 20）时，思考内容会把额度用光，`content` 返回空字符串，思考内容在 `reasoning` 字段里。
 
 **llama.cpp**（作业 4 L3、作业 5）：用 llama.cpp 官方服务镜像，锁定 digest：`ghcr.io/ggml-org/llama.cpp@sha256:ae28f5c2046de51dfd00c9116a36fe44b5e8703ef730d0aea69082781eecb1f7`（`server` 标签，构建版本 418fe97b，比作业 4 锁定编译的 commit `4783b1145c` 新）。一定要加 `--api-key`，否则同一网络里的任何容器都能调用它：
 ```bash
