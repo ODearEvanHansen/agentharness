@@ -139,7 +139,7 @@ def leaderboard_md():
 def main():
     shutil.rmtree(OUT, ignore_errors=True)
     OUT.mkdir()
-    for name in ("home", "project", "leaderboard"):   # 站点原生页面（链接按站内路径写）
+    for name in ("home", "project", "leaderboard", "faq", "grading"):   # 站点原生页面（链接按站内路径写）
         src = (REPO / "docs" / f"{name}.md").read_text()
         if name == "leaderboard":
             src = src.replace("{{LEADERBOARD}}", leaderboard_md())
@@ -174,7 +174,7 @@ def main():
     for n in range(6):
         if (OUT / f"assignments/a{n}.md").exists():
             nav.append(f"      - 'A{n} {ASSIGN_NAMES[n]}': assignments/a{n}.md")
-    nav += ["      - 'A2 源码阅读题': assignments/a2-questions.md", "  - 期末项目: project.md", "  - 排行榜: leaderboard.md", "  - 基础设施: infra.md"]
+    nav += ["      - 'A2 源码阅读题': assignments/a2-questions.md", "  - 期末项目: project.md", "  - 评分说明: grading.md", "  - 排行榜: leaderboard.md", "  - 基础设施: infra.md", "  - 常见问题: faq.md"]
     base = (REPO / "mkdocs.base.yml").read_text()
     (REPO / "mkdocs.yml").write_text("# 由 scripts/build_site.py 生成，请修改 mkdocs.base.yml\n" + base.rstrip() + "\n" + "\n".join(nav) + "\n")
     print(f"site_src: {sum(1 for _ in OUT.rglob('*.md'))} pages")

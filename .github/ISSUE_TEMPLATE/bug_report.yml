@@ -1,0 +1,46 @@
+name: 作业 / 脚本问题
+description: 作业脚本、检查脚本、运行器或基础设施跑不通
+title: "[作业 X] 简要描述问题"
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提交前请先看 [常见问题](https://odearevanhansen.github.io/agentharness/faq/) 和对应作业 README。
+        **不要贴出你的 API key**（包括 `sk-...`、`LOCAL_LLM_KEY`）；贴日志前请检查一遍。
+  - type: dropdown
+    id: assignment
+    attributes:
+      label: 哪个作业
+      options: [作业 0, 作业 1, 作业 2, 作业 3, 作业 4, 作业 5, infra / 基础设施, 期末项目, 其他]
+    validations: {required: true}
+  - type: textarea
+    id: command
+    attributes:
+      label: 执行的完整命令
+      description: 包括 docker run 的全部参数
+      render: shell
+    validations: {required: true}
+  - type: textarea
+    id: error
+    attributes:
+      label: 完整报错输出
+      description: 请贴完整输出，不要只截最后一行
+      render: text
+    validations: {required: true}
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: 例如 Ubuntu 22.04 / Windows 11 + WSL2 (Ubuntu 22.04)
+    validations: {required: true}
+  - type: input
+    id: docker
+    attributes:
+      label: Docker 版本
+      description: "`docker version` 的 Client / Server 版本"
+    validations: {required: true}
+  - type: textarea
+    id: tried
+    attributes:
+      label: 已经尝试过的办法

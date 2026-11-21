@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 提问与讨论（GitHub Discussions）
+    url: https://github.com/ODearEvanHansen/agentharness/discussions
+    about: 学习问题、思路讨论、经验分享请发到 Discussions；Issue 只用于报告脚本问题和内容错误。
+  - name: 常见问题
+    url: https://odearevanhansen.github.io/agentharness/faq/
+    about: 环境、Docker、费用、本地模型等常见问题。

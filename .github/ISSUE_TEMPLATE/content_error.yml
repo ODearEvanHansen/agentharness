@@ -1,0 +1,27 @@
+name: 讲稿 / 数字错误
+description: 讲稿、讲义、作业说明里的事实、数字、链接或错别字有误
+title: "[内容] 简要描述"
+labels: [content]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: 位置
+      description: 页面链接或文件路径 + 小节标题
+      placeholder: 例如 lectures/12 第二节 / assignment3/README.md
+    validations: {required: true}
+  - type: textarea
+    id: original
+    attributes:
+      label: 原文
+    validations: {required: true}
+  - type: textarea
+    id: correction
+    attributes:
+      label: 应改为 / 问题说明
+    validations: {required: true}
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 依据
+      description: 你的实测数据、官方文档链接、复现命令等

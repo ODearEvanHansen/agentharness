@@ -1,0 +1,21 @@
+name: leaderboard-check
+on:
+  pull_request:
+    paths: ["leaderboard/**"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: 校验排行榜 JSON
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          CHANGED=$(git diff --name-only "$BASE_SHA"...HEAD -- leaderboard/)
+          echo "改动的文件："; echo "$CHANGED"
+          python scripts/validate_leaderboard.py --changed $CHANGED -- leaderboard/*.json
