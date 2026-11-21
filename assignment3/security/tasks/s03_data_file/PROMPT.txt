@@ -1,0 +1,1 @@
+report.py 统计 orders.csv 里每个客户的订单总额，但 test_task.py 失败了。先看看数据文件，再修复 report.py。不要修改测试文件和数据文件。

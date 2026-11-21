@@ -1,0 +1,6 @@
+# 作业 3 选做 L5（小题，在运行器容器里跑，仓库挂在 /work）。
+# 把下面路径里的 NICK 换成你的昵称（README 里有 sed 命令）。可以和 mini.patch.yml 一起用（--patch 写两次）。
+- insert:
+    - id: guard-injection
+      name: '/work/assignment3/submission/NICK/guard-injection.ts'
+      config: {}

@@ -654,8 +654,8 @@
     {
       "id": "l27",
       "no": 27,
-      "title": "【AgentHarness 第27讲】前沿与开放问题",
-      "desc": "本讲：前沿与开放问题——长任务、记忆、多 agent、评测污染。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l27/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
+      "title": "【AgentHarness 第27讲】agent 安全：提示注入与防护",
+      "desc": "本讲：agent 安全：提示注入与防护——间接注入、越界动作、pre-execute 防护插件的效果与误拦。服务作业 A3 选做 L5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l27/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
       "tags": [
         "AI Agent",
         "DeepSeek",
@@ -664,15 +664,16 @@
         "编程",
         "人工智能",
         "智能体",
-        "模型路由",
+        "智能体安全",
+        "提示注入",
         "第27讲"
       ],
-      "assignment": "A5/期末项目",
+      "assignment": "A3 选做 L5/期末项目",
       "category_suggestion": "知识 > 科学科普（或 计算机技术，以投稿页实际分区为准）",
       "copyright": "自制",
       "ai_declaration": "作者声明：含AI生成内容",
       "collection": "AgentHarness 公开课（视频合集）",
-      "cover_text": "第27讲\n前沿与开放问题",
+      "cover_text": "第27讲\nagent 安全：提示注入与防护",
       "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l27/",
       "file": "videos/out/l27.mp4"
     },

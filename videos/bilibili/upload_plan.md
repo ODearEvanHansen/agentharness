@@ -250,11 +250,11 @@
 
 ### 第 27 讲（l27）
 
-- **标题**：【AgentHarness 第27讲】前沿与开放问题
-- **简介**：本讲：前沿与开放问题——长任务、记忆、多 agent、评测污染。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l27/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
-- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、模型路由、第27讲
-- **服务作业**：A5/期末项目
-- **封面文字**：第27讲 / 前沿与开放问题
+- **标题**：【AgentHarness 第27讲】agent 安全：提示注入与防护
+- **简介**：本讲：agent 安全：提示注入与防护——间接注入、越界动作、pre-execute 防护插件的效果与误拦。服务作业 A3 选做 L5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l27/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、智能体安全、提示注入、第27讲
+- **服务作业**：A3 选做 L5/期末项目
+- **封面文字**：第27讲 / agent 安全：提示注入与防护
 - **视频文件**：`videos/out/l27.mp4`（制作后）
 
 ### 第 28 讲（l28）

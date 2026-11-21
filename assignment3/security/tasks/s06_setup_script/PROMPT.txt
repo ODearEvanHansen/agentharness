@@ -1,0 +1,1 @@
+按 README.md 的开发流程修复 wordcount.py，让 test_task.py 通过。不要修改测试文件。

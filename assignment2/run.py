@@ -35,6 +35,7 @@ PROXY = f"http://{EGRESS}:8888"
 PROFILE = "sdk-minimal"          # --profile 可改
 OUTDIR = HERE / "results"        # --out 可改；所有中间产物都写在这里
 EXTRA_PATCHES: list[Path] = []   # --patch 可追加（作业 3/5：你的配置和插件）
+TASKS_DIR = HERE / "tasks"       # --suite-dir 可改（作业 3 选做 L5：assignment3/security/tasks）
 
 
 def all_patches():
@@ -117,6 +118,31 @@ def price(u, model):
     return round((u["input_miss"] * miss + u["cache_read"] * hit + u["output"] * out) / 1e6, 6)
 
 
+class ActionLogEnv(LocalEnv):
+    """LocalEnv + 把 madsloop 的每次工具调用记到 jsonl（作业 3 L5 用它判断 agent 是否执行了注入指令）。"""
+    def __init__(self, root, log):
+        super().__init__(root)
+        self.log = Path(log)
+        self.log.parent.mkdir(parents=True, exist_ok=True)
+        self.log.write_text("", encoding="utf-8")
+
+    def _rec(self, name, args):
+        with open(self.log, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"name": name, "arguments": args}, ensure_ascii=False) + "\n")
+
+    def bash(self, cmd, timeout=120):
+        self._rec("bash", {"command": cmd})
+        return super().bash(cmd, timeout)
+
+    def read(self, path):
+        self._rec("read_file", {"path": path})
+        return super().read(path)
+
+    def write(self, path, content):
+        self._rec("write_file", {"path": path, "content": content})
+        return super().write(path, content)
+
+
 # ------------------------------------------------------------------ agents
 def run_madsloop(env, prompt, model):
     import agent
@@ -157,17 +183,17 @@ def run_dsh_container(env, prompt, model):
 
 # ------------------------------------------------------------------ suites
 def mini_tasks():
-    root = HERE / "tasks"
+    root = TASKS_DIR
     return [{"id": p.name, "prompt": (p / "PROMPT.txt").read_text(encoding="utf-8")} for p in sorted(root.iterdir()) if p.is_dir()]
 
 
 def run_mini(task, agent, model, outdir):
-    src = HERE / "tasks" / task["id"]
+    src = TASKS_DIR / task["id"]
     d = outdir / "work" / agent / task["id"]
     shutil.rmtree(d, ignore_errors=True)
     shutil.copytree(src, d)
     th = hashlib.sha256((src / "test_task.py").read_bytes()).hexdigest()
-    env = LocalEnv(d)
+    env = LocalEnv(d) if agent != "madsloop" else ActionLogEnv(d, outdir / "actions" / agent / f"{task['id']}.jsonl")
     fn = run_madsloop if agent == "madsloop" else run_dsh_local
     usage, steps, tcalls = fn(env, task["prompt"], model)
     kill_stragglers(d)
@@ -279,9 +305,12 @@ def main():
     ap.add_argument("--tag", default="", help="结果文件名后缀，用于区分不同配置的运行")
     ap.add_argument("--fresh", action="store_true",
                     help="不续跑：先把已有结果文件改名为 <名字>.jsonl.bak-<时间戳>，再全部重跑")
+    ap.add_argument("--suite-dir", help="--suite mini 时改用别的题目目录（例如 assignment3/security/tasks）")
     ap.add_argument("--prompt-suffix-file", help="追加到每道题 prompt 末尾的文本文件（作业 5：路由指引）")
     a = ap.parse_args()
-    global PROFILE, OUTDIR
+    global PROFILE, OUTDIR, TASKS_DIR
+    if a.suite_dir:
+        TASKS_DIR = Path(a.suite_dir).resolve()
     PROFILE = a.profile
     OUTDIR = Path(a.out).resolve()
     EXTRA_PATCHES.extend(Path(p).resolve() for p in a.patch)
