@@ -1,7 +1,7 @@
 LECTURE = {
     "id": "l03", "no": 3, "title": "DSH 导论", "subtitle": "Cordis 插件架构、profile 与 patch、SDK 与运行时",
     "scenes": [
-        {"type": "title", "narration": "第三讲，我们来认识 DeepSeek Harness，简称 DSH。它是本课作业一、三、五都会用到的工业级 agent 框架。"},
+        {"type": "title", "narration": "第三讲，我们来认识 DeepSeek Harness，简称 DSH。它是本课作业一到作业五都会用到的工业级 agent 框架。"},
         {"type": "bullets", "title": "DSH 是什么", "sub": "一个由插件拼起来的 agent 运行时",
          "items": ["底座是 Cordis 插件框架：功能都以插件形式注册",
                    "agent loop、工具、会话日志、模型适配器，都是插件",

@@ -66,7 +66,17 @@ def check_resources():
         elif total >= 15:
             add("⚠️", "内存", f"{total:.0f} GB", "可完成 A0–A3 和 A4 的 8B 实验；A4 L3 与 A5 的 30B-A3B 需要 32GB（A5 可用课程提供的本地基线）；A2 建议 --parallel 1")
         else:
-            add("❌", "内存", f"{total:.0f} GB", "至少需要 16GB")
+            wsl = False
+            try:
+                wsl = "microsoft" in open("/proc/version", encoding="utf-8").read().lower()
+            except OSError:
+                pass
+            if wsl:
+                add("⚠️", "内存", f"{total:.0f} GB（WSL2）",
+                    "WSL2 默认只分到部分内存。在 Windows 的 %UserProfile%\\.wslconfig 写入 [wsl2] memory=14GB swap=8GB，"
+                    "然后在 PowerShell 执行 wsl --shutdown 重启 WSL，再运行本脚本")
+            else:
+                add("❌", "内存", f"{total:.0f} GB", "至少需要 16GB")
     except (ValueError, OSError, AttributeError):
         add("⚠️", "内存", "无法检测")
     free = shutil.disk_usage(os.path.expanduser("~")).free / 1024**3

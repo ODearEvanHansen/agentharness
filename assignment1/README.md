@@ -31,6 +31,8 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
   ```
   之后浏览器打开 `http://127.0.0.1:8765`（WSL2 下 Windows 浏览器一般也能直接访问；远程主机用 `ssh -L 8765:127.0.0.1:8765 <主机>` 再在本地打开）。用完执行 `docker rm -f agentharness-portfwd`。
 
+  WSL2 下 Windows 浏览器打不开时：先在 WSL 里跑上面的 `curl`，这一步不通就是容器问题；WSL 里通而浏览器不通，检查 Docker Desktop → Settings → Resources → WSL integration 是否启用了你的发行版；还不行就在 PowerShell 执行 `wsl hostname -I`，用第一个 IP 打开 `http://<IP>:8765`。详见 [FAQ](../docs/faq.md)。
+
 > **注意**：`-v "$PWD":/work` 让 agent 能读写整个仓库。提交前在宿主机上用 `git status` / `git diff` 看一眼 agent 有没有改动起始代码之外的文件；key 不要放在仓库里（见作业 0）。`-u` 让容器以你的用户身份运行，避免在仓库里留下 root 所有、宿主机删不掉的文件。
 
 前端会用到少量 HTML/JavaScript：`EventSource`（SSE）、`fetch` 和简单的 DOM 操作。不熟悉的话，先读 MDN 的 [Server-sent events](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events)（约 20 分钟）。

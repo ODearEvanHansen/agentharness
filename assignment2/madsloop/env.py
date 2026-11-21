@@ -48,12 +48,12 @@ class LocalEnv(Env):
         return p
 
     def read(self, path):
-        return self._p(path).read_text()
+        return self._p(path).read_text(encoding="utf-8")
 
     def write(self, path, content):
         p = self._p(path)
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(content)
+        p.write_text(content, encoding="utf-8")
 
 
 class ContainerEnv(Env):

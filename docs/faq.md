@@ -1,12 +1,32 @@
 # 常见问题
 
-遇到问题先查这里和对应作业的 README。仍然解决不了：学习问题发到 [GitHub Discussions](https://github.com/ODearEvanHansen/agentharness/discussions)，脚本跑不通或内容有错请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)（不要贴 API key）。
+遇到问题先查这里和对应作业的 README。仍然解决不了：请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)，学习问题、脚本跑不通、内容有错都可以（不要贴 API key）。GitHub Discussions 目前还没开通，开通后学习讨论会移到那里。作业 0 打卡用[打卡 Issue 模板](https://github.com/ODearEvanHansen/agentharness/issues/new?template=a0_checkin.yml)。
 
 ## Windows / macOS 能做吗？
 
 Windows 可以：安装 Docker Desktop 并启用 WSL2 后端，之后**所有操作都在 WSL2 里进行**。macOS 不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2（见作业 0）。
 
-作业 1 的网页在 WSL2 下要在 WSL 里的浏览器或用 curl 访问容器 IP；推荐用作业 1 README 里的端口转发小容器，之后 Windows 浏览器一般也能直接打开 `http://127.0.0.1:8765`。
+### WSL2 内存和磁盘
+
+WSL2 默认只分到 Windows 一部分内存，`selfcheck.py` 可能报内存不足 16GB。在 Windows 的 `%UserProfile%\.wslconfig` 写入：
+
+```ini
+[wsl2]
+memory=14GB
+swap=8GB
+```
+
+然后在 PowerShell 执行 `wsl --shutdown`，重新打开 WSL 终端。`memory` 不要超过 Windows 物理内存减 2GB。
+
+Docker Desktop 的镜像都放在它的虚拟磁盘里（Docker Desktop → Settings → Resources → Advanced → Disk image location）。课程需要约 100GB，C 盘不够时把这个位置改到空间大的盘。
+
+### 作业 1 的网页在 Windows 浏览器打不开
+
+推荐用作业 1 README 里的端口转发小容器。打不开时按顺序排查：
+
+1. **先在 WSL 里**执行 `curl -s 127.0.0.1:8765/ | head`。这里不通，问题在容器或转发容器，查 `docker ps` 和转发容器的日志。
+2. WSL 里通、Windows 浏览器不通：确认 Docker Desktop → Settings → Resources → WSL integration 里启用了你的发行版。
+3. 仍然不通：在 PowerShell 执行 `wsl hostname -I`，用输出的第一个 IP 打开 `http://<IP>:8765`。
 
 ## Docker Hub 不通怎么办？
 

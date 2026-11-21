@@ -13,7 +13,7 @@
   E5 权重量化与架构：llama-bench pp512/tg128
 结果写入 assignment4/results/<实验>.json。check.py 会检查这些文件。
 """
-import argparse, concurrent.futures as cf, json, os, subprocess, time, urllib.request
+import argparse, concurrent.futures as cf, json, os, platform, subprocess, time, urllib.request
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -55,10 +55,15 @@ class Server:
 
     def rss_mb(self):
         try:
-            for line in open(f"/proc/{self.p.pid}/status"):
+            for line in open(f"/proc/{self.p.pid}/status", encoding="utf-8"):
                 if line.startswith("VmRSS"):
                     return int(line.split()[1]) // 1024
         except OSError:
+            pass
+        try:   # 没有 /proc（macOS 等）：用 ps，单位 KB
+            r = subprocess.run(["ps", "-o", "rss=", "-p", str(self.p.pid)], capture_output=True, text=True, timeout=10)
+            return int(r.stdout.split()[0]) // 1024 if r.stdout.split() else None
+        except (OSError, ValueError, subprocess.SubprocessError):
             return None
 
     def __enter__(self):
@@ -141,6 +146,21 @@ def e5(a):
     return res
 
 
+def cpu_name():
+    """CPU 型号：/proc/cpuinfo → platform.processor() → "?"。任何异常都不影响结果保存。"""
+    try:
+        with open("/proc/cpuinfo", encoding="utf-8") as f:
+            for l in f:
+                if l.startswith("model name"):
+                    return l.split(":", 1)[1].strip()
+    except OSError:
+        pass
+    try:
+        return platform.processor() or platform.machine() or "?"
+    except Exception:
+        return "?"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--exp", choices=["E1", "E2", "E3", "E4", "E5"], required=True)
@@ -153,10 +173,9 @@ def main():
     t0 = time.time()
     data = {"E1": e1, "E2": e2, "E3": e3, "E4": e4, "E5": e5}[a.exp](a)
     out = {"exp": a.exp, "model": [Path(m).name for m in a.model], "threads": a.threads,
-           "cpu": next((l.split(":", 1)[1].strip() for l in open("/proc/cpuinfo") if l.startswith("model name")), "?"),
-           "seconds": round(time.time() - t0), "results": data}
+           "cpu": cpu_name(), "seconds": round(time.time() - t0), "results": data}
     OUT.mkdir(exist_ok=True)
-    (OUT / f"{a.exp}.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    (OUT / f"{a.exp}.json").write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
     print(json.dumps(out, indent=1, ensure_ascii=False))
 
 

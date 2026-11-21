@@ -16,7 +16,7 @@ SWE 模式要求：先按 infra/README.md 建好隔离网络和出网白名单�
   AH_PATH_MAP     本机路径→Docker 守护进程可见路径的映射，形如 /a=/b（只有在容器里运行本脚本时才需要）
   SWE_IMAGE_REPO  评测镜像仓库（默认 GHCR 课程镜像）
 """
-import argparse, concurrent.futures as cf, hashlib, json, os, shutil, subprocess, sys, time, uuid
+import argparse, concurrent.futures as cf, hashlib, json, os, shutil, signal, subprocess, sys, threading, time, uuid
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -56,6 +56,60 @@ def host_path(p) -> str:
         if p.startswith(a):
             return b + p[len(a):]
     return p
+
+
+def read_jsonl(path):
+    """容错读取结果文件：跳过无法解析的行（例如进程被杀时写了一半的最后一行）并提示。"""
+    recs, bad = [], 0
+    if not Path(path).exists():
+        return recs
+    for line in Path(path).read_text(encoding="utf-8", errors="replace").splitlines():
+        if not line.strip():
+            continue
+        try:
+            r = json.loads(line)
+        except ValueError:
+            bad += 1
+            continue
+        if isinstance(r, dict) and "id" in r:
+            recs.append(r)
+        else:
+            bad += 1
+    if bad:
+        print(f"警告：{path} 中有 {bad} 行无法解析，已跳过（对应的题会重跑）", file=sys.stderr, flush=True)
+    return recs
+
+
+WRITE_LOCK = threading.Lock()
+
+
+def append_record(out, rec):
+    """一次 write 写完整行 + flush + fsync，并发时加锁，避免行交错或半行。"""
+    line = json.dumps(rec, ensure_ascii=False) + "\n"
+    with WRITE_LOCK:
+        with open(out, "a", encoding="utf-8") as f:
+            f.write(line)
+            f.flush()
+            os.fsync(f.fileno())
+
+
+def kill_stragglers(workdir):
+    """判分前杀掉仍以任务目录为工作目录的进程（agent 留在后台的命令），避免它们在判分时改文件。"""
+    root = str(Path(workdir).resolve())
+    me = os.getpid()
+    for p in Path("/proc").glob("[0-9]*"):
+        try:
+            pid = int(p.name)
+            if pid == me:
+                continue
+            cwd = os.readlink(p / "cwd")
+        except (OSError, ValueError):
+            continue
+        if cwd == root or cwd.startswith(root + os.sep):
+            try:
+                os.kill(pid, signal.SIGKILL)
+            except OSError:
+                pass
 
 
 def price(u, model):
@@ -104,7 +158,7 @@ def run_dsh_container(env, prompt, model):
 # ------------------------------------------------------------------ suites
 def mini_tasks():
     root = HERE / "tasks"
-    return [{"id": p.name, "prompt": (p / "PROMPT.txt").read_text()} for p in sorted(root.iterdir()) if p.is_dir()]
+    return [{"id": p.name, "prompt": (p / "PROMPT.txt").read_text(encoding="utf-8")} for p in sorted(root.iterdir()) if p.is_dir()]
 
 
 def run_mini(task, agent, model, outdir):
@@ -116,25 +170,38 @@ def run_mini(task, agent, model, outdir):
     env = LocalEnv(d)
     fn = run_madsloop if agent == "madsloop" else run_dsh_local
     usage, steps, tcalls = fn(env, task["prompt"], model)
-    unchanged = hashlib.sha256((d / "test_task.py").read_bytes()).hexdigest() == th
+    kill_stragglers(d)
+    tp = d / "test_task.py"
+    unchanged = tp.is_file() and not tp.is_symlink() and hashlib.sha256(tp.read_bytes()).hexdigest() == th
     # 判分在干净副本里进行：只采纳 agent 对"原有源文件"的修改，新增文件（如 conftest.py、sitecustomize.py）一律不带入
     judge = outdir / "judge" / agent / task["id"]
     shutil.rmtree(judge, ignore_errors=True)
     shutil.copytree(src, judge)
+    # 拒绝符号链接：否则 agent 可以把源文件链到判分副本之外（例如指向测试文件或系统文件）
+    symlinks = []
     for f in src.rglob("*"):
         rel = f.relative_to(src)
-        if f.is_file() and rel.name != "test_task.py" and (d / rel).is_file():
-            shutil.copy2(d / rel, judge / rel)
+        if not f.is_file() or rel.name == "test_task.py":
+            continue
+        cand = d / rel
+        if any((d / Path(*rel.parts[:i])).is_symlink() for i in range(1, len(rel.parts) + 1)):
+            symlinks.append(str(rel))
+            continue
+        if cand.is_file():
+            shutil.copyfile(cand, judge / rel)
+    if symlinks:
+        print(f"{task['id']}: 拒绝判分——agent 把这些文件换成了符号链接：{symlinks}", flush=True)
+        unchanged = False
     p = subprocess.run([sys.executable, "test_task.py"], cwd=judge, capture_output=True, text=True, timeout=60)
     return {"solved": unchanged and p.returncode == 0, "usage": usage, "steps": steps, "tool_calls": tcalls}
 
 
 def swe_tasks(instances_file):
     """题面优先从仓库自带的 infra/swebench/dataset*.json 读取（国内无需访问 Hugging Face），缺的题再在线加载。"""
-    ids = [l.strip() for l in open(instances_file) if l.strip() and not l.startswith("#")]
+    ids = [l.strip() for l in open(instances_file, encoding="utf-8") if l.strip() and not l.startswith("#")]
     ds = {}
     for f in (REPO / "infra" / "swebench").glob("dataset*.json"):
-        ds.update({r["instance_id"]: r for r in json.load(open(f))})
+        ds.update({r["instance_id"]: r for r in json.loads(f.read_text(encoding="utf-8"))})
     if any(i not in ds for i in ids):
         from datasets import load_dataset   # 国内可先 export HF_ENDPOINT=https://hf-mirror.com
         ds.update({r["instance_id"]: r for r in load_dataset("SWE-bench/SWE-bench_Verified", split="test")})
@@ -183,7 +250,12 @@ def resume_filter(tasks, out, only=None, fresh=False):
         bak = out.with_name(f"{out.name}.bak-{time.strftime('%Y%m%d-%H%M%S')}")
         out.rename(bak)
         print(f"--fresh：已有结果文件移到 {bak}", flush=True)
-    done = {r["id"] for r in map(json.loads, out.open()) if not r.get("error")} if out.exists() else set()
+    if out.exists() and out.stat().st_size:
+        with open(out, "rb+") as f:          # 上次中断留下的半行：补一个换行，后续追加的记录才不会和它粘在一起
+            f.seek(-1, os.SEEK_END)
+            if f.read(1) != b"\n":
+                f.write(b"\n")
+    done = {r["id"] for r in read_jsonl(out) if not r.get("error")}
     wanted = [t for t in tasks if not only or t["id"] in only]
     skipped = [t for t in wanted if t["id"] in done]
     if skipped:
@@ -226,7 +298,7 @@ def main():
     if a.agent == "dsh" and a.suite == "mini":
         os.environ.setdefault("DSH_PERMISSION_MODE", "danger-full-access")   # 隔离由外层容器负责
     if a.prompt_suffix_file:
-        suffix = Path(a.prompt_suffix_file).read_text()
+        suffix = Path(a.prompt_suffix_file).read_text(encoding="utf-8")
         for t in tasks:
             t["prompt"] = t["prompt"].rstrip() + "\n\n" + suffix
 
@@ -253,20 +325,19 @@ def main():
             rec["by_model"] = r["usage"]["by_model"]
         if "model_patch" in r:
             rec["model_patch"] = r["model_patch"]
-        with out.open("a") as f:
-            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        append_record(out, rec)
         print(f"{t['id']:40} solved={rec['solved']!s:5} {rec['seconds']:7}s steps={rec['steps']:3} ${rec['usd']} {err or ''}", flush=True)
 
     with cf.ThreadPoolExecutor(a.parallel) as ex:
         list(ex.map(one, tasks))
 
-    recs = list({r["id"]: r for r in map(json.loads, out.open())}.values())
+    recs = list({r["id"]: r for r in read_jsonl(out)}.values())
     n = len(recs)
     if a.suite == "mini":
         print(f"\n{a.agent}: solved {sum(r['solved'] for r in recs)}/{n}  ${sum(r['usd'] for r in recs):.4f}")
     else:
         preds = outdir / f"predictions-{a.agent}{tag}.jsonl"
-        with preds.open("w") as f:
+        with preds.open("w", encoding="utf-8") as f:
             for r in recs:
                 f.write(json.dumps({"instance_id": r["id"], "model_name_or_path": a.agent + tag,
                                     "model_patch": r.get("model_patch", "")}) + "\n")

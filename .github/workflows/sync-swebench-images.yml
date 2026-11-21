@@ -32,12 +32,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 350
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Install crane
         run: |
+          set -euo pipefail
+          # VER：google/go-containerregistry 的发布版本（crane 镜像复制工具）。
+          # SHA256 取自该版本官方发布的 checksums.txt；升级 VER 时一并更新。
           VER=v0.22.1
-          curl -sL "https://github.com/google/go-containerregistry/releases/download/${VER}/go-containerregistry_Linux_x86_64.tar.gz" | tar xz -C /usr/local/bin crane
+          SHA256=0ab7a1d6932a213aed964ce97666c3077fe691c8606413674a8b3e0b9ec4cda0
+          TGZ=go-containerregistry_Linux_x86_64.tar.gz
+          curl -fsSL -o "/tmp/$TGZ" "https://github.com/google/go-containerregistry/releases/download/${VER}/${TGZ}"
+          echo "${SHA256}  /tmp/$TGZ" | sha256sum -c -
+          tar xzf "/tmp/$TGZ" -C /usr/local/bin crane
           crane version
 
       - name: Login to GHCR

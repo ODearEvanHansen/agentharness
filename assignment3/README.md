@@ -107,15 +107,20 @@ python assignment2/run.py --agent dsh --suite swe --parallel 1 --instances $SET 
 # 2. 官方判分。报告 dsh-$NICK.$NICK.json 写在当前目录，移进 results/
 python -m swebench.harness.run_evaluation -d $DS -p assignment2/results/predictions-dsh-$NICK.jsonl -id $NICK
 mv dsh-$NICK.$NICK.json assignment2/results/
-# 3. 生成提交文件，然后发起 PR（提交 leaderboard/ 下的 JSON 和 submission/$NICK/ 目录）
+# 3. 生成提交文件（同时把三份原始文件复制到 submission/$NICK/artifacts/），然后发起 PR
 python assignment3/score.py --run assignment2/results/swe-dsh-$NICK.jsonl --report assignment2/results/dsh-$NICK.$NICK.json \
     --track $TRACK --config-dir assignment3/submission/$NICK --name $NICK > leaderboard/$NICK-$TRACK.json
 ```
-`score.py` 会做以下检查：运行记录是否覆盖整个题集、评测报告是否与运行记录对应、有没有运行出错的题。维护者会抽查复现：用你的配置重跑一遍，解决数允许相差 ±2；`config_sha` 用来核对配置是否一致。提交后的结果显示在[排行榜](../docs/leaderboard.md)页面。
+`score.py` 会做以下检查，任何一项不符都直接报错退出：运行记录是否覆盖整个题集、有没有运行出错的题、predictions 的 `model_name_or_path` 是否等于 `dsh-$NICK`、评测报告文件名是否为 `dsh-$NICK.<run_id>.json` 且覆盖该赛道题集。它会把运行记录、predictions、评测报告分别复制为 `assignment3/submission/$NICK/artifacts/run.jsonl`、`predictions.jsonl`、`report.json`，并在 JSON 里写入三者的 sha256（`run_sha`、`predictions_sha`、`report_sha`）。
+
+PR 的 CI（`.github/workflows/leaderboard-check.yml`）用主分支上的 `scripts/validate_leaderboard.py` 校验：PR 只能改 `leaderboard/` 和 `assignment3/submission/`；不能动 `leaderboard/baseline-*.json`；`resolved_ids` 必须属于该赛道题集并与 `report.json` 一致；三份原始文件的 sha256 和 `config_sha` 要与 JSON 吻合；补丁和提交目录里不能出现形如 `sk-…` 的 API key。提交前可以本地先跑一遍 `python scripts/validate_leaderboard.py leaderboard/$NICK-$TRACK.json`。
+
+维护者会抽查复现，**排名靠前的提交一定会被重跑验证**：用你的配置重跑一遍，解决数允许相差 ±2；`config_sha` 用来核对配置是否一致（不含 `artifacts/`）。提交后的结果显示在[排行榜](../docs/leaderboard.md)页面。
 
 ## 提交物
 - `assignment3/submission/<昵称>/`：patch 文件和插件源码；
-- `leaderboard/<昵称>-<赛道>.json`；
-- `assignment2/results/` 下对应的运行记录 `swe-dsh-<昵称>.jsonl`、`predictions-dsh-<昵称>.jsonl` 和评测报告 `dsh-<昵称>.<昵称>.json`；
+- `leaderboard/<昵称>-<赛道>.json`（由 `score.py` 生成，不要手改）；
+- `assignment3/submission/<昵称>/artifacts/` 下的 `run.jsonl`、`predictions.jsonl`、`report.json`（由 `score.py` 自动复制，不要手改，否则 sha256 对不上）；
+- 不要提交 `assignment2/results/` 下的其他文件（PR 只能改 `leaderboard/` 和 `assignment3/submission/`）；
 - 一篇博客形式的报告 `assignment3/submission/<昵称>/BLOG.md`，写你的优化思路和数据；
 - 视频可选。

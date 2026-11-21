@@ -40,16 +40,20 @@
 
 ## 开始学习
 
-1. 阅读[课程大纲](syllabus.md)：14 周授课 + 2 周项目期，共 28 讲，每讲 3–5 分钟视频，配讲稿全文。
-2. 完成[作业 0：环境自检](assignments/a0.md)。
-3. 从[第 1 讲](lectures/l01.md)开始。
+本课程按自己的进度学，**没有统一开课日期**，你开始的那天就是第 1 周。
+
+1. 阅读[课程大纲](syllabus.md)：14 周授课 + 2 周项目期，共 28 讲，每讲 3–5 分钟视频，配讲稿全文。每周约 3–10 小时，全课约 85–110 小时（不含期末项目）；每周时间少于 6 小时，可以按大纲里的 [24 周节奏](syllabus.md#学习节奏)学。
+2. 完成[作业 0：环境自检](assignments/a0.md)，用[打卡 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new?template=a0_checkin.yml)打卡。
+3. 从[第 1 讲](lectures/l01.md)开始。只想做其中某个作业，见[按需学习路线](syllabus.md#按需学习路线)。
+
+有问题请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)（GitHub Discussions 开通后会移到那里）。
 
 ## 需要准备什么
 
 | | |
 |---|---|
 | 电脑 | x86_64 Linux，或 Windows + WSL2；内存至少 16GB（作业 4、5 推荐 32GB）；磁盘 100GB；Docker |
-| API | 自己的 [DeepSeek API key](https://platform.deepseek.com/)。API 费用分项估算（试做阶段实测，按官方高峰价）：A0–A1 几元；A2 不到 $2；A3 必做部分约 $5（约 35 元），大量调试可能到 $50（约 350 元），所以请先在小题或子集上调试；A5 必做部分的云端花费不到 $1；期末项目建议控制在 100 元以内。全课总额要等外部试学员做完后再校准公布 |
+| API | 自己的 [DeepSeek API key](https://platform.deepseek.com/)。API 费用分项估算（试做阶段实测，按官方高峰价）：A0–A1 几元；A2 不到 $2；A3 必做部分约 $5（约 35 元），大量调试可能到 $50–70（约 350–500 元），所以请先在小题或子集上调试，重跑同样计费；按[最低预算路线](syllabus.md#最低预算路线)全课（不含期末项目）约 80 元。建议只预充一笔固定小额余额作为硬上限；A5 必做部分的云端花费不到 $1；期末项目建议控制在 100 元以内。全课总额要等外部试学员做完后再校准公布 |
 | 先修 | 熟练使用 Python，会用 git 和 Docker，了解 HTTP。不需要机器学习背景 |
 
 !!! warning "当前状态"
@@ -57,4 +61,4 @@
 
 ---
 
-课程结构参考了 Harvard [CS2680 Modern AI Systems](https://cs2680.seas.harvard.edu/)，在此致谢。本课程的讲义、作业和代码均为独立编写。代码采用 MIT 许可，讲义采用 CC BY-SA 4.0 许可。
+课程结构参考了 Harvard [CS2680 Modern AI Systems](https://cs2680.seas.harvard.edu/)，在此致谢。本课程的讲义、作业和代码均为独立编写，**与哈佛大学及 CS2680 课程团队没有任何关联，也未获其背书**。代码采用 MIT 许可，讲义采用 CC BY-SA 4.0 许可。

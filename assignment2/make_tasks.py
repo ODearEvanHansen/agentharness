@@ -61,7 +61,7 @@ if __name__ == "__main__":
         d = ROOT / name
         d.mkdir(parents=True)
         for fn, content in t["files"].items():
-            (d / fn).write_text(content)
-        (d / "PROMPT.txt").write_text(t["prompt"])
-    (ROOT / "index.json").write_text(json.dumps({k: v["prompt"] for k, v in TASKS.items()}, ensure_ascii=False, indent=1))
+            (d / fn).write_text(content, encoding="utf-8")
+        (d / "PROMPT.txt").write_text(t["prompt"], encoding="utf-8")
+    (ROOT / "index.json").write_text(json.dumps({k: v["prompt"] for k, v in TASKS.items()}, ensure_ascii=False, indent=1), encoding="utf-8")
     print(len(TASKS), "tasks ->", ROOT)

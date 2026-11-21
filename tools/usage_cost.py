@@ -30,27 +30,39 @@ def _zstd_decompress(data: bytes) -> bytes:
         from compression import zstd          # Python ≥ 3.14
         return zstd.decompress(data)
     except ImportError:
-        import io, zstandard                  # Python < 3.14：pip install zstandard
-        return zstandard.ZstdDecompressor().stream_reader(io.BytesIO(data)).read()
+        pass
+    try:
+        import io, zstandard                  # Python < 3.14
+    except ImportError:
+        raise ImportError("会话日志是 zstd 压缩的（session.v4.jsonl.zstd），需要先安装解压库：pip install zstandard") from None
+    return zstandard.ZstdDecompressor().stream_reader(io.BytesIO(data)).read()
 
 
 def iter_session_lines(home, session_id=None):
     """Yield JSON records from plain and zstd-compressed DSH session logs."""
     pat = f"sessions/*/{session_id}/" if session_id else "sessions/**/"
+    zfound = zparsed = 0
     for f in list(Path(home).glob(pat + "session.v4.jsonl")) + list(Path(home).glob(pat + "session.v4.jsonl.zstd")):
         if f.suffix == ".zstd":
+            zfound += 1
             try:
-                text = _zstd_decompress(f.read_bytes()).decode()
+                text = _zstd_decompress(f.read_bytes()).decode("utf-8", errors="replace")
+            except ImportError:
+                raise
             except Exception:
                 continue  # file being written; caller retries later
+            zparsed += 1
         else:
-            text = f.read_text()
+            text = f.read_text(encoding="utf-8", errors="replace")
         for line in text.splitlines():
             if line.strip():
                 try:
                     yield json.loads(line)
                 except ValueError:
                     pass
+    if zfound and not zparsed:
+        print(f"警告：找到 {zfound} 个 zstd 压缩的会话日志，但一个都没能解压（文件可能还在写入或已损坏），用量按 0 计",
+              file=sys.stderr)
 
 
 def record_model(rec):

@@ -1,21 +1,42 @@
 name: leaderboard-check
 on:
   pull_request:
-    paths: ["leaderboard/**"]
+    paths: ["leaderboard/**", "assignment3/submission/**"]
 permissions:
   contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with: {fetch-depth: 0}
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with: {python-version: "3.12"}
-      - name: 校验排行榜 JSON
+      - name: 校验排行榜提交
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          CHANGED=$(git diff --name-only "$BASE_SHA"...HEAD -- leaderboard/)
-          echo "改动的文件："; echo "$CHANGED"
-          python scripts/validate_leaderboard.py --changed $CHANGED -- leaderboard/*.json
+          set -euo pipefail
+          shopt -s nullglob
+          # 校验脚本和题集一律取自 base 提交：PR 改不了检查逻辑，也改不了题集
+          git show "${BASE_SHA}:scripts/validate_leaderboard.py" > /tmp/v.py
+          mkdir -p /tmp/base-swebench
+          git show "${BASE_SHA}:infra/swebench/instances.txt" > /tmp/base-swebench/instances.txt
+          git show "${BASE_SHA}:infra/swebench/instances_hard.txt" > /tmp/base-swebench/instances_hard.txt
+          mapfile -t CHANGED < <(git diff --name-only "${BASE_SHA}...HEAD")
+          echo "改动的文件："; printf '  %s\n' "${CHANGED[@]}"
+          outside=()
+          for f in "${CHANGED[@]}"; do
+            case "$f" in
+              leaderboard/*|assignment3/submission/*) ;;
+              *) outside+=("$f") ;;
+            esac
+          done
+          if (( ${#outside[@]} )); then
+            echo "✗ 排行榜 PR 只能改 leaderboard/ 和 assignment3/submission/，以下文件超出范围："
+            printf '  %s\n' "${outside[@]}"
+            exit 1
+          fi
+          files=(leaderboard/*.json)
+          python /tmp/v.py --repo "$PWD" --instances-dir /tmp/base-swebench \
+            --changed "${CHANGED[@]}" -- "${files[@]}"

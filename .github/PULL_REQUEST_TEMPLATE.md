@@ -12,9 +12,12 @@
 - [ ] 文件名形如 `<昵称>-accuracy.json` 或 `<昵称>-efficiency.json`
 - [ ] 效率赛道：解决数 ≥ 17
 - [ ] 附上了 `assignment3/submission/<昵称>/`（patch、插件、BLOG.md），`--config-dir` 指向的就是这个目录
+- [ ] 附上了 `score.py` 自动复制的 `assignment3/submission/<昵称>/artifacts/run.jsonl`、`predictions.jsonl`、`report.json`，没有手改
+- [ ] PR 只改了 `leaderboard/` 和 `assignment3/submission/<昵称>/`（改其他路径 CI 会直接拒绝）
 - [ ] 没有修改 `leaderboard/baseline-*.json` 或其他人的提交
 - [ ] 本地运行 `python scripts/validate_leaderboard.py leaderboard/*.json` 通过
-- [ ] 提交内容里没有 API key
+- [ ] 提交内容（包括 predictions 里的补丁）没有 API key（CI 会扫描 `sk-…`）
+- [ ] 知悉：排名靠前的提交会被维护者重跑验证，解决数允许相差 ±2
 
 ## 说明（可选）
 

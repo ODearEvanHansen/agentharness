@@ -20,7 +20,7 @@ LECTURE = {
                    "重试时复用已渲染好的组装结果，不重复执行 pre-step"],
          "caption": "组装决定了前缀，前缀决定了缓存",
          "narration": "组装阶段有几个细节值得注意。系统提示在 DSH 里也是历史中的一个节点，取最新的那个非空节点。提示为空时，就不发系统消息。工具只发送当前可见的那些。另外，README 里还提到，请求失败重试时，会复用已经渲染好的组装结果，不会重新执行步骤前的钩子。组装决定了请求的前缀，而前缀决定了缓存能不能命中。"},
-        {"type": "code", "title": "madsLoop 的主循环骨架", "sub": "assignment2/madsloop/agent.py（节选，主循环由你实现）",
+        {"type": "code", "title": "madsLoop 的主循环骨架", "sub": "以下为作业 2 骨架，TODO 是你要补全的地方（assignment2/madsloop/agent.py 节选）",
          "code": "def solve(env, prompt, model=\"deepseek-flash\", max_steps=50):\n    messages = [{\"role\": \"system\", \"content\": SYSTEM},\n                {\"role\": \"user\", \"content\": prompt}]\n    usage = {\"requests\": 0, \"input_miss\": 0, \"cache_read\": 0, \"output\": 0}\n    steps = tool_calls = 0\n    finished = False\n    # TODO(A2-L2): main loop\n    return {\"steps\": steps, \"tool_calls\": tool_calls, \"usage\": usage, \"finished\": finished}", "lang": "python",
          "caption": "同样四步：组装、请求、分发、记录",
          "narration": "再看作业二的起始代码，作业二下一讲发布。M A D S loop 的 solve 函数用一个 messages 列表保存全部历史。主循环要你自己实现：调用 chat，累加用量；把助手消息追加进去，记得带回 reasoning content；对每个工具调用执行 run tool，追加 tool 消息；遇到 done 或者步数用完就结束。和 DSH 一样，也是组装、请求、分发、记录四步，只是 messages 列表就是你的会话日志。它其实就是第二讲那个示意循环的完整版。"},

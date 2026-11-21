@@ -63,7 +63,7 @@ def site_rel(src: Path) -> str:
 def copy_md(src: Path):
     dst = OUT / site_rel(src)
     dst.parent.mkdir(parents=True, exist_ok=True)
-    dst.write_text(fix_links(src.read_text(), src))
+    dst.write_text(fix_links(src.read_text(encoding="utf-8"), src))
 
 
 def load_lecture(p: Path):
@@ -120,7 +120,7 @@ def lecture_page(L, videos):
 
 
 def leaderboard_md():
-    rows = [json.loads(p.read_text()) for p in sorted((REPO / "leaderboard").glob("*.json"))]
+    rows = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((REPO / "leaderboard").glob("*.json"))]
     out = []
     for track, title, key in (("accuracy", "解决率赛道（难题集 20 题）", lambda r: (-r["resolved"], r["usd_per_task"])),
                               ("efficiency", "效率赛道（20 题；解决率不低于基线时按每题成本排名）", lambda r: (r["usd_per_task"], -r["resolved"]))):
@@ -140,10 +140,10 @@ def main():
     shutil.rmtree(OUT, ignore_errors=True)
     OUT.mkdir()
     for name in ("home", "project", "leaderboard", "faq", "grading"):   # 站点原生页面（链接按站内路径写）
-        src = (REPO / "docs" / f"{name}.md").read_text()
+        src = (REPO / "docs" / f"{name}.md").read_text(encoding="utf-8")
         if name == "leaderboard":
             src = src.replace("{{LEADERBOARD}}", leaderboard_md())
-        (OUT / ("index.md" if name == "home" else f"{name}.md")).write_text(src)
+        (OUT / ("index.md" if name == "home" else f"{name}.md")).write_text(src, encoding="utf-8")
     copy_md(REPO / "docs/syllabus.md")
     copy_md(REPO / "infra/README.md")
     for n in range(6):
@@ -151,7 +151,7 @@ def main():
         if p.exists():
             copy_md(p)
     copy_md(REPO / "assignment2/QUESTIONS.md")
-    vids = json.loads((REPO / "videos/bilibili.json").read_text()) if (REPO / "videos/bilibili.json").exists() else {}
+    vids = json.loads((REPO / "videos/bilibili.json").read_text(encoding="utf-8")) if (REPO / "videos/bilibili.json").exists() else {}
     lecs = sorted((REPO / "videos/lectures").glob("l[0-9][0-9].py"))
     (OUT / "lectures").mkdir()
     idx = ["# 讲座", "", "每讲 3–5 分钟，配有讲稿全文。周次安排见[课程大纲](../syllabus.md)。", "",
@@ -159,14 +159,14 @@ def main():
     nav_lec = []
     for p in lecs:
         L = load_lecture(p)
-        (OUT / "lectures" / f"{L['id']}.md").write_text(lecture_page(L, vids))
+        (OUT / "lectures" / f"{L['id']}.md").write_text(lecture_page(L, vids), encoding="utf-8")
         idx.append(f"| 第 {L['no']} 讲 | [{L['title']}]({L['id']}.md) | {'▶️' if L['id'] in vids else '制作中'} |")
         nav_lec.append((L["no"], L["title"], L["id"]))
-    (OUT / "lectures/index.md").write_text("\n".join(idx) + "\n")
+    (OUT / "lectures/index.md").write_text("\n".join(idx) + "\n", encoding="utf-8")
     (OUT / "assets").mkdir()
     (OUT / "assets/extra.css").write_text(
         ".video{position:relative;padding-top:56.25%;margin:1em 0}"
-        ".video iframe{position:absolute;inset:0;width:100%;height:100%;border-radius:8px}\n")
+        ".video iframe{position:absolute;inset:0;width:100%;height:100%;border-radius:8px}\n", encoding="utf-8")
     # 导航
     nav = ["nav:", "  - 首页: index.md", "  - 课程大纲: syllabus.md", "  - 讲座:", "      - lectures/index.md"]
     nav += [f"      - '{n:02d} {t}': lectures/{i}.md" for n, t, i in nav_lec]
@@ -175,8 +175,8 @@ def main():
         if (OUT / f"assignments/a{n}.md").exists():
             nav.append(f"      - 'A{n} {ASSIGN_NAMES[n]}': assignments/a{n}.md")
     nav += ["      - 'A2 源码阅读题': assignments/a2-questions.md", "  - 期末项目: project.md", "  - 评分说明: grading.md", "  - 排行榜: leaderboard.md", "  - 基础设施: infra.md", "  - 常见问题: faq.md"]
-    base = (REPO / "mkdocs.base.yml").read_text()
-    (REPO / "mkdocs.yml").write_text("# 由 scripts/build_site.py 生成，请修改 mkdocs.base.yml\n" + base.rstrip() + "\n" + "\n".join(nav) + "\n")
+    base = (REPO / "mkdocs.base.yml").read_text(encoding="utf-8")
+    (REPO / "mkdocs.yml").write_text("# 由 scripts/build_site.py 生成，请修改 mkdocs.base.yml\n" + base.rstrip() + "\n" + "\n".join(nav) + "\n", encoding="utf-8")
     print(f"site_src: {sum(1 for _ in OUT.rglob('*.md'))} pages")
 
 

@@ -27,6 +27,7 @@ theme:
 plugins:
   - search:
       lang: [zh, en]
+      separator: '[\s\u200b\u3000\-、。，．？！；]+'
 markdown_extensions:
   - attr_list
   - md_in_html
@@ -45,4 +46,4 @@ extra_css:
   - assets/extra.css
 extra:
   generator: false
-copyright: 代码 MIT · 讲义 CC BY-SA 4.0 · 结构参考 Harvard CS2680，内容独立编写
+copyright: 代码 MIT · 讲义 CC BY-SA 4.0 · 结构参考 Harvard CS2680，内容独立编写，与哈佛大学及 CS2680 课程团队没有任何关联，也未获其背书

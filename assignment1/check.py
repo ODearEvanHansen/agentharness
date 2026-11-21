@@ -41,7 +41,7 @@ def req(url, data=None):
 def first_sse_event(url, timeout=60):
     with urllib.request.urlopen(url, timeout=timeout) as r:
         for raw in r:
-            line = raw.decode().strip()
+            line = raw.decode("utf-8").strip()
             if line.startswith("data:"):
                 return json.loads(line[5:])
     return None
@@ -61,7 +61,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://127.0.0.1:8765")
     ap.add_argument("--dsh-home", required=True, help="服务使用的 DSH_HOME，用于独立重算用量")
-    ap.add_argument("--model", default="deepseek-flash")
+    ap.add_argument("--model", default="deepseek-flash", choices=sorted(usage_cost.PRICES))
     a = ap.parse_args()
     base = a.url.rstrip("/")
     try:
@@ -73,6 +73,8 @@ def main():
         print(f"❌ {STAGE[0]}+ 连不上 {base}：{e.reason}（服务启动了吗？--url 对吗？）")
     except TimeoutError as e:
         print(f"❌ {STAGE[0]}+ 超时：{e}")
+    except (ValueError, KeyError, TypeError, AttributeError) as e:
+        print(f"❌ {STAGE[0]}+ 返回格式错误：{type(e).__name__}: {e}（接口返回的不是约定的 JSON 结构，对照 README 的契约检查）")
     else:
         passed = sum(1 for _, c, _ in RESULTS if c)
         print(f"\n{passed}/{len(RESULTS)} 通过")
