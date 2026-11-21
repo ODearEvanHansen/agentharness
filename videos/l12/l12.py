@@ -69,7 +69,7 @@ def s_title(d, t):
     text(d, (W / 2, 500), "前缀缓存与 request series", 96, FG, a, bold=True, anchor="mm")
     text(d, (W / 2, 620), "为什么同一个 agent，换个写法就贵 7 倍", 44, BLUE, ease((t - 1) / 1), anchor="mm")
     text(d, (W / 2, 900), "AgentHarness · 基于 DeepSeek Harness 的 Agent 系统公开课", 28, DIM, ease((t - 2) / 1), anchor="mm")
-    text(d, (W / 2, 950), "本视频由程序合成（画面与字幕），数据均为真实运行结果", 24, DIM, ease((t - 2) / 1), anchor="mm")
+    text(d, (W / 2, 950), "本视频由程序合成（画面、字幕与 DeepSeek TTS 配音），数据均为真实运行结果", 24, DIM, ease((t - 2) / 1), anchor="mm")
 
 
 def s_price(d, t):
