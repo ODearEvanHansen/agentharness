@@ -61,6 +61,14 @@ def frame(t, L, nxt):
     c = E.ease((t - 1.0) / 0.6)
     E.text(d, (E.W / 2, 760), "课程网站：" + SITE, 36, "fg", c, anchor="mm")
     E.text(d, (E.W / 2, 820), DISC, 30, "dim", c, anchor="mm")
+    # 高亮："欢迎点赞 · 收藏 · 一键三连"（橙底深色字的胶囊）
+    h = E.ease((t - 1.6) / 0.6)
+    if h > 0:
+        msg, fs = "欢迎点赞 · 收藏 · 一键三连", 40
+        w = d.textlength(msg, font=E.F(fs, bold=True))
+        y = 930
+        d.rounded_rectangle((E.W / 2 - w / 2 - 36, y - 38, E.W / 2 + w / 2 + 36, y + 38), 38, fill=E.mix("orange", h))
+        E.text(d, (E.W / 2, y), msg, fs, (20, 20, 24), h, bold=True, anchor="mm")
     return im
 
 
