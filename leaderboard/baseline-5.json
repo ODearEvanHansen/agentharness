@@ -4,6 +4,7 @@
  "n": 20,
  "resolved": 8,
  "usd_per_task": 0.037,
+ "cny_per_task": 0.24667,
  "models": [
   "deepseek-flash"
  ],

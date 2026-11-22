@@ -49,7 +49,7 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
 | L1 | 跑通起始代码，在页面上看到原始事件 | ✅ |
 | L2 | **轨迹渲染**：助手文本用 markdown 显示，思考内容可折叠；每个工具调用显示为可折叠卡片（参数 + 结果） | ✅（后端部分） |
 | L3 | **状态**：单个调用 pending → ok/error；整轮 running → completed；**续聊**（同一会话多轮） | ✅ |
-| L4 | **成本**：请求数、未命中输入 / 缓存命中 / 输出 token、缓存命中率、美元成本、耗时、轮数 | ✅ |
+| L4 | **成本**：请求数、未命中输入 / 缓存命中 / 输出 token、缓存命中率、成本（元）、耗时、轮数 | ✅ |
 | L5 | **子 agent 树**：子 agent 的事件挂在对应节点下，侧边栏显示树结构 | ✅ |
 | 加做 | 见下文 | — |
 
@@ -61,7 +61,7 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
   "status": "idle | running",
   "turns": [{"n": 1, "status": "completed", "seconds": 12.3}],
   "tool_calls": [{"call_id": "call_...", "name": "bash", "status": "pending | ok | error", "session_id": "所属会话（根或子 agent）"}],
-  "usage": {"requests": 9, "input_miss": 3008, "cache_read": 84992, "output": 1590, "usd": 0.0033},
+  "usage": {"requests": 9, "input_miss": 3008, "cache_read": 84992, "output": 1590, "cny": 0.022},
   "agents": [{"session_id": "session-...", "parent": null}, {"session_id": "...", "parent": "session-..."}]
 }
 ```
@@ -71,7 +71,7 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
 ```bash
 docker exec agentharness-a1 python assignment1/check.py --url http://127.0.0.1:8765 --dsh-home assignment1/starter/.dsh-home
 ```
-检查会真实调用 API，跑 2 轮对话，其中包括一次子 agent，花费约 0.003 美元。全部 ✅ 才算通过 L1–L5。
+检查会真实调用 API，跑 2 轮对话，其中包括一次子 agent，花费约 0.02 元。全部 ✅ 才算通过 L1–L5。
 
 用没改过的起始代码跑，只有 L1 能通过：summary 等接口还没实现，会看到 `❌ L2+ 接口 /api/sessions/<id>/summary 返回 500` 之类的提示，脚本随即以非零退出码结束。这是正常的，实现完接口再跑。
 

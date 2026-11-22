@@ -4,6 +4,7 @@
  "n": 20,
  "resolved": 17,
  "usd_per_task": 0.018,
+ "cny_per_task": 0.12,
  "median_seconds": 55,
  "cache_hit_rate": 0.958,
  "models": [

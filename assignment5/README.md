@@ -11,8 +11,8 @@
 
 | 配置 | 解决 | 云端请求 | 本地请求 | 云端成本 | 中位耗时 |
 |---|---|---|---|---|---|
-| 不路由（对照） | 8/8 | — | 0 | $0.0167 | 11.9 s |
-| 路由（模板 + 示例提示） | 8/8 | 58 | 34 | **$0.0231** | **168 s** |
+| 不路由（对照） | 8/8 | — | 0 | 0.111 元 | 11.9 s |
+| 路由（模板 + 示例提示） | 8/8 | 58 | 34 | **0.154 元** | **168 s** |
 
 按模板路由后，云端成本**反而高了约 38%**，耗时则变成原来的十几倍。原因有三点：
 - 每委派一次，主 agent 都要多发几次请求：写任务说明、等结果、读结果。
@@ -62,7 +62,7 @@ python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl assignment2/re
 
 **日志证据**：`.gitignore` 虽然忽略 `*.log`，但 `assignment*/submission/` 下的 `.log` 例外，会被保留，不用改扩展名。例如 `docker logs agentharness-llm > assignment5/submission/<昵称>/llama-server.log 2>&1`。
 
-`tools/usage_cost.py` 会按每次请求实际用到的模型分别计价，写在运行记录的 `by_model` 字段里，本地模型按 $0 计。
+`tools/usage_cost.py` 会按每次请求实际用到的模型分别计价，写在运行记录的 `by_model` 字段里，本地模型按 0 元计。
 
 ## 小内存路线：Qwen3-4B（16GB 电脑可以亲手跑）
 
@@ -74,8 +74,8 @@ python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl assignment2/re
 
 | 配置 | 解决 | 云端请求 | 本地请求 | 云端成本 | 中位耗时 | 8 题合计 |
 |---|---|---|---|---|---|---|
-| 不路由（对照，同上表） | 8/8 | — | 0 | $0.0167 | 11.9 s | 约 1 分钟 |
-| 路由到 Qwen3-4B | 8/8 | 72 | 28 | $0.0307 | 424 s | 约 63 分钟 |
+| 不路由（对照，同上表） | 8/8 | — | 0 | 0.111 元 | 11.9 s | 约 1 分钟 |
+| 路由到 Qwen3-4B | 8/8 | 72 | 28 | 0.205 元 | 424 s | 约 63 分钟 |
 
 原始记录在 [`baseline/mini-dsh-a5-qwen3-4b.jsonl`](baseline/mini-dsh-a5-qwen3-4b.jsonl)。
 

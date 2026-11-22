@@ -113,8 +113,9 @@ def kill_stragglers(workdir):
                 pass
 
 
-def price(u, model):
-    hit, miss, out = usage_cost.PRICES.get(model, {"peak": (0, 0, 0)})["peak"]
+def price(u, model, table=None):
+    """按高峰价计费，默认单位元（usage_cost.PRICES）；table=usage_cost.USD_PRICES 时给已弃用的 usd 字段。"""
+    hit, miss, out = (table or usage_cost.PRICES).get(model, {"peak": (0, 0, 0)})["peak"]
     return round((u["input_miss"] * miss + u["cache_read"] * hit + u["output"] * out) / 1e6, 6)
 
 
@@ -349,13 +350,15 @@ def main():
         u = {k: r["usage"].get(k, 0) for k in ("requests", "input_miss", "cache_read", "output")}
         rec = {"id": t["id"], "agent": a.agent, "model": a.model, "seconds": round(time.time() - t0, 1),
                "solved": r["solved"], "steps": r["steps"], "tool_calls": r["tool_calls"], **u,
-               "usd": r["usage"].get("usd", price(u, a.model)), "error": err}
+               "cny": r["usage"].get("cny", price(u, a.model)),
+               "usd": r["usage"].get("usd", price(u, a.model, usage_cost.USD_PRICES)),  # 已弃用，仅为兼容
+               "error": err}
         if r["usage"].get("by_model"):
             rec["by_model"] = r["usage"]["by_model"]
         if "model_patch" in r:
             rec["model_patch"] = r["model_patch"]
         append_record(out, rec)
-        print(f"{t['id']:40} solved={rec['solved']!s:5} {rec['seconds']:7}s steps={rec['steps']:3} ${rec['usd']} {err or ''}", flush=True)
+        print(f"{t['id']:40} solved={rec['solved']!s:5} {rec['seconds']:7}s steps={rec['steps']:3} {rec['cny']:.4f} 元 {err or ''}", flush=True)
 
     with cf.ThreadPoolExecutor(a.parallel) as ex:
         list(ex.map(one, tasks))
@@ -363,7 +366,7 @@ def main():
     recs = list({r["id"]: r for r in read_jsonl(out)}.values())
     n = len(recs)
     if a.suite == "mini":
-        print(f"\n{a.agent}: solved {sum(r['solved'] for r in recs)}/{n}  ${sum(r['usd'] for r in recs):.4f}")
+        print(f"\n{a.agent}: solved {sum(r['solved'] for r in recs)}/{n}  {sum(usage_cost.record_cny(r) for r in recs):.4f} 元")
     else:
         preds = outdir / f"predictions-{a.agent}{tag}.jsonl"
         with preds.open("w", encoding="utf-8") as f:
@@ -371,7 +374,7 @@ def main():
                 f.write(json.dumps({"instance_id": r["id"], "model_name_or_path": a.agent + tag,
                                     "model_patch": r.get("model_patch", "")}) + "\n")
         ds = "infra/swebench/dataset_hard.json" if "hard" in Path(a.instances).name else "infra/swebench/dataset.json"
-        print(f"\n{n} 题完成，${sum(r['usd'] for r in recs):.4f}。predictions -> {preds}\n判分："
+        print(f"\n{n} 题完成，{sum(usage_cost.record_cny(r) for r in recs):.4f} 元。predictions -> {preds}\n判分："
               f"python -m swebench.harness.run_evaluation -d {ds} -p {preds} -id {a.agent}{tag}")
 
 

@@ -4,7 +4,7 @@
 用法（先启动你的服务）：
   python assignment1/check.py --url http://127.0.0.1:8765 --dsh-home assignment1/starter/.dsh-home
 
-会真实调用 DeepSeek API（2 轮对话，约 $0.003）。检查项：
+会真实调用 DeepSeek API（2 轮对话，约 0.02 元）。检查项：
   L1 提交与流式：POST /api/run 返回 session_id；SSE 能收到事件
   L2 工具调用：summary.tool_calls 含 bash 类调用，状态为 ok/error，call_id 唯一
   L3 状态与续聊：同一会话第二轮后 turns 递增、状态回到 idle
@@ -117,9 +117,11 @@ def checks(base, a):
     close = all(abs(u.get(k, -1) - v) <= max(1, 0.01 * v) for k, v in ref.items())
     ok("L4", close, f"usage 与会话日志一致：你的={ {k: u.get(k) for k in ref} } 参考={ref}")
     hit, miss, out = usage_cost.PRICES[a.model]["peak"]
-    usd_ref = (u.get("input_miss", 0) * miss + u.get("cache_read", 0) * hit + u.get("output", 0) * out) / 1e6
-    ok("L4", isinstance(u.get("usd"), (int, float)) and u["usd"] > 0 and abs(u["usd"] - usd_ref) <= max(1e-6, 0.01 * usd_ref),
-       f"usd={u.get('usd')}，按高峰价由你的 token 数重算应为 {usd_ref:.6f}")
+    field, table = ("cny", usage_cost.PRICES) if "cny" in u or "usd" not in u else ("usd", usage_cost.USD_PRICES)  # usd：旧契约，已弃用
+    hit, miss, out = table[a.model]["peak"]
+    ref_cost = (u.get("input_miss", 0) * miss + u.get("cache_read", 0) * hit + u.get("output", 0) * out) / 1e6
+    ok("L4", isinstance(u.get(field), (int, float)) and u[field] > 0 and abs(u[field] - ref_cost) <= max(1e-6, 0.01 * ref_cost),
+       f"{field}={u.get(field)}，按高峰价由你的 token 数重算应为 {ref_cost:.6f}" + (" 元" if field == "cny" else "（usd 字段已弃用，请改报 cny，单位元）"))
 
 
 if __name__ == "__main__":

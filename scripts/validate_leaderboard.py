@@ -29,10 +29,23 @@ NUM = (int, float)
 # score.py 输出的字段 -> 类型
 FIELDS = {
     "name": str, "track": str, "n": int, "resolved": int, "resolved_ids": list,
-    "usd_total": NUM, "usd_per_task": NUM, "median_seconds": NUM, "cache_hit_rate": NUM,
+    "median_seconds": NUM, "cache_hit_rate": NUM,
     "models": list, "errors": int, "config_sha": str, "price_tier": str,
     "run_sha": str, "predictions_sha": str, "report_sha": str,
 }
+# 成本字段：新提交为 cny_total/cny_per_task（元）；旧的 usd_total/usd_per_task 已弃用但仍接受，至少要有一组
+COST_PAIRS = (("cny_total", "cny_per_task"), ("usd_total", "usd_per_task"))
+
+
+def cost_errs(d, keys_needed=2):
+    ok = [p for p in COST_PAIRS if not any(bad_type(d.get(k), NUM) for k in p[2 - keys_needed:])]
+    return [] if ok else ["缺少成本字段：需要 cny_total/cny_per_task（元；或已弃用的 usd_total/usd_per_task）"]
+
+
+def cost_values(d):
+    return [d[k] for p in COST_PAIRS for k in p if k in d and not bad_type(d[k], NUM)]
+
+
 HEX = re.compile(r"^[0-9a-f]{16,64}$")
 
 
@@ -70,7 +83,8 @@ def bad_type(v, t):
 
 def check_baseline(d):
     errs = [f"缺少字段或类型错误：{k}" for k, t in
-            (("name", str), ("track", str), ("n", int), ("resolved", int), ("usd_per_task", NUM)) if bad_type(d.get(k), t)]
+            (("name", str), ("track", str), ("n", int), ("resolved", int)) if bad_type(d.get(k), t)]
+    errs += cost_errs(d, keys_needed=1)
     if d.get("track") not in TRACKS:
         errs.append(f"track 必须是 {TRACKS} 之一")
     return errs
@@ -136,6 +150,7 @@ def check_entry(p: Path, d, repo: Path, inst_dir: Path):
         return ["文件名应为 <昵称>-<赛道>.json，赛道为 accuracy 或 efficiency（昵称只含字母、数字、_ . -）"]
     errs = [f"缺少字段：{k}" if k not in d else f"字段类型错误：{k}"
             for k, t in FIELDS.items() if bad_type(d.get(k), t)]
+    errs += cost_errs(d)
     if errs:
         return errs
     nick = m.group(1)
@@ -169,7 +184,7 @@ def check_entry(p: Path, d, repo: Path, inst_dir: Path):
         errs.append("price_tier 应为 peak（按高峰价计）")
     if not d["models"]:
         errs.append("models 不能为空")
-    if min(d["usd_total"], d["usd_per_task"], d["median_seconds"]) < 0 or not 0 <= d["cache_hit_rate"] <= 1:
+    if min(*cost_values(d), d["median_seconds"]) < 0 or not 0 <= d["cache_hit_rate"] <= 1:
         errs.append("数值超出合理范围")
     if errs:
         return errs

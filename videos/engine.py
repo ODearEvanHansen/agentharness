@@ -125,6 +125,19 @@ def caption(d, t, s, start):
         text(d, (W / 2, y0 + 8 + 27 + i * 54), l, 34, "fg", a, anchor="mm")
 
 
+def takeaway(d, t, s, start):
+    """本幕要点：左下角、左侧色条 + "要点"标签，和逐句字幕区分开。"""
+    a = ease((t - start) / 0.5)
+    if not s or a <= 0:
+        return
+    lines = wrap(d, s, 30, W - 420)
+    y0 = H - 80 - 44 * len(lines)
+    d.rectangle((80, y0 - 6, 88, H - 74), fill=mix("orange", a))
+    text(d, (108, y0), "要点", 26, "orange", a, bold=True)
+    for i, ln in enumerate(lines):
+        text(d, (180, y0 + i * 44), ln, 30, "fg", a)
+
+
 # ------------------------------------------------------------------ scene renderers: fn(d, t, S, L) with t in [0, 10]
 def r_title(d, t, S, L):
     text(d, (W / 2, 380), f"第 {L['no']} 讲", 48, "dim", ease(t / 1), anchor="mm")
@@ -302,8 +315,9 @@ def frame(S, L, t10, dur, t):
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
     R[S["type"]](d, t10, S, L)
+    # 视频里不放字幕（课程决定）。scene 的 caption 是本幕"要点"，以左下角标签样式出现，不是逐句字幕。
     if S["type"] != "title":
-        caption(d, t10, S.get("caption"), 8.5)
+        takeaway(d, t10, S.get("caption"), 8.5)
     fade = min(1.0, t / 0.4, (dur - t) / 0.4)
     if fade < 1:
         img = Image.blend(Image.new("RGB", (W, H), BG), img, max(0.0, fade))
@@ -329,8 +343,10 @@ def main():
     ap.add_argument("--out", default=os.environ.get("VIDEO_OUT", str(Path(__file__).resolve().parent / "out")))
     ap.add_argument("--preview", action="store_true")
     ap.add_argument("--no-intro", action="store_true", help="不加固定片头")
+    ap.add_argument("--no-outro", action="store_true", help="不加固定片尾")
     a = ap.parse_args()
     L = load(a.spec)
+    L["_path"] = a.spec
     out = Path(a.out)
     build = out / "build" / L["id"]
     build.mkdir(parents=True, exist_ok=True)
@@ -369,6 +385,10 @@ def main():
             tt += dd
         t0 += dur
         print(f"  scene {i} {S['type']:8} {dur:5.1f}s", flush=True)
+    outro = None
+    if not a.no_outro:
+        import outro as O
+        outro = O.prepare(L, out / "build" / "_outro")
     (out / f"{L['id']}.srt").write_text("".join(f"{k + 1}\n{fmt(x)} --> {fmt(y)}\n{s}\n\n" for k, (x, y, s) in enumerate(srt)))
     parts = [intro[1]] if intro else []
     for k, (S, dur, wav) in enumerate(plan):
@@ -376,6 +396,8 @@ def main():
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(wav), "-af",
                         f"adelay={int(LEAD * 1000)}:all=1,apad=whole_dur={dur}", "-ar", "24000", "-ac", "1", str(p)], check=True)
         parts.append(p)
+    if outro:
+        parts.append(outro[1])
     (build / "list.txt").write_text("".join(f"file '{p}'\n" for p in parts))
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(build / "list.txt"),
                     "-c", "copy", str(build / "voice.wav")], check=True)
@@ -391,16 +413,18 @@ def main():
         for i in range(n):
             t = i / FPS
             ff.stdin.write(frame(S, L, t * 10 / dur, dur, t).tobytes())
+    if outro:
+        for i in range(int(round(outro[2] * FPS))):
+            ff.stdin.write(outro[0](i / FPS).tobytes())
     ff.stdin.close()
     ff.wait()
     final = out / f"{L['id']}.mp4"
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(silent), "-i", str(build / "voice.wav"),
-                    "-i", str(out / f"{L['id']}.srt"), "-map", "0:v", "-map", "1:a", "-map", "2:s", "-c:v", "copy",
-                    "-c:a", "aac", "-b:a", "128k", "-c:s", "mov_text", "-metadata:s:s:0", "language=chi",
+                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "128k",
                     "-metadata", "comment=AIGC: 画面、字幕由程序生成，配音由 DeepSeek TTS 合成（AgentHarness 公开课）",
                     "-metadata", "description=AI-generated content (synthetic video and voice)",
                     "-shortest", "-movflags", "+faststart", str(final)], check=True)
-    print("done", final, f"{t0:.0f}s")
+    print("done", final, f"{t0 + (outro[2] if outro else 0):.0f}s")
 
 
 if __name__ == "__main__":

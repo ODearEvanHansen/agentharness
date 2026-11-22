@@ -119,18 +119,23 @@ def lecture_page(L, videos):
     return "\n".join(lines) + "\n"
 
 
+def cny_per_task(r):
+    """每题成本（元）：优先 cny_per_task；旧条目只有 usd_per_task 时按 deepseek-flash 官方人民币/美元定价比 20/3 折算。"""
+    return r["cny_per_task"] if "cny_per_task" in r else r["usd_per_task"] * 20 / 3
+
+
 def leaderboard_md():
     rows = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((REPO / "leaderboard").glob("*.json"))]
     out = []
-    for track, title, key in (("accuracy", "解决率赛道（难题集 20 题）", lambda r: (-r["resolved"], r["usd_per_task"])),
-                              ("efficiency", "效率赛道（20 题；解决率不低于基线时按每题成本排名）", lambda r: (r["usd_per_task"], -r["resolved"]))):
+    for track, title, key in (("accuracy", "解决率赛道（难题集 20 题）", lambda r: (-r["resolved"], cny_per_task(r))),
+                              ("efficiency", "效率赛道（20 题；解决率不低于基线时按每题成本排名）", lambda r: (cny_per_task(r), -r["resolved"]))):
         rs = sorted((r for r in rows if r["track"] == track), key=key)
         out += [f"## {title}", "", "| # | 名称 | 解决 | 每题成本 | 中位耗时 | 缓存命中 | 模型 | 备注 |", "|---|---|---|---|---|---|---|---|"]
         for i, r in enumerate(rs, 1):
             med = f"{r['median_seconds']:.0f}s" if r.get("median_seconds") else "—"
             hit = f"{r['cache_hit_rate']:.1%}" if r.get("cache_hit_rate") else "—"
             name = r["name"] + (" 🔖" if r.get("baseline") else "")
-            out.append(f"| {i} | {name} | {r['resolved']}/{r['n']} | ${r['usd_per_task']:.4f} | {med} | {hit} | {', '.join(r.get('models', []))} | {r.get('note', '')} |")
+            out.append(f"| {i} | {name} | {r['resolved']}/{r['n']} | {cny_per_task(r):.3f} 元 | {med} | {hit} | {', '.join(r.get('models', []))} | {r.get('note', '')} |")
         out.append("")
     out.append("🔖 = 课程团队提供的基线或示例。")
     return "\n".join(out)

@@ -75,21 +75,21 @@ def chat(messages):
     req = urllib.request.Request("https://api.deepseek.com/chat/completions", json.dumps(body).encode(),
         {"Content-Type": "application/json", "Authorization": "Bearer " + os.environ["DEEPSEEK_API_KEY"]})
     return json.load(urllib.request.urlopen(req, timeout=120))
-messages, usd = [{"role": "user", "content": "用 add 工具算 1234+5678，再用一句话告诉我结果"}], 0.0
+messages, cny = [{"role": "user", "content": "用 add 工具算 1234+5678，再用一句话告诉我结果"}], 0.0
 for step in range(5):
     r = chat(messages); u = r["usage"]; msg = r["choices"][0]["message"]
-    usd += (u.get("prompt_cache_hit_tokens", 0) * 0.006 + u.get("prompt_cache_miss_tokens", 0) * 0.30
-            + u["completion_tokens"] * 1.2) / 1e6           # 高峰价，与 tools/usage_cost.py 一致
+    cny += (u.get("prompt_cache_hit_tokens", 0) * 0.04 + u.get("prompt_cache_miss_tokens", 0) * 2
+            + u["completion_tokens"] * 8) / 1e6             # 高峰价（元 / 百万 token），与 tools/usage_cost.py 一致
     messages.append(msg)
     if not msg.get("tool_calls"):
         print("回复：", msg["content"]); break
     for c in msg["tool_calls"]:
         a = json.loads(c["function"]["arguments"])
         messages.append({"role": "tool", "tool_call_id": c["id"], "content": str(a["a"] + a["b"])})
-print(f"共 {step + 1} 次请求，花费约 ${usd:.5f}")
+print(f"共 {step + 1} 次请求，花费约 {cny:.4f} 元")
 ```
 
-正常会看到两次请求：第一次模型调用 `add`，第二次给出答案 6912，花费不到 $0.001。这就是 agent 的全部骨架：请求、执行工具、把结果放回历史、再请求。
+正常会看到两次请求：第一次模型调用 `add`，第二次给出答案 6912，花费不到 0.01 元。这就是 agent 的全部骨架：请求、执行工具、把结果放回历史、再请求。
 
 ## 关卡 3：拉取评测镜像，跑通一道题的评测
 课程已把 SWE-bench 评测镜像同步到 GHCR，拉取无需登录：`ghcr.io/odearevanhansen/swebench-x86_64:<实例>`。仓库里的 `infra/swebench/dataset.json` 已经指向这些 GHCR 镜像，不用自己改。

@@ -47,9 +47,9 @@ SWE-bench 评测镜像也已同步到 GHCR（`ghcr.io/odearevanhansen/swebench-x
 
 ## 怎么查看花了多少钱？
 
-- 课程脚本按 DeepSeek 官方**高峰价**计价：`tools/usage_cost.py <dsh_home> [model] [peak|offpeak]` 读取 DSH 会话日志（包括 `.zstd`），统计 token 和成本；作业 2/3 的运行记录里每题都有 `usd` 字段，`assignment3/score.py` 会汇总出 `usd_total` 和 `usd_per_task`。
+- 课程脚本按 DeepSeek 官方**高峰价**计价：`tools/usage_cost.py <dsh_home> [model] [peak|offpeak]` 读取 DSH 会话日志（包括 `.zstd`），统计 token 和成本；作业 2/3 的运行记录里每题都有 `cny` 字段（单位元），`assignment3/score.py` 会汇总出 `cny_total` 和 `cny_per_task`。价格表见 `tools/usage_cost.py` 里的 `PRICES`，取自 [DeepSeek 官方人民币价格页](https://api-docs.deepseek.com/zh-cn/quick_start/pricing)。
 - 实际扣费以 [DeepSeek 开放平台](https://platform.deepseek.com/)上的账户余额为准。
-- 作业 3 参考：小题 8 道约 $0.01，效率赛道 20 题约 $0.4，难题集 20 题约 $0.8。**先在小题上调试，跑通后再上 20 题。**
+- 作业 3 参考：小题 8 道约 0.07 元，效率赛道 20 题约 2.7 元，难题集 20 题约 5.3 元。**先在小题上调试，跑通后再上 20 题。**
 
 ## API key 怎么放才安全？
 

@@ -14,7 +14,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
-from usage_cost import PRICES  # noqa: E402  云端模型 = 有官方价格的模型，其余视为本地
+from usage_cost import PRICES, record_cny  # noqa: E402  云端模型 = 有官方价格的模型，其余视为本地
 
 TASKS = {p.name for p in (REPO / "assignment2" / "tasks").iterdir() if p.is_dir()}   # 与 run.py mini_tasks() 一致
 ok = True
@@ -57,16 +57,16 @@ def complete(rs, label):
 
 
 def split(rs):
-    cloud_usd = cloud_req = local_req = 0
+    cloud_cny = cloud_req = local_req = 0
     for r in rs:
         for m, v in (r.get("by_model") or {}).items():
             if not isinstance(v, dict):
                 continue
             if m in PRICES:
-                cloud_usd += v.get("usd", 0); cloud_req += v.get("requests", 0)
+                cloud_cny += record_cny(v, m); cloud_req += v.get("requests", 0)
             else:
                 local_req += v.get("requests", 0)
-    return cloud_usd, cloud_req, local_req
+    return cloud_cny, cloud_req, local_req
 
 
 def med(rs):
@@ -87,15 +87,15 @@ def main():
                                    for m, v in (r.get("by_model") or {}).items())]
     check("L1", len(routed) >= len(TASKS) / 2, f"{len(routed)}/{len(TASKS)} 题有请求路由到本地模型")
     cloud, cloud_req, local_req = split(rs)
-    print(f"   云端请求 {cloud_req} 次 ${cloud:.4f}；本地请求 {local_req} 次；中位耗时 {med(rs):.1f}s")
+    print(f"   云端请求 {cloud_req} 次 {cloud:.4f} 元；本地请求 {local_req} 次；中位耗时 {med(rs):.1f}s")
     b = load(base, "对照组")
     if b is None:
         check("对照", False, "缺少对照组结果（同 profile、不路由，--tag sdkfull）")
     else:
         complete(b, "对照")
-        bc = sum(r.get("usd", 0) for r in b)
+        bc = sum(record_cny(r) for r in b)
         print(f"   对照（同 profile、不路由）：解决 {sum(1 for r in b if r.get('solved') is True)}/{len(b)}，"
-              f"云端 ${bc:.4f}，中位耗时 {med(b):.1f}s")
+              f"云端 {bc:.4f} 元，中位耗时 {med(b):.1f}s")
     sys.exit(0 if ok else 1)
 
 

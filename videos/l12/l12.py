@@ -73,15 +73,15 @@ def s_title(d, t):
 
 
 def s_price(d, t):
-    chrome(d, t, "先看价格", "deepseek-flash 官方价格（高峰时段，美元 / 百万 token）")
-    rows = [("输入 · 缓存命中", 0.006, GREEN), ("输入 · 缓存未命中", 0.30, ORANGE), ("输出", 1.2, PURPLE)]
+    chrome(d, t, "先看价格", "deepseek-flash 官方价格（高峰时段，元 / 百万 token）")
+    rows = [("输入 · 缓存命中", 0.04, GREEN), ("输入 · 缓存未命中", 2, ORANGE), ("输出", 8, PURPLE)]
     for i, (name, p, c) in enumerate(rows):
         y = 340 + i * 150
         a = ease((t - 0.8 - i * 0.6) / 0.6)
         text(d, (120, y + 20), name, 40, FG, a)
-        bw = 1100 * (p / 1.2) * ease((t - 1.0 - i * 0.6) / 1.2)
+        bw = 1100 * (p / 8) * ease((t - 1.0 - i * 0.6) / 1.2)
         block(d, 560, y, max(bw, 6 if a > 0 else 0), 70, c, "", a)
-        text(d, (580 + max(bw, 6), y + 15), f"${p:.3f}".rstrip("0").replace(".3", ".30") if p == 0.30 else f"${p}", 40, c, a, bold=True)
+        text(d, (580 + max(bw, 6), y + 15), f"{p:g} 元", 40, c, a, bold=True)
     if t > 4.5:
         a = ease((t - 4.5) / 0.8)
         text(d, (W / 2, 830), "命中 vs 未命中：差 50 倍", 64, GREEN, a, bold=True, anchor="mm")
@@ -124,7 +124,7 @@ def s_data(d, t):
         text(d, (700, 320 + i * 90), v, 40, c, a, bold=True)
     a = ease((t - 3) / 0.6)
     text(d, (160, 640), "缓存命中率 96%", 48, GREEN, a, bold=True)
-    for i, (k, v, c, frac) in enumerate([("实际花费", "$0.34", GREEN, 0.34 / 2.59), ("如果完全没有缓存", "$2.59", RED, 1.0)]):
+    for i, (k, v, c, frac) in enumerate([("实际花费", "2.27 元", GREEN, 0.34 / 2.59), ("如果完全没有缓存", "17.3 元", RED, 1.0)]):
         a = ease((t - 4 - i * 1.0) / 0.6)
         y = 760 + i * 100
         text(d, (160, y + 10), k, 36, FG, a)

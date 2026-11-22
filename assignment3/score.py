@@ -17,6 +17,9 @@ score.py 会把三份原始文件复制到 <config-dir>/artifacts/（run.jsonl�
 import argparse, hashlib, json, shutil, statistics, sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools"))
+import usage_cost  # noqa: E402
+
 REPO = Path(__file__).resolve().parent.parent
 TRACKS = {"accuracy": REPO / "infra/swebench/instances_hard.txt", "efficiency": REPO / "infra/swebench/instances.txt"}
 
@@ -96,7 +99,8 @@ def main():
     resolved = sorted(set(report.get("resolved_ids", [])) & set(want))
     rs = [recs[i] for i in want]
     miss, hit = sum(r["input_miss"] for r in rs), sum(r["cache_read"] for r in rs)
-    usd = sum(r["usd"] for r in rs)
+    cny = sum(usage_cost.record_cny(r) for r in rs)
+    usd = sum(r.get("usd") or 0 for r in rs)  # 已弃用，仅为兼容旧字段
 
     art = cfg / "artifacts"
     art.mkdir(exist_ok=True)
@@ -105,6 +109,7 @@ def main():
             shutil.copyfile(src, art / fn)
     out = {
         "name": a.name, "track": a.track, "n": len(want), "resolved": len(resolved), "resolved_ids": resolved,
+        "cny_total": round(cny, 4), "cny_per_task": round(cny / len(rs), 5),
         "usd_total": round(usd, 4), "usd_per_task": round(usd / len(rs), 5),
         "median_seconds": statistics.median(r["seconds"] for r in rs),
         "cache_hit_rate": round(hit / (hit + miss), 3) if hit + miss else 0,

@@ -4,7 +4,7 @@
 
 agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Python 标准库写一个最小的 agent loop，让它在隔离容器里解真实的 SWE-bench 题目，再和工业级 harness（DSH）做对照。
 
-**参考数据**（试做阶段（开课前课程团队的完整试做）实测，`deepseek-flash`，20 道分层抽样的 Verified 题）：一个约 110 行的 loop 解出 18/20，DSH `sdk-minimal` 解出 17/20；loop 每题约 $0.026，DSH 每题约 $0.018。也就是说，你写的 loop 有能力解出大部分题，但你需要讲清楚它为什么更贵。
+**参考数据**（试做阶段（开课前课程团队的完整试做）实测，`deepseek-flash`，20 道分层抽样的 Verified 题）：一个约 110 行的 loop 解出 18/20，DSH `sdk-minimal` 解出 17/20；loop 每题约 0.17 元，DSH 每题约 0.12 元。也就是说，你写的 loop 有能力解出大部分题，但你需要讲清楚它为什么更贵。
 
 ## 准备
 - 完成[作业 0](../assignment0/)，包括隔离网络、运行器镜像和 GHCR 镜像拉取。
@@ -13,7 +13,7 @@ agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Pytho
 - **磁盘**：每道 SWE 题的镜像约 3GB，20 题约 60GB。磁盘紧张时，用 `--parallel 1`，并在每题评测完后执行 `docker rmi` 删除镜像。
 - **内存**：`--parallel N` 会同时运行 N 个容器，每个上限 8GB。16GB 内存的机器请用 `--parallel 1`。
 
-**运行器已验证**（课程参考实现）：小题 madsLoop 8/8（$0.0085）、DSH 8/8（$0.0064）；`django__django-15467` 两边都通过了官方评测（madsLoop 24 步 $0.013，DSH $0.008）。
+**运行器已验证**（课程参考实现）：小题 madsLoop 8/8（0.057 元）、DSH 8/8（0.043 元）；`django__django-15467` 两边都通过了官方评测（madsLoop 24 步 0.087 元，DSH 0.053 元）。
 
 ## Part A：实现 madsLoop（`madsloop/agent.py`）
 
