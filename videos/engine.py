@@ -385,6 +385,14 @@ def main():
             tt += dd
         t0 += dur
         print(f"  scene {i} {S['type']:8} {dur:5.1f}s", flush=True)
+    # 章节时间点（B 站简介里的时间戳可点击跳转）
+    chapters, tt = [], (intro[2] if intro else 0.0)
+    for S, dur, _ in plan:
+        name = S.get("title") or ("开场" if S["type"] == "title" else "小结" if S["type"] == "summary" else "")
+        if name:
+            chapters.append({"t": round(tt, 1), "title": name})
+        tt += dur
+    (out / f"{L['id']}.chapters.json").write_text(json.dumps(chapters, ensure_ascii=False, indent=1))
     outro = None
     if not a.no_outro:
         import outro as O
