@@ -33,7 +33,6 @@ def next_title(L):
 def frame(t, L, nxt):
     im = Image.new("RGB", (E.W, E.H), E.BG)
     d = ImageDraw.Draw(im)
-    E.text(d, (E.W - 80, 56), "AI 合成（含 AI 配音）", 26, "fg", anchor="ra")
     a = E.ease(t / 0.6)
     # 图标 + 课程名（与片头定格画面一致，整体上移）
     size, icon_r, gap = 96, 50, 48

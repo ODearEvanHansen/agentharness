@@ -9,7 +9,7 @@
   LECTURE = {"id": "l03", "no": 3, "title": "...", "subtitle": "...",
              "scenes": [ {"type": "...", "narration": "...", ...}, ... ]}
 场景类型（type）：
-  title    —— 片头（自动加 AI 合成标识）
+  title    —— 讲次标题页（AI 合成声明只放这一页）
   bullets  —— title, items: [str], (note)
   bars     —— title, sub, rows: [(label, value, color, display)], (unit), (highlight)
   blocks   —— title, sub, rows: [(row_label, [(text, width, color), ...])], (legend: [(color, text)])
@@ -105,7 +105,6 @@ class Ctx:
 
 def chrome(d, t, L, title, sub=None):
     text(d, (80, 56), f"第 {L['no']} 讲 · {L['title']}", 26, "dim")
-    text(d, (W - 80, 56), "AI 合成（含 AI 配音）", 26, "fg", anchor="ra")
     if title:
         text(d, (80, 112), title, 54, "fg", ease(t / 0.6), bold=True)
     if sub:
@@ -148,7 +147,7 @@ def r_title(d, t, S, L):
     if L.get("subtitle"):
         text(d, (W / 2, y), L["subtitle"], 42, "blue", ease((t - 1) / 1), anchor="mm")
     text(d, (W / 2, 900), "AgentHarness · 基于 DeepSeek Harness 的 Agent 系统公开课", 28, "dim", ease((t - 2) / 1), anchor="mm")
-    text(d, (W / 2, 950), "本视频由程序合成（画面、字幕与 DeepSeek TTS 配音）；演示数据均为真实运行结果", 24, "dim", ease((t - 2) / 1), anchor="mm")
+    text(d, (W / 2, 950), "AI 合成：画面由程序生成，配音由 DeepSeek TTS 合成；演示数据均为真实运行结果", 24, "dim", ease((t - 2) / 1), anchor="mm")
 
 
 def r_bullets(d, t, S, L):
@@ -429,7 +428,7 @@ def main():
     final = out / f"{L['id']}.mp4"
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(silent), "-i", str(build / "voice.wav"),
                     "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "128k",
-                    "-metadata", "comment=AIGC: 画面、字幕由程序生成，配音由 DeepSeek TTS 合成（AgentHarness 公开课）",
+                    "-metadata", "comment=AIGC: 画面由程序生成，配音由 DeepSeek TTS 合成（AgentHarness 公开课）",
                     "-metadata", "description=AI-generated content (synthetic video and voice)",
                     "-shortest", "-movflags", "+faststart", str(final)], check=True)
     print("done", final, f"{t0 + (outro[2] if outro else 0):.0f}s")

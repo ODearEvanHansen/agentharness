@@ -35,7 +35,6 @@ def frame(t):
     t = min(t, ANIM)
     im = Image.new("RGB", (E.W, E.H), E.BG)
     d = ImageDraw.Draw(im)
-    E.text(d, (E.W - 80, 56), "AI 合成（含 AI 配音）", 26, "fg", anchor="ra")
     size = 120
     tw = d.textlength(TITLE, font=E.F(size, mono=True))
     icon_r, gap = 62, 60
