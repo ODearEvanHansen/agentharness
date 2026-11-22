@@ -87,3 +87,24 @@ mv dsh.a2-mine.json assignment2/results/
 ## 规则
 - madsLoop 只能使用标准库和起始代码提供的 `chat()`，不能使用任何 agent 框架。
 - 禁止针对具体题目硬编码，例如在提示词里写入某个 issue 的修法。
+
+## 选做：无 agent 基线（no-agent baseline）
+同一个模型，不给工具、不循环，一次请求直接作答——用来回答"agent 到底多做了什么"。脚本：[noagent.py](noagent.py)。
+```bash
+# SWE 子集：issue + 金标准补丁改动到的文件全文（"oracle 文件"）→ 一个 unified diff → 官方评测
+python assignment2/noagent.py --suite swe --judge
+# 小题：题面 + 题目目录所有文件 → 模型按固定格式返回完整新文件 → 干净副本里跑 test_task.py（必须在容器里）
+docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
+  -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
+  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 python assignment2/noagent.py --suite mini
+```
+结果写在 `assignment2/results/noagent/`。**注意**：oracle 文件设定是无 agent 方案的宽松上界——现实中没人告诉模型该改哪些文件，agent 要自己找。
+
+课程组跑了一次（deepseek-flash，思考模式，`--max-tokens 32768`，按高峰价）：
+
+| 题集 | 无 agent | 成本 | 中位耗时 | 对照：自写 loop / DSH |
+|---|---|---|---|---|
+| SWE 20 题（oracle 文件） | 14/20 | 3.19 元（每题 0.16 元） | 65 s | 18/20 / 17/20 |
+| 课程小题 8 题 | 8/8 | 0.03 元 | 2 s | — / 8/8 |
+
+SWE 的 6 道失败里有 5 道是思考过程用满 32768 个输出 token、一行答案都没给（这 5 道就花了约 1.3 元）；另有 2 道模型给的 diff 漏了 `---/+++` 文件头，脚本按唯一的 oracle 文件补头后通过（不补头是 12/20）。只跑了一次，方差未测。
