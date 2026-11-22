@@ -8,7 +8,7 @@
 
 | 部分 | 权重 | 评分方式 |
 |---|---|---|
-| A0 环境自检 | 0%（完成即可，是后续作业的前提） | [打卡 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new?template=a0_checkin.yml) |
+| A0 环境自检 | 0%（完成即可，是后续作业的前提） | [Discussions 打卡](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1) |
 | A1 DSH-Lens | 10% | `check.py` 50% + 报告 50% |
 | A2 madsLoop | 15% | 自动检查 + 源码阅读题 + 对照实验报告 |
 | A3 DSH-Opt | 20% | 排行榜提交 + 博客报告（以报告为主） |
@@ -24,7 +24,7 @@
 
 - **目前没有人工批改。** 本页的权重和评分原则是公开的标准，供你自评。
 - **自动检查**：各作业的 `check.py` 等脚本会告诉你每一关是否通过，这部分是客观的。
-- **报告自评**：对照下面的"好报告包含什么"和"常见失分点"给自己的报告定档。想要别人看，可以把报告链接发到 [Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)（Discussions 开通后改到那里）。
+- **报告自评**：对照下面的"好报告包含什么"和"常见失分点"给自己的报告定档。想要别人看，可以把报告链接发到 [Discussions 的 Show and tell](https://github.com/ODearEvanHansen/agentharness/discussions/categories/show-and-tell)。
 - **排行榜**：作业 3 的结果可以通过 PR 提交到排行榜，流程见[排行榜](leaderboard.md)。PR 会自动校验格式，但不评报告。
 
 ## 好报告包含什么

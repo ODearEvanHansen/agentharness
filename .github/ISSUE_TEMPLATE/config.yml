@@ -1,9 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  # GitHub Discussions 尚未开通。开通后可把下面这一项改回 https://github.com/ODearEvanHansen/agentharness/discussions
-  - name: 提问（目前用 Issue）
-    url: https://github.com/ODearEvanHansen/agentharness/issues/new/choose
-    about: Discussions 开通前，学习问题也请用 Issue 提问；脚本问题和内容错误用对应模板。不要贴 API key。
+  - name: 提问（Discussions Q&A）
+    url: https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a
+    about: 学习问题请到 Discussions 的 Q&A 分类提问；脚本跑不通和内容错误用下面的 Issue 模板。不要贴 API key。
   - name: 常见问题
     url: https://odearevanhansen.github.io/agentharness/faq/
     about: 环境、Docker、费用、本地模型等常见问题。

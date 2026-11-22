@@ -123,7 +123,7 @@ print(f"共 {step + 1} 次请求，花费约 ${usd:.5f}")
 4. 清理（可选）：`docker rmi ghcr.io/odearevanhansen/swebench-x86_64:django_1776_django-15467`。之后每道题的镜像都按需拉取，用完就删，100GB 磁盘就够用。
 
 ## 完成标准
-用[作业 0 打卡 Issue 模板](https://github.com/ODearEvanHansen/agentharness/issues/new?template=a0_checkin.yml)提交一个 Issue，贴出以下内容（GitHub Discussions 开通前，打卡和提问都先用 Issue）：
+到 [Discussions 的 Show and tell 分类](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1)发一个标题为“作业 0 打卡”的帖子，贴出以下内容（有问题请发到 [Q&A 分类](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a)）：
 - `selfcheck.py` 的完整输出（不要包含 key）；
 - 关卡 3 第 2 步和第 3 步的输出；
 - `infra/README.md` 中白名单三条验证的输出。

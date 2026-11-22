@@ -1,6 +1,6 @@
 # 常见问题
 
-遇到问题先查这里和对应作业的 README。仍然解决不了：请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)，学习问题、脚本跑不通、内容有错都可以（不要贴 API key）。GitHub Discussions 目前还没开通，开通后学习讨论会移到那里。作业 0 打卡用[打卡 Issue 模板](https://github.com/ODearEvanHansen/agentharness/issues/new?template=a0_checkin.yml)。
+遇到问题先查这里和对应作业的 README。仍然解决不了：学习问题请到 [Discussions 的 Q&A](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a) 提问；脚本跑不通、内容有错请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)。不要贴 API key。
 
 ## Windows / macOS 能做吗？
 
