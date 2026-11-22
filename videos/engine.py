@@ -21,7 +21,8 @@
 每个场景都可带 caption（屏幕下方要点条）。颜色用名字：blue green orange red purple gray dim fg。
 配音规则：所有数字和英文都按"读出来的样子"写在 narration 里（例如"百分之九十六""SWE bench"）。
 """
-import argparse, importlib.util, json, os, re, subprocess, sys, time, urllib.error, urllib.request, wave
+import argparse
+import hashlib, importlib.util, json, os, re, subprocess, sys, time, urllib.error, urllib.request, wave
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
@@ -327,6 +328,7 @@ def main():
     ap.add_argument("spec")
     ap.add_argument("--out", default=os.environ.get("VIDEO_OUT", str(Path(__file__).resolve().parent / "out")))
     ap.add_argument("--preview", action="store_true")
+    ap.add_argument("--no-intro", action="store_true", help="不加固定片头")
     a = ap.parse_args()
     L = load(a.spec)
     out = Path(a.out)
@@ -347,8 +349,14 @@ def main():
         return
     LEAD, TAIL = 0.8, 1.2
     plan, srt, t0 = [], [], 0.0
+    intro = None
+    if not a.no_intro:
+        import intro as I
+        _, iwav, idur = I.render(out / "build" / "_intro")
+        intro = (I, iwav, idur)
+        t0 = idur
     for i, S in enumerate(scenes):
-        wav = build / f"n{i}.wav"
+        wav = build / f"n{i}_{hashlib.sha1(S['narration'].encode()).hexdigest()[:10]}.wav"   # 按口播文本缓存，改稿后自动重新合成
         da = tts(S["narration"], wav)
         dur = LEAD + da + TAIL
         plan.append((S, dur, wav))
@@ -362,7 +370,7 @@ def main():
         t0 += dur
         print(f"  scene {i} {S['type']:8} {dur:5.1f}s", flush=True)
     (out / f"{L['id']}.srt").write_text("".join(f"{k + 1}\n{fmt(x)} --> {fmt(y)}\n{s}\n\n" for k, (x, y, s) in enumerate(srt)))
-    parts = []
+    parts = [intro[1]] if intro else []
     for k, (S, dur, wav) in enumerate(plan):
         p = build / f"seg{k}.wav"
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(wav), "-af",
@@ -375,6 +383,9 @@ def main():
     ff = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                            "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-tune", "stillimage",
                            "-pix_fmt", "yuv420p", str(silent)], stdin=subprocess.PIPE)
+    if intro:
+        for i in range(int(round(intro[2] * FPS))):
+            ff.stdin.write(intro[0].frame(i / FPS).tobytes())
     for S, dur, _ in plan:
         n = int(round(dur * FPS))
         for i in range(n):

@@ -1,8 +1,9 @@
-"""课程固定片头（约 4 秒）：agent loop 环（模型 → 工具 → 结果 → 模型）转一圈，收成打字机效果的课程名。
+"""课程固定片头（约 6 秒）：agent loop 环（模型 → 工具 → 结果 → 模型）转一圈，收成"图标 + 打字机课程名"，
+课程名出现时 Stella 读固定口播 VOICE。
 
     python3 videos/intro.py --out videos/out          # 单独渲染 intro.mp4 预览
 engine.py 渲染每讲时会自动把片头接在最前面（--no-intro 可关闭）。
-声音是程序合成的短音效（正弦波），没有版权问题。
+提示音是程序合成的正弦波，没有版权问题；口播用 DeepSeek TTS 合成一次后缓存。
 """
 import argparse
 import math
@@ -16,7 +17,10 @@ from PIL import Image, ImageDraw
 
 import engine as E
 
-DUR = 4.0
+ANIM = 4.0          # 动画时长；之后定格到口播结束
+VOICE = "欢迎来到 AgentHarness，Agent 系统公开课。"
+VOICE_AT = 2.45
+DUR = 6.0           # 实际时长由 audio() 按口播长度更新
 SR = 24000
 NODES = [("模型", "blue"), ("工具", "orange"), ("结果", "green")]
 CX, CY, RAD = E.W / 2, E.H / 2 - 40, 230
@@ -28,6 +32,7 @@ def _pt(ang, r=RAD, cx=CX, cy=CY):
 
 
 def frame(t):
+    t = min(t, ANIM)
     im = Image.new("RGB", (E.W, E.H), E.BG)
     d = ImageDraw.Draw(im)
     E.text(d, (E.W - 80, 56), "AI 合成（含 AI 配音）", 26, "fg", anchor="ra")
@@ -82,7 +87,25 @@ def _tone(f0, dur, amp, f1=None, decay=6.0):
     return out
 
 
-def sting(path):
+def _read(path):
+    with wave.open(str(path)) as w:
+        raw = w.readframes(w.getnframes())
+    return [v / 32768 for v in struct.unpack(f"<{len(raw) // 2}h", raw)]
+
+
+def audio(path, cache):
+    """三声提示音（环点亮节点）+ 固定口播；返回总时长。"""
+    global DUR
+    cache = Path(cache)
+    raw, trimmed = cache / "intro_vo_raw.wav", cache / "intro_vo.wav"
+    E.tts(VOICE, raw)
+    if not trimmed.exists():
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(raw), "-af",
+                        "silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
+                        "silenceremove=start_periods=1:start_threshold=-45dB,areverse",
+                        "-ar", str(SR), "-ac", "1", str(trimmed)], check=True)
+    vo = _read(trimmed)
+    DUR = max(ANIM, round(VOICE_AT + len(vo) / SR + 0.5, 2))
     out = [0.0] * int(DUR * SR)
 
     def put(sig, at):
@@ -91,22 +114,14 @@ def sting(path):
             if i0 + k < len(out):
                 out[i0 + k] += v
 
-    for i, f in enumerate([523.25, 659.25, 783.99]):        # C5 E5 G5：箭头点亮三个节点
-        put(_tone(f, 0.6, 0.22), 0.3 + i * 0.6)
-    put(_tone(140, 0.9, 0.5, f1=70, decay=4.0), 2.55)       # 低音"咚"：课程名出现
-    put(_tone(1046.5, 1.2, 0.12, decay=3.0), 2.6)
-    rng = random.Random(7)
-    for k in range(len(TITLE)):                              # 打字的轻微咔嗒声
-        m = int(0.012 * SR)
-        put([0.05 * rng.gauss(0, 1) * math.exp(-j / 60) for j in range(m)], 2.6 + k * 0.05)
-    nf = int(0.3 * SR)
-    pcm = bytearray()
-    for i, v in enumerate(out):
-        g = 0.8 * (1.0 if i < len(out) - nf else (len(out) - i) / nf)
-        pcm += struct.pack("<h", int(max(-1.0, min(1.0, v * g)) * 32767))
+    for i, f in enumerate([523.25, 659.25, 783.99]):        # C5 E5 G5：亮点依次点亮三个节点
+        put(_tone(f, 0.6, 0.18), 0.3 + i * 0.6)
+    put(vo, VOICE_AT)
+    pcm = b"".join(struct.pack("<h", int(max(-1.0, min(1.0, v)) * 32767)) for v in out)
     with wave.open(str(path), "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
-        w.writeframes(bytes(pcm))
+        w.writeframes(pcm)
+    return DUR
 
 
 def render(out_dir):
@@ -114,17 +129,16 @@ def render(out_dir):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     vid, wav = out_dir / "intro_silent.mp4", out_dir / "intro.wav"
+    dur = audio(wav, out_dir)
     if not vid.exists():
         ff = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{E.W}x{E.H}",
                                "-r", str(E.FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "22",
                                "-pix_fmt", "yuv420p", str(vid)], stdin=subprocess.PIPE)
-        for i in range(int(DUR * E.FPS)):
+        for i in range(int(round(dur * E.FPS))):
             ff.stdin.write(frame(i / E.FPS).tobytes())
         ff.stdin.close()
         ff.wait()
-    if not wav.exists():
-        sting(wav)
-    return vid, wav, DUR
+    return vid, wav, dur
 
 
 if __name__ == "__main__":
