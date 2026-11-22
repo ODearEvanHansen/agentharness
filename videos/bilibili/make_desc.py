@@ -1,4 +1,4 @@
-"""生成 B 站视频简介：本讲一句话 + 本讲要点 + 课程介绍 + 相关链接 + 声明（不列章节时间戳）。
+"""生成 B 站视频简介：本讲一句话 + 本讲看点（meta.json 的 highlights）+ 课程介绍 + 相关链接 + 声明（不列章节时间戳）。
 
     python3 videos/bilibili/make_desc.py lectures/l02.py
 
@@ -30,11 +30,11 @@ def mmss(t):
 def build(spec, chapters_path=None):
     L = E.load(spec)
     lid = Path(spec).stem
-    summary = next((S for S in L["scenes"] if S["type"] == "summary"), None)
-    pts = (summary or {}).get("items", [])
+    meta = json.loads((HERE / "meta.json").read_text(encoding="utf-8"))
+    pts = next((m.get("highlights") or [] for m in meta["lectures"] if m["id"] == lid), [])
     lines = [f"第 {L['no']} 讲：{L['title']}" + (f"——{L['subtitle']}" if L.get("subtitle") else ""), ""]
     if pts:
-        lines.append("本讲要点：")
+        lines.append("本讲看点：")
         lines += [f"· {p}" for p in pts]
         lines.append("")
     lines += ["关于课程：", INTRO, "",

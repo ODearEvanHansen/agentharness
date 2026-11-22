@@ -25,7 +25,12 @@
    "cover_text": "第1讲\n课程导论：agent 系统是什么",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l01/",
    "file": "videos/out/l01.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "一个 agent 到底由哪几样东西组成，这门课五个部分怎么学",
+    "试做实测：约110行的自写 loop 解出20题中18道，每题约0.13元",
+    "看完能备好电脑、Docker 和专用 key，避开日志上传等隐私坑"
+   ]
   },
   {
    "id": "l02",
@@ -51,7 +56,12 @@
    "cover_text": "第2讲\nDeepSeek API 入门",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l02/",
    "file": "videos/out/l02.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "驱动所有 agent 的 DeepSeek API，请求、工具调用和计费怎么回事",
+    "同一段输入，命中缓存每百万 token 0.04元，未命中要2元",
+    "看完能手写约20行的最小 agent 循环，并避开思考模式的400错误"
+   ]
   },
   {
    "id": "l03",
@@ -77,7 +87,12 @@
    "cover_text": "第3讲\nDSH 导论",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l03/",
    "file": "videos/out/l03.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "工业级框架 DSH 由什么搭成，怎样不改源码就改变它的行为",
+    "连 sdk-minimal 默认也会上传会话日志，一个四行补丁即可关掉",
+    "看完能装好 SDK、选对 profile，在容器里正常跑起 DSH"
+   ]
   },
   {
    "id": "l04",
@@ -103,7 +118,12 @@
    "cover_text": "第4讲\n事件与会话日志",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l04/",
    "file": "videos/out/l04.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "agent 运行时留下哪些记录，花了多少钱该去哪里查",
+    "三轮对话五次请求，从日志算出命中率62%，花费约半分钱",
+    "看完能读懂事件流与会话日志，算出含子 agent 的完整成本"
+   ]
   },
   {
    "id": "l05",
@@ -129,7 +149,12 @@
    "cover_text": "第5讲\n子 agent 与编排",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l05/",
    "file": "videos/out/l05.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "什么时候值得把任务拆给子 agent，DSH 怎样派发和回收",
+    "实测：子任务交给本地模型答对了，主 agent 却又自己算一遍",
+    "看完能分清 spawn 与 fork，判断委派在成本上是否划算"
+   ]
   },
   {
    "id": "l06",
@@ -155,7 +180,12 @@
    "cover_text": "第6讲\nAgent loop 剖析（上）",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l06/",
    "file": "videos/out/l06.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "agent loop 每一步内部到底发生了什么，为何影响成本",
+    "参考实现8道小题全解约0.057元，DSH 每题3到4步仅0.043元",
+    "看完能照着四个阶段写出自己的主循环，并正确处理工具报错"
+   ]
   },
   {
    "id": "l07",
@@ -181,7 +211,12 @@
    "cover_text": "第7讲\nAgent loop 剖析（下）",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l07/",
    "file": "videos/out/l07.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "用户取消、请求失败、多个工具并发时，agent loop 怎么不出错",
+    "少回填一条工具结果，下一次请求就直接返回400",
+    "看完能写出保持历史合法的恢复逻辑，并理解并行调用的屏障"
+   ]
   },
   {
    "id": "l08",
@@ -207,7 +242,12 @@
    "cover_text": "第8讲\n评测基础设施",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l08/",
    "file": "videos/out/l08.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "怎样让 agent 安全地执行命令，评测结果又能被别人复现",
+    "20题镜像约60GB，改从 GHCR 拉取后重评，18道与17道一题不差",
+    "看完能搭出只放行 DeepSeek 的容器网络，并知道它的盲区"
+   ]
   },
   {
    "id": "l09",
@@ -233,7 +273,12 @@
    "cover_text": "第9讲\n工具设计",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l09/",
    "file": "videos/out/l09.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "同一个模型换一套工具，为什么步数和花费会差很多",
+    "8道小题自写 loop 平均4.9次请求，DSH 只要2.3次",
+    "看完能设计粒度合适、失败时会提示模型的编辑与运行工具"
+   ]
   },
   {
    "id": "l10",
@@ -259,7 +304,12 @@
    "cover_text": "第10讲\n评测",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l10/",
    "file": "videos/out/l10.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "怎样可信地衡量一个编码 agent，高分背后可能藏着什么",
+    "原20题已近饱和（18比17），换难题集后降到10比8，每题约0.27元",
+    "看完能用官方 harness 跑 SWE-bench 并读懂分数的含义"
+   ]
   },
   {
    "id": "l11",
@@ -285,7 +335,12 @@
    "cover_text": "第11讲\n上下文工程",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l11/",
    "file": "videos/out/l11.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "agent 的 token 到底花在哪里，上下文该怎么管",
+    "自写 loop 每题输入约70万 token，DSH 约41万，输出仅一万出头",
+    "看完能判断提示、工具输出裁剪和压缩各自值不值得做"
+   ]
   },
   {
    "id": "l12",
@@ -311,7 +366,12 @@
    "cover_text": "第12讲\n前缀缓存与 request series",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l12/",
    "file": "videos/out/l12.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "为什么只是在提示里写个时间，就能让成本翻好几倍",
+    "DSH 20题实花2.4元；若完全不命中缓存，约需18元",
+    "看完能把会变的信息放对位置，让 agent 稳定命中缓存"
+   ]
   },
   {
    "id": "l13",
@@ -337,7 +397,12 @@
    "cover_text": "第13讲\n插件开发",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l13/",
    "file": "videos/out/l13.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "不改 DSH 一行源码，如何用插件改变 agent 的行为",
+    "插件是单个 .ts 文件，在 patch 里写绝对路径即可免编译加载",
+    "看完能写出第一个钩子插件，避开 waterfall 漏调 next 的坑"
+   ]
   },
   {
    "id": "l14",
@@ -363,7 +428,12 @@
    "cover_text": "第14讲\n成本与可靠性",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l14/",
    "file": "videos/out/l14.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "agent 跑几十步，怎样既不被偶发失败打断，也不超出预算",
+    "实测最贵的一题是均值的两倍多，DSH 均价0.12元而最贵0.29元",
+    "看完能设计重试与预算上限，并在 flash 与 pro 之间做选择"
+   ]
   },
   {
    "id": "l15",
@@ -389,7 +459,12 @@
    "cover_text": "第15讲\n实验方法",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l15/",
    "file": "videos/out/l15.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "agent 每次运行都不一样，怎样证明一个优化真的有效",
+    "同一 loop 跑20题，高峰价3.4元、低峰价1.7元，时段就差一倍",
+    "看完能设计只改一个变量、可量化噪声的对照实验"
+   ]
   },
   {
    "id": "l16",
@@ -415,7 +490,12 @@
    "cover_text": "第16讲\n课程团队方案复盘",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l16/",
    "file": "videos/out/l16.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "一个看似必然省钱的优化，放到真实任务上会怎样",
+    "小实验成本从0.017元降到0.006元，在20道真题上却几乎无变化",
+    "看完能用“先测问题频率”的思路，避免在无效优化上花力气"
+   ]
   },
   {
    "id": "l17",
@@ -441,7 +521,12 @@
    "cover_text": "第17讲\n推理基础：预填充与解码",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l17/",
    "file": "videos/out/l17.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "大模型生成文字时为什么“读”快“写”慢，瓶颈在哪里",
+    "8B Q4 在 CPU 上预填充约116 tok/s，解码只有约17 tok/s",
+    "看完能用内存带宽估出本机解码速度的上限"
+   ]
   },
   {
    "id": "l18",
@@ -467,7 +552,12 @@
    "cover_text": "第18讲\n本地推理入门：Ollama 与 llama.cpp",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l18/",
    "file": "videos/out/l18.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "本地跑模型怎么入门，服务不报错却结果不对时怎么查",
+    "接上 Ollama 后，agent 对任务视而不见，只回了一句打招呼",
+    "看完能用 Ollama 和 llama-server 跑起模型，并会读日志对账"
+   ]
   },
   {
    "id": "l19",
@@ -493,7 +583,12 @@
    "cover_text": "第19讲\n批处理与调度",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l19/",
    "file": "videos/out/l19.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "推理服务如何同时接待多个请求，吞吐和延迟怎么取舍",
+    "8B 模型从1个槽位到4个，吞吐16.6升到41.1 tok/s，延迟反降",
+    "看完能用 -np 配好并发槽位，判断 agent 能否吃满它"
+   ]
   },
   {
    "id": "l20",
@@ -519,7 +614,12 @@
    "cover_text": "第20讲\n前缀复用",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l20/",
    "file": "videos/out/l20.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "推理服务端的前缀缓存怎样实现，agent 该如何配合",
+    "打开 cache_prompt 后，第二次请求预填充从约40秒降到半秒",
+    "看完能在本地验证缓存命中，并写出对缓存友好的 agent"
+   ]
   },
   {
    "id": "l21",
@@ -545,7 +645,12 @@
    "cover_text": "第21讲\n显存与内存管理",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l21/",
    "file": "videos/out/l21.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "KV cache 占的内存怎么管，量化它一定更省更快吗",
+    "手写引擎里分页把内存利用率从6.4%提到90.6%",
+    "看完能估算 KV cache 大小，并按瓶颈判断某个优化是否值得"
+   ]
   },
   {
    "id": "l22",
@@ -571,7 +676,12 @@
    "cover_text": "第22讲\n推测解码",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l22/",
    "file": "videos/out/l22.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "推测解码如何在不改输出的前提下加速，草稿该多长",
+    "草稿长度3提速到20.8 tok/s，长度16反降到11.6，比不用还慢",
+    "看完能在 llama-server 正确开启推测解码并估算加速比"
+   ]
   },
   {
    "id": "l23",
@@ -597,7 +707,12 @@
    "cover_text": "第23讲\n量化",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l23/",
    "file": "videos/out/l23.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "同一个模型的 Q4、Q8 等文件差在哪，该选哪个",
+    "8B 模型 Q4 仅约5GB，生成17 tok/s，比 Q8 的10.7快约四成",
+    "看完能按内存和速度挑量化档位，并知道质量要自己测"
+   ]
   },
   {
    "id": "l24",
@@ -623,7 +738,12 @@
    "cover_text": "第24讲\nMoE：混合专家模型",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l24/",
    "file": "videos/out/l24.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "为什么一个30B 的模型，生成反而比8B 还快",
+    "30B-A3B 生成约35.6 tok/s，约为8B 两倍，但权重有18.6GB",
+    "看完能读懂 MoE 模型名，判断自己的机器能否跑得动"
+   ]
   },
   {
    "id": "l25",
@@ -649,7 +769,12 @@
    "cover_text": "第25讲\n全栈：多模型路由",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l25/",
    "file": "videos/out/l25.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "能否把简单子任务交给本机模型，让云端少花钱",
+    "实测路由到4B 后，云端花费反从约0.11元涨到约0.2元",
+    "看完能用 tool-subagent 接上本地子 agent，并识别隐性成本"
+   ]
   },
   {
    "id": "l26",
@@ -675,7 +800,12 @@
    "cover_text": "第26讲\n全栈：系统级优化",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l26/",
    "file": "videos/out/l26.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "解决率、成本、耗时同时要比时，怎样取舍和排名才公平",
+    "20题解决率几乎相同，自写 loop 耗时中位数132秒，DSH 仅55秒",
+    "看完能用帕累托前沿比较方案，设计可比的排行榜"
+   ]
   },
   {
    "id": "l27",
@@ -702,7 +832,12 @@
    "cover_text": "第27讲\nagent 安全：提示注入与防护",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l27/",
    "file": "videos/out/l27.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "agent 读到的文件里藏着恶意指令时，会发生什么",
+    "文字注入15次全被识破，藏进脚本后6次中了5次",
+    "看完能写出执行前拦截的防护插件，并清楚它的代价和局限"
+   ]
   },
   {
    "id": "l28",
@@ -728,7 +863,12 @@
    "cover_text": "第28讲\n期末项目答疑与展示安排",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l28/",
    "file": "videos/out/l28.mp4",
-   "tid": 208
+   "tid": 208,
+   "highlights": [
+    "期末项目怎么选题、怎样做到可复现，最后交什么",
+    "评分中实验设计占30%，可复现性与分析写作各占25%",
+    "看完能把一个大想法缩成可回答、可对照的项目题目"
+   ]
   }
  ]
 }
