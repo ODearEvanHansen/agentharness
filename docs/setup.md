@@ -7,6 +7,8 @@
 
 两种平台装好 Docker 之后，都接着做[第三部分](#三python-虚拟环境与-api-key)和[第四部分](#四验证清单)。
 
+作业 3–5 和期末项目还需要本地模型服务（Ollama / llama.cpp）、花费统计脚本、provider 配置、插件加载和复现检查，见[本地模型与进阶工具](setup-local.md)。
+
 !!! note "命令出处"
     下面的命令照抄自官方文档，每一节都给了链接。官方文档更新后如果和这里不一致，**以官方文档为准**，也欢迎[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose) 告诉我们。
 

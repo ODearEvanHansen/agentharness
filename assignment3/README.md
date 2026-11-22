@@ -10,6 +10,8 @@
 | **解决率赛道** | [instances_hard.txt](../infra/swebench/instances_hard.txt)：难题集，20 道 Verified 题，预计修复耗时 1–4 小时及以上 | 解决数优先，其次是每题成本 | 自写 loop 10/20（每题 0.30 元）；DSH `sdk-minimal` 8/20（每题 0.25 元） |
 | **效率赛道** | [instances.txt](../infra/swebench/instances.txt)：原 20 题 | 解决数不低于 17 的前提下，比每题成本 | DSH `sdk-minimal` 17/20，每题 0.12 元，中位耗时 55 s，缓存命中率 95.8% |
 
+> patch 文件和插件加载的分步说明、花费统计脚本用法，见[本地模型与进阶工具](https://odearevanhansen.github.io/agentharness/setup-local/#四patch-文件与插件加载)（仓库内 [docs/setup-local.md](../docs/setup-local.md)）。
+
 ## 你可以改什么
 - **配置**（patch 文件）：preset、工具集与工具描述、系统提示、压缩策略、`maxParallelToolCalls`、思考强度、输出上限。用 DSH 运行时的 `--dump-config` 可以列出所有插件 id 和当前配置。
 - **插件**（TypeScript，**无需编译，也不用装 Node**）：DSH 运行时可以按绝对路径直接加载 `.ts` 文件（第 13 讲）。常用的挂载点：

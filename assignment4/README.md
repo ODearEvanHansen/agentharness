@@ -5,6 +5,8 @@
 
 前三个作业里，模型对你来说是一个黑盒 API。这个作业要你在自己的机器上把模型跑起来，亲手调推理服务的参数，用数据解释每个参数为什么有效（或者为什么无效），最后把本地模型接回你的 agent。
 
+> 模型下载与校验、Ollama / llama-server 容器、`/health` 就绪检查和本地 provider 配置的分步说明，见[本地模型与进阶工具](https://odearevanhansen.github.io/agentharness/setup-local/#一本地模型服务)（仓库内 [docs/setup-local.md](../docs/setup-local.md)）。
+
 ## 准备
 
 ### 硬件与模型

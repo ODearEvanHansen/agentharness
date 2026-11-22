@@ -5,6 +5,8 @@
 
 作业 3 优化的是 harness，作业 4 优化的是推理服务。这个作业把两者合起来：**主 agent 用 DeepSeek API，一部分子任务交给你在本机托管的模型**，在解决率、成本和耗时三个指标上一起优化。
 
+> 本地模型服务、`/health` 就绪检查、provider 配置和 `usage_cost.py` 的分步说明，见[本地模型与进阶工具](https://odearevanhansen.github.io/agentharness/setup-local/#一本地模型服务)（仓库内 [docs/setup-local.md](../docs/setup-local.md)）。
+
 ## 先看课程团队的实测结果：路由不一定省钱
 
 实验在 8 道课程小题上进行。主 agent 用 `deepseek-flash`，子 agent 用 CPU 上的 Qwen3-Coder-30B-A3B（Xeon Gold 6354，`-t 16`）。两组都用 `sdk` 完整 profile，唯一的区别是路由组多了 `local_worker` 工具和一段路由提示：
