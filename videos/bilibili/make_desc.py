@@ -1,8 +1,8 @@
-"""生成 B 站视频简介：课程介绍 + 本讲内容 + 章节时间戳 + 相关链接 + 声明。
+"""生成 B 站视频简介：本讲一句话 + 本讲要点 + 课程介绍 + 相关链接 + 声明（不列章节时间戳）。
 
-    python3 videos/bilibili/make_desc.py lectures/l02.py [--chapters out/l02.chapters.json]
+    python3 videos/bilibili/make_desc.py lectures/l02.py
 
-章节文件由 engine.py 渲染时生成；简介长度上限按 B 站 2000 字检查。
+简介长度上限按 B 站 2000 字检查。
 """
 import argparse
 import json
@@ -36,11 +36,6 @@ def build(spec, chapters_path=None):
     if pts:
         lines.append("本讲要点：")
         lines += [f"· {p}" for p in pts]
-        lines.append("")
-    if chapters_path and Path(chapters_path).exists():
-        ch = json.loads(Path(chapters_path).read_text())
-        lines.append("章节：")
-        lines += [f"{mmss(c['t'])} {c['title']}" for c in ch]
         lines.append("")
     lines += ["关于课程：", INTRO, "",
               "链接：",

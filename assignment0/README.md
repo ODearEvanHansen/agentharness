@@ -23,7 +23,10 @@
 > 本课程所有命令都在**仓库根目录**下执行：`git clone https://github.com/ODearEvanHansen/agentharness && cd agentharness`。
 
 ## 关卡 1：基础环境
-1. 安装 Docker。Linux 用户安装 Docker Engine，并把当前用户加入 `docker` 组；Windows 用户安装 Docker Desktop 并启用 WSL2 后端，之后**所有操作都在 WSL2 里进行**。
+
+> 第一次装 Docker / WSL2？先按[环境搭建指南](https://odearevanhansen.github.io/agentharness/setup/)（仓库内 [docs/setup.md](../docs/setup.md)）一步步做，包括国内镜像源、WSL2 内存设置和常见报错。
+
+1. 安装 Docker。Linux 用户安装 Docker Engine，并把当前用户加入 `docker` 组；Windows 用户在 WSL2 里安装 Docker Engine（推荐）或使用 Docker Desktop 的 WSL2 后端（两种方式的取舍见环境搭建指南），之后**所有操作都在 WSL2 里进行**。
    - **WSL2 用户先调内存**：WSL2 默认只分到部分内存。在 Windows 的 `%UserProfile%\.wslconfig` 写入下面三行，再在 PowerShell 执行 `wsl --shutdown`，重新打开 WSL 终端：
      ```ini
      [wsl2]

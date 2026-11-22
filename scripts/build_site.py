@@ -144,7 +144,7 @@ def leaderboard_md():
 def main():
     shutil.rmtree(OUT, ignore_errors=True)
     OUT.mkdir()
-    for name in ("home", "project", "leaderboard", "faq", "grading"):   # 站点原生页面（链接按站内路径写）
+    for name in ("home", "setup", "project", "leaderboard", "faq", "grading"):   # 站点原生页面（链接按站内路径写）
         src = (REPO / "docs" / f"{name}.md").read_text(encoding="utf-8")
         if name == "leaderboard":
             src = src.replace("{{LEADERBOARD}}", leaderboard_md())
@@ -175,7 +175,7 @@ def main():
     # 导航
     nav = ["nav:", "  - 首页: index.md", "  - 课程大纲: syllabus.md", "  - 讲座:", "      - lectures/index.md"]
     nav += [f"      - '{n:02d} {t}': lectures/{i}.md" for n, t, i in nav_lec]
-    nav += ["  - 作业:"]
+    nav += ["  - 作业:", "      - 环境搭建指南: setup.md"]
     for n in range(6):
         if (OUT / f"assignments/a{n}.md").exists():
             nav.append(f"      - 'A{n} {ASSIGN_NAMES[n]}': assignments/a{n}.md")

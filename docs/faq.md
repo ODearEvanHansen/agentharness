@@ -4,7 +4,7 @@
 
 ## Windows / macOS 能做吗？
 
-Windows 可以：安装 Docker Desktop 并启用 WSL2 后端，之后**所有操作都在 WSL2 里进行**。macOS 不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2（见作业 0）。
+Windows 可以：启用 WSL2，在 WSL 里安装 Docker Engine（推荐）或使用 Docker Desktop 的 WSL2 后端，之后**所有操作都在 WSL2 里进行**。macOS 不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2。完整步骤（含国内镜像源、两种 Docker 安装方式的取舍、排错表）见[环境搭建指南](setup.md)。
 
 ### WSL2 内存和磁盘
 
@@ -18,7 +18,7 @@ swap=8GB
 
 然后在 PowerShell 执行 `wsl --shutdown`，重新打开 WSL 终端。`memory` 不要超过 Windows 物理内存减 2GB。
 
-Docker Desktop 的镜像都放在它的虚拟磁盘里（Docker Desktop → Settings → Resources → Advanced → Disk image location）。课程需要约 100GB，C 盘不够时把这个位置改到空间大的盘。
+在 WSL 里直接装 Docker Engine 时，镜像在 Ubuntu 发行版的虚拟磁盘里，迁移方法见[环境搭建指南](setup.md#4-磁盘位置)。Docker Desktop 的镜像都放在它的虚拟磁盘里（Docker Desktop → Settings → Resources → Advanced → Disk image location）。课程需要约 100GB，C 盘不够时把这个位置改到空间大的盘。
 
 ### 作业 1 的网页在 Windows 浏览器打不开
 
