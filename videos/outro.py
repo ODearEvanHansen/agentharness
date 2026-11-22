@@ -61,7 +61,6 @@ def frame(t, L, nxt):
     c = E.ease((t - 1.0) / 0.6)
     E.text(d, (E.W / 2, 760), "课程网站：" + SITE, 36, "fg", c, anchor="mm")
     E.text(d, (E.W / 2, 820), DISC, 30, "dim", c, anchor="mm")
-    E.text(d, (E.W / 2, 900), "觉得有帮助，欢迎点赞 · 收藏 · 一键三连", 32, "orange", E.ease((t - 1.6) / 0.6), anchor="mm")
     return im
 
 
