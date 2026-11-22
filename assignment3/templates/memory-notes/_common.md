@@ -1,0 +1,3 @@
+- Python env is already active (`python` = testbed env). Do not pip install or upgrade packages; there is no general internet access.
+- Workflow that works: locate the code with `grep -rn`, write a tiny reproduction script under /tmp (not in the repo), fix the source, rerun the repro, then run the closest existing test module only (full suites take too long).
+- Keep the diff minimal: change library code only; do not edit existing tests, do not commit, delete your scratch files.

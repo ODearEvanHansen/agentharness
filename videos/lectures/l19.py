@@ -1,7 +1,7 @@
 LECTURE = {
-    "id": "l18", "no": 18, "title": "本地推理入门：Ollama 与 llama.cpp", "subtitle": "GGUF 格式，以及静默失败的排查方法",
+    "id": "l19", "no": 19, "title": "本地推理入门：Ollama 与 llama.cpp", "subtitle": "GGUF 格式，以及静默失败的排查方法",
     "scenes": [
-        {"type": "title", "narration": "第十八讲，本地推理入门。我们认识 Ollama 和 llama dot cpp 这两个工具，了解 GGUF 格式，再学一套排查方法：服务没报错，结果却不对，该怎么查。"},
+        {"type": "title", "narration": "第十九讲，本地推理入门。我们认识 Ollama 和 llama dot cpp 这两个工具，了解 GGUF 格式，再学一套排查方法：服务没报错，结果却不对，该怎么查。"},
         {"type": "bullets", "title": "背景：为什么要在本地跑模型", "sub": None,
          "items": ["数据不出本机，不按 token 付费",
                    "能看到服务端的配置、日志和耗时统计",
@@ -21,7 +21,7 @@ LECTURE = {
                    "Qwen3-8B：Q4 约 5GB，Q8 约 8.7GB",
                    "Qwen3-Coder-30B-A3B Q4_K_M：18.6GB"],
          "caption": "量化档位决定文件大小，也决定速度和质量",
-         "narration": "llama dot cpp 用的模型格式叫 GGUF。权重、分词器和对话模板都打包在一个文件里，文件名会标出量化档位。比如 Qwen 三 八 B，Q 四 版本约五 GB，Q 八 版本约八点七 GB。课程主力模型是 Qwen 三 Coder 三十 B A 三 B，它的 Q 四 版本有十八点六 GB。量化，就是用更少的比特来存每个权重，文件更小，读得也更快，代价是精度有一点损失。第二十三讲会专门讲它。"},
+         "narration": "llama dot cpp 用的模型格式叫 GGUF。权重、分词器和对话模板都打包在一个文件里，文件名会标出量化档位。比如 Qwen 三 八 B，Q 四 版本约五 GB，Q 八 版本约八点七 GB。课程主力模型是 Qwen 三 Coder 三十 B A 三 B，它的 Q 四 版本有十八点六 GB。量化，就是用更少的比特来存每个权重，文件更小，读得也更快，代价是精度有一点损失。第二十四讲会专门讲它。"},
         {"type": "bullets", "title": "先说清楚：什么是静默失败", "sub": "像快递签收了，箱子里却是空的",
          "items": ["是什么：程序不报错、正常返回，结果却是错的",
                    "为什么危险：没有报错，就没人去查",

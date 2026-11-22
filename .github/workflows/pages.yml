@@ -46,7 +46,7 @@ jobs:
           base=https://odearevanhansen.github.io/agentharness
           for i in $(seq 1 20); do
             ok=1
-            for p in "" syllabus/ project/ leaderboard/ assignments/a5/ lectures/l28/; do
+            for p in "" syllabus/ project/ leaderboard/ assignments/a5/ lectures/l29/; do
               c=$(curl -s -o /dev/null -w "%{http_code}" "$base/$p"); [ "$c" = 200 ] || { ok=0; echo "$c $p"; }
             done
             [ $ok = 1 ] && { echo "all pages 200"; exit 0; }; sleep 15

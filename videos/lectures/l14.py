@@ -1,11 +1,11 @@
 LECTURE = {
-    'id': 'l13',
-    'no': 13,
+    'id': 'l14',
+    'no': 14,
     'title': '插件开发',
     'subtitle': 'tools/post-execute、agent/pre-step、agent/request-error；.ts 免编译加载',
     "scenes": [
         {'type': 'title',
-         'narration': '第十三讲，插件开发。前面几讲讲了很多优化思路，比如裁剪工具结果、保住前缀缓存，这一讲讲怎样不改 harness 的源码，就把这些思路装进去，方法就是插件。我们先说清楚插件和钩子是什么，再写出第一个插件。'},
+         'narration': '第十四讲，插件开发。前面几讲讲了很多优化思路，比如裁剪工具结果、保住前缀缓存，这一讲讲怎样不改 harness 的源码，就把这些思路装进去，方法就是插件。我们先说清楚插件和钩子是什么，再写出第一个插件。'},
         {'type': 'bullets',
          'title': '先说清楚：什么是插件和钩子',
          'sub': '不改源码，也能改变 agent 的行为',

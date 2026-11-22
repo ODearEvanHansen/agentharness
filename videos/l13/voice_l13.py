@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""给 L12 样片配音：逐段用 DeepSeek TTS（stella）合成，按音频时长拉伸画面，输出带配音的 mp4 和 srt 字幕。"""
+"""给 L13 样片配音：逐段用 DeepSeek TTS（stella）合成，按音频时长拉伸画面，输出带配音的 mp4 和 srt 字幕。"""
 import json, os, re, subprocess, sys, urllib.request, wave
 from pathlib import Path
 from PIL import Image, ImageDraw
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-import l12  # noqa: E402
+import l13  # noqa: E402
 
 NARRATION = [
     "这一讲，我们讨论前缀缓存。同样一个 agent，只是换一种写法，成本就可能相差七倍以上。本视频由程序合成，里面的数据都来自真实运行。",
@@ -44,7 +44,7 @@ def fmt(s):
 def main():
     LEAD, TAIL = 0.8, 1.2
     plan, srt, t0 = [], [], 0.0
-    for i, ((orig, fn), text) in enumerate(zip(l12.SCENES, NARRATION)):
+    for i, ((orig, fn), text) in enumerate(zip(l13.SCENES, NARRATION)):
         wav, dur_a = tts(i, text)
         dur = max(orig, LEAD + dur_a + TAIL)
         plan.append((orig, fn, dur, wav))
@@ -58,7 +58,7 @@ def main():
             t += d
         t0 += dur
         print(f"scene {i}: audio {dur_a:.1f}s -> scene {dur:.1f}s", flush=True)
-    (OUT / "l12.srt").write_text("".join(f"{k + 1}\n{fmt(a)} --> {fmt(b)}\n{s}\n\n" for k, (a, b, s) in enumerate(srt)))
+    (OUT / "l13.srt").write_text("".join(f"{k + 1}\n{fmt(a)} --> {fmt(b)}\n{s}\n\n" for k, (a, b, s) in enumerate(srt)))
     # 音轨：每段 = 前置静音 + 配音 + 补足到场景长度
     parts = []
     for k, (_, _, dur, wav) in enumerate(plan):
@@ -70,7 +70,7 @@ def main():
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(OUT / "list.txt"),
                     "-c", "copy", str(OUT / "voice.wav")], check=True)
     # 画面：按新时长拉伸动画时间轴
-    W, H, FPS = l12.W, l12.H, l12.FPS
+    W, H, FPS = l13.W, l13.H, l13.FPS
     silent = OUT / "video.mp4"
     ff = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                            "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "20",
@@ -79,17 +79,17 @@ def main():
         k = orig / dur
         for i in range(int(round(dur * FPS))):
             t = i / FPS
-            img = Image.new("RGB", (W, H), l12.BG)
+            img = Image.new("RGB", (W, H), l13.BG)
             fn(ImageDraw.Draw(img), t * k)
             fade = min(1.0, t / 0.4, (dur - t) / 0.4)
             if fade < 1:
-                img = Image.blend(Image.new("RGB", (W, H), l12.BG), img, max(0.0, fade))
+                img = Image.blend(Image.new("RGB", (W, H), l13.BG), img, max(0.0, fade))
             ff.stdin.write(img.tobytes())
     ff.stdin.close()
     ff.wait()
-    final = HERE / "l12_prefix_cache_voiced.mp4"
+    final = HERE / "l13_prefix_cache_voiced.mp4"
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(silent), "-i", str(OUT / "voice.wav"),
-                    "-i", str(OUT / "l12.srt"), "-map", "0:v", "-map", "1:a", "-map", "2:s", "-c:v", "copy",
+                    "-i", str(OUT / "l13.srt"), "-map", "0:v", "-map", "1:a", "-map", "2:s", "-c:v", "copy",
                     "-c:a", "aac", "-b:a", "128k", "-c:s", "mov_text", "-metadata:s:s:0", "language=chi",
                     "-shortest", "-movflags", "+faststart", str(final)], check=True)
     print("done", final, round(t0, 1), "s")

@@ -1,0 +1,6 @@
+# 作业 3 选做 L6（记忆）SWE 题用。HOST_REPO 换成宿主机上仓库根目录的绝对路径、NICK 换成你的昵称。
+# notesDir 里放 _common.md 和 <仓库>.md（django.md、sympy.md…），插件按工作区里有哪个目录选一份。
+- insert:
+    - id: memory-notes
+      name: 'HOST_REPO/assignment3/submission/NICK/memory-notes.ts'
+      config: { notesDir: 'HOST_REPO/assignment3/submission/NICK/memory-notes', mode: prefix, maxChars: 4000 }

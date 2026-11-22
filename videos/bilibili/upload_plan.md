@@ -1,4 +1,4 @@
-# B 站投稿计划（AgentHarness 28 讲）
+# B 站投稿计划（AgentHarness 29 讲）
 
 > 本文件只准备投稿材料，不生成视频。逐讲元数据的机器可读版本见 `meta.json`（已用脚本校验：标题 ≤80 字、简介 ≤250 字、标签 ≤10 个）。
 
@@ -7,7 +7,7 @@
 - **分区（已定）**：知识 > 校园学习（tid 208，2026-11-22 从投稿接口核对）。
 - **平台（已定）**：只发 B 站；YouTube 暂不做。mp4 另挂 GitHub Releases 存档。
 - **类型**：自制。**必须**在投稿页勾选“作者声明：含 AI 生成内容”（与画面右上角“AI 合成（含 AI 配音）”标识、片头说明、mp4 元数据一致，见 `videos/README.md`）。
-- **单个多 P vs 分开投稿**：建议**每讲单独投稿**，再在创作中心建一个**合集**（如“AgentHarness 公开课”）把 28 个视频按讲次排序。理由：
+- **单个多 P vs 分开投稿**：建议**每讲单独投稿**，再在创作中心建一个**合集**（如“AgentHarness 公开课”）把 29 个视频按讲次排序。理由：
   1. 网站每讲页面按 `videos/bilibili.json` 里**每讲一个 BV 号**嵌入播放器（`scripts/build_site.py` 的 `lecture_page`），多 P 只有一个 BV 号，无法给每讲独立链接/统计；
   2. 每讲独立标题、简介、标签，更利于搜索和推荐；
   3. 可以随课程进度逐讲发布、单独修正重传，不影响其他讲；合集仍提供连续观看体验。
@@ -116,156 +116,165 @@
 
 ### 第 12 讲（l12）
 
-- **标题**：【AgentHarness 第12讲】前缀缓存与 request series
-- **简介**：本讲：前缀缓存与 request series——追加还是改写？“每一步都写入当前时间”的代价。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l12/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第12讲】记忆：让 agent 记住该记的
+- **简介**：本讲：记忆：让 agent 记住该记的——项目说明文件、跨会话笔记与记忆的代价。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l12/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、SWE-bench、第12讲
 - **服务作业**：A2
-- **封面文字**：第12讲 / 前缀缓存与 request series
+- **封面文字**：第12讲 / 记忆：让 agent 记住该记的
 - **视频文件**：`videos/out/l12.mp4`（制作后）
 
 ### 第 13 讲（l13）
 
-- **标题**：【AgentHarness 第13讲】插件开发
-- **简介**：本讲：插件开发——tools/post-execute、agent/pre-step、agent/request-e…。服务作业 A3。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l13/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第13讲】前缀缓存与 request series
+- **简介**：本讲：前缀缓存与 request series——追加还是改写？“每一步都写入当前时间”的代价。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l13/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、SWE-bench、第13讲
-- **服务作业**：A3
-- **封面文字**：第13讲 / 插件开发
+- **服务作业**：A2
+- **封面文字**：第13讲 / 前缀缓存与 request series
 - **视频文件**：`videos/out/l13.mp4`（制作后）
 
 ### 第 14 讲（l14）
 
-- **标题**：【AgentHarness 第14讲】成本与可靠性
-- **简介**：本讲：成本与可靠性——重试策略、预算控制、模型选择。服务作业 A3。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l14/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第14讲】插件开发
+- **简介**：本讲：插件开发——tools/post-execute、agent/pre-step、agent/request-e…。服务作业 A3。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l14/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、SWE-bench、第14讲
 - **服务作业**：A3
-- **封面文字**：第14讲 / 成本与可靠性
+- **封面文字**：第14讲 / 插件开发
 - **视频文件**：`videos/out/l14.mp4`（制作后）
 
 ### 第 15 讲（l15）
 
-- **标题**：【AgentHarness 第15讲】实验方法
-- **简介**：本讲：实验方法——对照实验、只改一个变量、重复与方差、统一计价。服务作业 A3/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l15/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第15讲】成本与可靠性
+- **简介**：本讲：成本与可靠性——重试策略、预算控制、模型选择。服务作业 A3。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l15/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、SWE-bench、第15讲
-- **服务作业**：A3/期末项目
-- **封面文字**：第15讲 / 实验方法
+- **服务作业**：A3
+- **封面文字**：第15讲 / 成本与可靠性
 - **视频文件**：`videos/out/l15.mp4`（制作后）
 
 ### 第 16 讲（l16）
 
-- **标题**：【AgentHarness 第16讲】课程团队方案复盘
-- **简介**：本讲：课程团队方案复盘——一个在小实验里有效、在真实任务上无效的插件。服务作业 A3/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l16/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第16讲】实验方法
+- **简介**：本讲：实验方法——对照实验、只改一个变量、重复与方差、统一计价。服务作业 A3/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l16/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、SWE-bench、第16讲
 - **服务作业**：A3/期末项目
-- **封面文字**：第16讲 / 课程团队方案复盘
+- **封面文字**：第16讲 / 实验方法
 - **视频文件**：`videos/out/l16.mp4`（制作后）
 
 ### 第 17 讲（l17）
 
-- **标题**：【AgentHarness 第17讲】推理基础：预填充与解码
-- **简介**：本讲：推理基础：预填充与解码——KV cache、算力瓶颈与访存瓶颈。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l17/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
-- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第17讲
-- **服务作业**：A4
-- **封面文字**：第17讲 / 推理基础：预填充与解码
+- **标题**：【AgentHarness 第17讲】课程团队方案复盘
+- **简介**：本讲：课程团队方案复盘——一个在小实验里有效、在真实任务上无效的插件。服务作业 A3/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l17/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、SWE-bench、第17讲
+- **服务作业**：A3/期末项目
+- **封面文字**：第17讲 / 课程团队方案复盘
 - **视频文件**：`videos/out/l17.mp4`（制作后）
 
 ### 第 18 讲（l18）
 
-- **标题**：【AgentHarness 第18讲】本地推理入门：Ollama 与 llama.cpp
-- **简介**：本讲：本地推理入门：Ollama 与 llama.cpp——GGUF 格式，以及静默失败的排查方法。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l18/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第18讲】推理基础：预填充与解码
+- **简介**：本讲：推理基础：预填充与解码——KV cache、算力瓶颈与访存瓶颈。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l18/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第18讲
 - **服务作业**：A4
-- **封面文字**：第18讲 / 本地推理入门：Ollama 与 llama.cpp
+- **封面文字**：第18讲 / 推理基础：预填充与解码
 - **视频文件**：`videos/out/l18.mp4`（制作后）
 
 ### 第 19 讲（l19）
 
-- **标题**：【AgentHarness 第19讲】批处理与调度
-- **简介**：本讲：批处理与调度——静态批、连续批与 -np 并发槽位。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l19/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第19讲】本地推理入门：Ollama 与 llama.cpp
+- **简介**：本讲：本地推理入门：Ollama 与 llama.cpp——GGUF 格式，以及静默失败的排查方法。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l19/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第19讲
 - **服务作业**：A4
-- **封面文字**：第19讲 / 批处理与调度
+- **封面文字**：第19讲 / 本地推理入门：Ollama 与 llama.cpp
 - **视频文件**：`videos/out/l19.mp4`（制作后）
 
 ### 第 20 讲（l20）
 
-- **标题**：【AgentHarness 第20讲】前缀复用
-- **简介**：本讲：前缀复用——cache_prompt、RadixAttention，以及 agent 与推理服务的协同设计。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l20/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第20讲】批处理与调度
+- **简介**：本讲：批处理与调度——静态批、连续批与 -np 并发槽位。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l20/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第20讲
 - **服务作业**：A4
-- **封面文字**：第20讲 / 前缀复用
+- **封面文字**：第20讲 / 批处理与调度
 - **视频文件**：`videos/out/l20.mp4`（制作后）
 
 ### 第 21 讲（l21）
 
-- **标题**：【AgentHarness 第21讲】显存与内存管理
-- **简介**：本讲：显存与内存管理——PagedAttention 与 KV 量化。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l21/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第21讲】前缀复用
+- **简介**：本讲：前缀复用——cache_prompt、RadixAttention，以及 agent 与推理服务的协同设计。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l21/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第21讲
 - **服务作业**：A4
-- **封面文字**：第21讲 / 显存与内存管理
+- **封面文字**：第21讲 / 前缀复用
 - **视频文件**：`videos/out/l21.mp4`（制作后）
 
 ### 第 22 讲（l22）
 
-- **标题**：【AgentHarness 第22讲】推测解码
-- **简介**：本讲：推测解码——草稿模型、接受率与加速比，草稿长度怎么选。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l22/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第22讲】显存与内存管理
+- **简介**：本讲：显存与内存管理——PagedAttention 与 KV 量化。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l22/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第22讲
 - **服务作业**：A4
-- **封面文字**：第22讲 / 推测解码
+- **封面文字**：第22讲 / 显存与内存管理
 - **视频文件**：`videos/out/l22.mp4`（制作后）
 
 ### 第 23 讲（l23）
 
-- **标题**：【AgentHarness 第23讲】量化
-- **简介**：本讲：量化——权重量化档位，以及量化对速度和质量的影响。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l23/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第23讲】推测解码
+- **简介**：本讲：推测解码——草稿模型、接受率与加速比，草稿长度怎么选。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l23/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第23讲
 - **服务作业**：A4
-- **封面文字**：第23讲 / 量化
+- **封面文字**：第23讲 / 推测解码
 - **视频文件**：`videos/out/l23.mp4`（制作后）
 
 ### 第 24 讲（l24）
 
-- **标题**：【AgentHarness 第24讲】MoE：混合专家模型
-- **简介**：本讲：MoE：混合专家模型——激活参数和总参数，为什么 30B-A3B 生成快但占内存大。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l24/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第24讲】量化
+- **简介**：本讲：量化——权重量化档位，以及量化对速度和质量的影响。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l24/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第24讲
 - **服务作业**：A4
-- **封面文字**：第24讲 / MoE：混合专家模型
+- **封面文字**：第24讲 / 量化
 - **视频文件**：`videos/out/l24.mp4`（制作后）
 
 ### 第 25 讲（l25）
 
-- **标题**：【AgentHarness 第25讲】全栈：多模型路由
-- **简介**：本讲：全栈：多模型路由——主 agent 用云端模型，子 agent 用本地模型。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l25/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
-- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、模型路由、第25讲
-- **服务作业**：A5/期末项目
-- **封面文字**：第25讲 / 全栈：多模型路由
+- **标题**：【AgentHarness 第25讲】MoE：混合专家模型
+- **简介**：本讲：MoE：混合专家模型——激活参数和总参数，为什么 30B-A3B 生成快但占内存大。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l25/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、大模型推理、本地部署、第25讲
+- **服务作业**：A4
+- **封面文字**：第25讲 / MoE：混合专家模型
 - **视频文件**：`videos/out/l25.mp4`（制作后）
 
 ### 第 26 讲（l26）
 
-- **标题**：【AgentHarness 第26讲】全栈：系统级优化
-- **简介**：本讲：全栈：系统级优化——解决率、成本、耗时三者的取舍；排行榜方法论。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l26/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标题**：【AgentHarness 第26讲】全栈：多模型路由
+- **简介**：本讲：全栈：多模型路由——主 agent 用云端模型，子 agent 用本地模型。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l26/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
 - **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、模型路由、第26讲
 - **服务作业**：A5/期末项目
-- **封面文字**：第26讲 / 全栈：系统级优化
+- **封面文字**：第26讲 / 全栈：多模型路由
 - **视频文件**：`videos/out/l26.mp4`（制作后）
 
 ### 第 27 讲（l27）
 
-- **标题**：【AgentHarness 第27讲】agent 安全：提示注入与防护
-- **简介**：本讲：agent 安全：提示注入与防护——间接注入、越界动作、pre-execute 防护插件的效果与误拦。服务作业 A3 选做 L5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l27/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
-- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、智能体安全、提示注入、第27讲
-- **服务作业**：A3 选做 L5/期末项目
-- **封面文字**：第27讲 / agent 安全：提示注入与防护
+- **标题**：【AgentHarness 第27讲】全栈：系统级优化
+- **简介**：本讲：全栈：系统级优化——解决率、成本、耗时三者的取舍；排行榜方法论。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l27/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、模型路由、第27讲
+- **服务作业**：A5/期末项目
+- **封面文字**：第27讲 / 全栈：系统级优化
 - **视频文件**：`videos/out/l27.mp4`（制作后）
 
 ### 第 28 讲（l28）
 
-- **标题**：【AgentHarness 第28讲】期末项目答疑与展示安排
-- **简介**：本讲：期末项目答疑与展示安排——复现要求、报告与展示形式。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l28/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
-- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、模型路由、第28讲
-- **服务作业**：A5/期末项目
-- **封面文字**：第28讲 / 期末项目答疑与展示安排
+- **标题**：【AgentHarness 第28讲】agent 安全：提示注入与防护
+- **简介**：本讲：agent 安全：提示注入与防护——间接注入、越界动作、pre-execute 防护插件的效果与误拦。服务作业 A3 选做 L5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l28/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、智能体安全、提示注入、第28讲
+- **服务作业**：A3 选做 L5/期末项目
+- **封面文字**：第28讲 / agent 安全：提示注入与防护
 - **视频文件**：`videos/out/l28.mp4`（制作后）
+
+### 第 29 讲（l29）
+
+- **标题**：【AgentHarness 第29讲】期末项目答疑与展示安排
+- **简介**：本讲：期末项目答疑与展示安排——复现要求、报告与展示形式。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l29/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0
+- **标签**：AI Agent、DeepSeek、大模型、公开课、编程、人工智能、智能体、模型路由、第29讲
+- **服务作业**：A5/期末项目
+- **封面文字**：第29讲 / 期末项目答疑与展示安排
+- **视频文件**：`videos/out/l29.mp4`（制作后）
 
 ## 上传方式
 
@@ -307,7 +316,7 @@ biliup -u cookies.json upload videos/out/l01.mp4 \
 
 ## 上传后：把 BV 号写回网站
 
-`scripts/build_site.py` 读取 `videos/bilibili.json`，格式是**讲次 id → BV 号**的扁平对象（键必须是 `l01`…`l28`，与讲稿文件名一致）：
+`scripts/build_site.py` 读取 `videos/bilibili.json`，格式是**讲次 id → BV 号**的扁平对象（键必须是 `l01`…`l29`，与讲稿文件名一致）：
 
 ```json
 {

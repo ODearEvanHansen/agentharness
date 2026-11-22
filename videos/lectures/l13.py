@@ -1,11 +1,11 @@
 LECTURE = {
-    'id': 'l12',
-    'no': 12,
+    'id': 'l13',
+    'no': 13,
     'title': '前缀缓存与 request series',
     'subtitle': '追加还是改写？“每一步都写入当前时间”的代价',
     "scenes": [
         {'type': 'title',
-         'narration': '第十二讲，前缀缓存与 request series。第二讲我们已经认识了前缀缓存，这一讲看它在 agent 里怎么被保住、又怎么被打断。同样一个 agent，只是换一种写法，成本就可能相差七倍以上。视频里的数据都来自真实运行。'},
+         'narration': '第十三讲，前缀缓存与 request series。第二讲我们已经认识了前缀缓存，这一讲看它在 agent 里怎么被保住、又怎么被打断。同样一个 agent，只是换一种写法，成本就可能相差七倍以上。视频里的数据都来自真实运行。'},
         {'type': 'bars',
          'title': '先看价格：命中与未命中差 50 倍',
          'sub': 'deepseek-flash 输入价格（高峰价，元 / 百万 token）',

@@ -1,7 +1,7 @@
 LECTURE = {
-    "id": "l25", "no": 25, "title": "全栈：多模型路由", "subtitle": "主 agent 用云端模型，子 agent 用本地模型",
+    "id": "l26", "no": 26, "title": "全栈：多模型路由", "subtitle": "主 agent 用云端模型，子 agent 用本地模型",
     "scenes": [
-        {"type": "title", "narration": "第二十五讲，我们进入全栈部分：多模型路由。主 agent 用云端的 DeepSeek，子任务交给本机托管的模型。这是本周发布的作业五的核心。"},
+        {"type": "title", "narration": "第二十六讲，我们进入全栈部分：多模型路由。主 agent 用云端的 DeepSeek，子任务交给本机托管的模型。这是本周发布的作业五的核心。"},
         {"type": "bullets", "title": "为什么要路由", "sub": "前面学的推理知识，在这里和 agent 汇合",
          "items": ["agent 每道题要发几十次请求，每次都按 token 计费",
                    "很多子任务不需要最强的模型：搜索、跑测试、读日志",
