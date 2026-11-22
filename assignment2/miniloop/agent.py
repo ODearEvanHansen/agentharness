@@ -1,4 +1,4 @@
-"""madsLoop：你的最小 agent loop（作业 2 Part A）。
+"""miniLoop：你的最小 agent loop（作业 2 Part A）。
 
 约束：只用标准库 + 本文件里的 chat()；不要用 DSH、LangChain 等框架。参考实现约 110 行。
 接口（run.py 会调用）：
@@ -14,7 +14,7 @@ import urllib.request
 
 from env import Env
 
-API = os.environ.get("MADS_API", "https://api.deepseek.com/chat/completions")
+API = os.environ.get("MINI_API", "https://api.deepseek.com/chat/completions")
 
 SYSTEM = "You are a coding agent. ..."   # TODO(A2-L1): 写你的系统提示
 

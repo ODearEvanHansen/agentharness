@@ -99,7 +99,7 @@ python assignment4/check.py
 - E5：MoE 每生成一个 token 只激活约 3B 参数，为什么内存却要按 30B 来算？用"生成速度 × 每 token 读取的字节数"估算一下你机器的有效内存带宽。
 
 ### L3 接回 agent（需要 32GB；学完第 21 讲再做）
-1. 用 `llama-server --jinja` 托管 30B-A3B 模型（容器写法见 [infra/README.md 的"本地模型服务"一节](../infra/README.md#本地模型服务接入隔离网络)，带 `--api-key`），让你的 madsLoop（作业 2）和 DSH 分别接上它，跑课程小题。madsLoop 通过环境变量 `MADS_API=http://agentharness-llm:8091/v1/chat/completions` 指向本地服务，`DEEPSEEK_API_KEY` 填 `$LOCAL_LLM_KEY` 的值，并设置 `NO_PROXY=agentharness-llm`。注意：llama.cpp 返回的用量字段和 DeepSeek 不同，用量统计需要你自己适配。
+1. 用 `llama-server --jinja` 托管 30B-A3B 模型（容器写法见 [infra/README.md 的"本地模型服务"一节](../infra/README.md#本地模型服务接入隔离网络)，带 `--api-key`），让你的 miniLoop（作业 2）和 DSH 分别接上它，跑课程小题。miniLoop 通过环境变量 `MINI_API=http://agentharness-llm:8091/v1/chat/completions` 指向本地服务，`DEEPSEEK_API_KEY` 填 `$LOCAL_LLM_KEY` 的值，并设置 `NO_PROXY=agentharness-llm`。注意：llama.cpp 返回的用量字段和 DeepSeek 不同，用量统计需要你自己适配。
 2. 测量解决率、单题耗时和每题 token 数，和 `deepseek-flash` 做对比。
 3. **agent 与推理服务协同设计**：利用 E2 的结论修改你的 agent，让前缀复用的效果最大化，例如保持系统提示和工具定义不变、不改写历史消息。证明修改后预填充时间下降了，并且解决率没有变差。
 

@@ -23,7 +23,7 @@ REPO = HERE.parent
 sys.path[:0] = [str(REPO / "tools")]
 import usage_cost  # noqa: E402
 
-API = os.environ.get("MADS_API", "https://api.deepseek.com/chat/completions")
+API = os.environ.get("MINI_API", "https://api.deepseek.com/chat/completions")
 RAW = os.environ.get("AH_RAW_BASE", "https://raw.githubusercontent.com/{repo}/{commit}/{path}")
 
 SWE_PROMPT = """You are given a GitHub issue and the full contents of the relevant source files of the repository.

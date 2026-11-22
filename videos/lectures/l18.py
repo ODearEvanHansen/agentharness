@@ -50,7 +50,7 @@ LECTURE = {
         {"type": "bullets", "title": "作业四发布：DSH-Serve", "sub": "在自己的机器上把模型跑起来",
          "items": ["L1：Ollama 接入 DSH，查清一个反常现象",
                    "L2：llama-server 上做 E1 到 E5 五个实验",
-                   "L3：把本地模型接回 madsLoop 和 DSH",
+                   "L3：把本地模型接回 miniLoop 和 DSH",
                    "安装与构建步骤：assignment4/README.md「准备」一节"],
          "caption": "不需要 GPU；构建步骤见作业四说明",
          "narration": "作业四这一周发布，每个实验都标注了学完哪一讲再做。第一关，用 Ollama 把本地模型接到 DSH 上，并查清一个反常现象。第二关，在 llama server 上做五个实验。第三关，把本地模型接回你自己的 agent。整个作业不需要 GPU，但想跑三十 B A 三 B 这个 MoE 模型，需要三十二 GB 内存。构建 llama dot cpp 和下载模型的每一步命令，都写在作业四说明的准备一节里，照着做即可。"},

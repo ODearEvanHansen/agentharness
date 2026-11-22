@@ -17,7 +17,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "site_src"
 GH = "https://github.com/ODearEvanHansen/agentharness"
-ASSIGN_NAMES = {0: "环境自检", 1: "DSH-Lens", 2: "madsLoop", 3: "DSH-Opt", 4: "DSH-Serve", 5: "DSH-Stack"}
+ASSIGN_NAMES = {0: "环境自检", 1: "DSH-Lens", 2: "miniLoop", 3: "DSH-Opt", 4: "DSH-Serve", 5: "DSH-Stack"}
 
 
 def fix_links(md: str, src: Path) -> str:

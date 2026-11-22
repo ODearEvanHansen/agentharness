@@ -62,7 +62,7 @@
 - 前端依赖要本地打包，不使用 CDN（国内网络考虑）。
 
 ### A2 DSH-Loop：自己写 loop（10–12 小时）
-- **Part A**：从零写 `madsLoop`（Python，直接调 DeepSeek 的 OpenAI 格式接口，带 bash/read/edit/done 四个工具），在容器里解 SWE-bench 题。参考实现 112 行；M0 中在 20 道 Verified 题上解决 18 道。
+- **Part A**：从零写 `miniLoop`（Python，直接调 DeepSeek 的 OpenAI 格式接口，带 bash/read/edit/done 四个工具），在容器里解 SWE-bench 题。参考实现 112 行；M0 中在 20 道 Verified 题上解决 18 道。
   - 说明里要提示：开启思考模式时必须回传 `reasoning_content`。
 - **Part B**：阅读 DSH loop 源码并回答对照题（取消处理、并行工具调用的 barrier、request series 与前缀缓存）。源码引用要对应课程锁定的版本 tag。
 - **Part C**：在同一批题上和 DSH `sdk-minimal` 做对比，写一页分析：步数、token、成本、解决率，以及工具设计对这些指标的影响。

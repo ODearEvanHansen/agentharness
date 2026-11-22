@@ -1,4 +1,4 @@
-# 作业 2：madsLoop —— 自己写一个 agent loop
+# 作业 2：miniLoop —— 自己写一个 agent loop
 
 > 预计 15–20 小时。第 4 周发布，第 7 周截止。对应第 2 讲（最小 agent 循环）、第 6–10 讲（agent loop、评测基础设施、工具设计、评测）。
 
@@ -13,9 +13,9 @@ agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Pytho
 - **磁盘**：每道 SWE 题的镜像约 3GB，20 题约 60GB。磁盘紧张时，用 `--parallel 1`，并在每题评测完后执行 `docker rmi` 删除镜像。
 - **内存**：`--parallel N` 会同时运行 N 个容器，每个上限 8GB。16GB 内存的机器请用 `--parallel 1`。
 
-**运行器已验证**（课程参考实现）：小题 madsLoop 8/8（0.057 元）、DSH 8/8（0.043 元）；`django__django-15467` 两边都通过了官方评测（madsLoop 24 步 0.087 元，DSH 0.053 元）。
+**运行器已验证**（课程参考实现）：小题 miniLoop 8/8（0.057 元）、DSH 8/8（0.043 元）；`django__django-15467` 两边都通过了官方评测（miniLoop 24 步 0.087 元，DSH 0.053 元）。
 
-## Part A：实现 madsLoop（`madsloop/agent.py`）
+## Part A：实现 miniLoop（`miniloop/agent.py`）
 
 | 关卡 | 内容 | 检查 |
 |---|---|---|
@@ -29,18 +29,18 @@ agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Pytho
 ```bash
 docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
   -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
-  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent madsloop --suite mini
+  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent miniloop --suite mini
 ```
 判分在一份干净副本里进行：只采用你对原有源文件的修改。新增的文件（例如 `conftest.py`）不会带入判分副本，改动 `test_task.py` 的解答直接判为不通过。
 
 **SWE 题**：运行器在宿主机上为每道题启动一个隔离的任务容器，agent 只在任务容器里执行命令：
 ```bash
-python assignment2/run.py --agent madsloop --suite swe --parallel 1
+python assignment2/run.py --agent miniloop --suite swe --parallel 1
 python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
-  -p assignment2/results/predictions-madsloop.jsonl -id a2-mine
-mv madsloop.a2-mine.json assignment2/results/     # 官方评测把报告写在当前目录（仓库根目录）
+  -p assignment2/results/predictions-miniloop.jsonl -id a2-mine
+mv miniloop.a2-mine.json assignment2/results/     # 官方评测把报告写在当前目录（仓库根目录）
 ```
-报告文件名是 `<模型名>.<run_id>.json`，模型名取自 predictions 里的 `model_name_or_path`（这里是 `madsloop`）；如果 `mv` 找不到文件，用 `ls *.a2-mine.json` 看实际名字。
+报告文件名是 `<模型名>.<run_id>.json`，模型名取自 predictions 里的 `model_name_or_path`（这里是 `miniloop`）；如果 `mv` 找不到文件，用 `ls *.a2-mine.json` 看实际名字。
 **断点续跑**：结果按题追加写入 `assignment2/results/<suite>-<agent>[-<tag>].jsonl`。再次运行同样的命令时，已有无错误记录的题会跳过，并打印 `跳过 N 道已有记录的题（结果文件 ...）；要重跑请加 --fresh 或换 --tag`；出错的题会重跑。想全部重跑：加 `--fresh`（旧文件改名为 `<名字>.jsonl.bak-<时间戳>` 留作备份），或者换一个 `--tag` 写到新文件。改了 agent 代码之后一定要这么做，否则看到的还是旧结果。
 
 数据集 `dataset.json` 已随仓库提供，**不需要访问 Hugging Face**。单题超时（`--timeout`，默认 1200 秒）后，运行器会删除该题的任务容器，agent 随之停止。
@@ -64,7 +64,7 @@ python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
   -p assignment2/results/predictions-dsh.jsonl -id a2-mine
 mv dsh.a2-mine.json assignment2/results/
 ```
-在同一批题上比较 madsLoop 和 DSH，写一页分析，至少包括：
+在同一批题上比较 miniLoop 和 DSH，写一页分析，至少包括：
 - 一张表：解决率、平均步数、输入/输出 token、缓存命中率、每题成本、中位耗时；
 - **一道两边结果不同的题**：用作业 1 的工具对比两边的轨迹，解释差别从哪里来；
 - 工具设计对步数的影响：DSH 一次 bash 调用就能同时写文件和运行，你的 loop 是怎么做的？
@@ -77,7 +77,7 @@ mv dsh.a2-mine.json assignment2/results/
 
 ## 提交物
 提交到 `assignment2/` 目录：
-1. `madsloop/agent.py`；
+1. `miniloop/agent.py`；
 2. `results/` 下的结果文件（`git add assignment2/results/` 即可，中间产物已被 `.gitignore` 忽略）：
    - **要提交**：`mini-*.jsonl`、`swe-*.jsonl`、`predictions-*.jsonl`，以及官方评测报告 `*.a2-mine.json`；
    - **不提交（已忽略）**：`results/work/`、`results/judge/`（小题工作副本和判分副本）、`results/dsh-home*/`、`results/dsh-homes/`（DSH 会话日志）、`--fresh` 留下的 `*.bak-*` 备份，以及仓库根目录下评测生成的 `logs/`；
@@ -85,7 +85,7 @@ mv dsh.a2-mine.json assignment2/results/
 4. （选做）`contrib/` 下你贡献的题目。
 
 ## 规则
-- madsLoop 只能使用标准库和起始代码提供的 `chat()`，不能使用任何 agent 框架。
+- miniLoop 只能使用标准库和起始代码提供的 `chat()`，不能使用任何 agent 框架。
 - 禁止针对具体题目硬编码，例如在提示词里写入某个 issue 的修法。
 
 ## 选做：无 agent 基线（no-agent baseline）

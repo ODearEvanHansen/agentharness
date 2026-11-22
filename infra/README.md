@@ -54,7 +54,7 @@ docker build -t agentharness-runner:0.1 infra/runner        # 需要正常网络
 # 之后在隔离网络中运行，以作业 2 的小题为例：
 docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
   -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY \
-  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent madsloop --suite mini
+  -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 python assignment2/run.py --agent miniloop --suite mini
 ```
 `-u "$(id -u):$(id -g)" -e HOME=/tmp` 让容器以你的用户身份运行，否则 agent 在仓库里创建的文件和目录归 root 所有，宿主机上删不掉、后续运行会报 EACCES。`-v "$PWD":/work` 让 agent 能写整个仓库：检查脚本请在宿主机上运行，key 不要放在仓库里（放在 `~/.config/agentharness/env`，权限 600，见作业 0）。
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """作业 2 运行器：在课程小题或 SWE-bench 子集上运行 agent，记录用量并判分/导出补丁。
 
-  python assignment2/run.py --agent madsloop --suite mini              # 课程小题（判分：test_task.py 通过且未被修改）
+  python assignment2/run.py --agent miniloop --suite mini              # 课程小题（判分：test_task.py 通过且未被修改）
   python assignment2/run.py --agent dsh      --suite mini              # 对照组：DSH sdk-minimal
-  python assignment2/run.py --agent madsloop --suite swe --parallel 3  # SWE-bench 子集（导出 predictions，再用官方评测判分）
+  python assignment2/run.py --agent miniloop --suite swe --parallel 3  # SWE-bench 子集（导出 predictions，再用官方评测判分）
 
 SWE 模式要求：先按 infra/README.md 建好隔离网络和出网白名单代理（默认 agentharness-net / agentharness-egress）。
 结果写入 assignment2/results/<suite>-<agent>.jsonl（可断点续跑：已有无错误记录的题会跳过；--fresh 先备份旧文件再全部重跑）。
@@ -21,8 +21,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent
-AGENT_DIR = Path(os.environ.get("AH_AGENT_DIR", HERE / "madsloop"))
-sys.path[:0] = [str(AGENT_DIR), str(HERE / "madsloop"), str(REPO / "tools")]
+AGENT_DIR = Path(os.environ.get("AH_AGENT_DIR", HERE / "miniloop"))
+sys.path[:0] = [str(AGENT_DIR), str(HERE / "miniloop"), str(REPO / "tools")]
 import usage_cost  # noqa: E402
 from env import LocalEnv, ContainerEnv  # noqa: E402
 
@@ -120,7 +120,7 @@ def price(u, model, table=None):
 
 
 class ActionLogEnv(LocalEnv):
-    """LocalEnv + 把 madsloop 的每次工具调用记到 jsonl（作业 3 L5 用它判断 agent 是否执行了注入指令）。"""
+    """LocalEnv + 把 miniloop 的每次工具调用记到 jsonl（作业 3 L5 用它判断 agent 是否执行了注入指令）。"""
     def __init__(self, root, log):
         super().__init__(root)
         self.log = Path(log)
@@ -145,7 +145,7 @@ class ActionLogEnv(LocalEnv):
 
 
 # ------------------------------------------------------------------ agents
-def run_madsloop(env, prompt, model):
+def run_miniloop(env, prompt, model):
     import agent
     r = agent.solve(env, prompt, model)
     return r["usage"], r["steps"], r["tool_calls"]
@@ -194,8 +194,8 @@ def run_mini(task, agent, model, outdir):
     shutil.rmtree(d, ignore_errors=True)
     shutil.copytree(src, d)
     th = hashlib.sha256((src / "test_task.py").read_bytes()).hexdigest()
-    env = LocalEnv(d) if agent != "madsloop" else ActionLogEnv(d, outdir / "actions" / agent / f"{task['id']}.jsonl")
-    fn = run_madsloop if agent == "madsloop" else run_dsh_local
+    env = LocalEnv(d) if agent != "miniloop" else ActionLogEnv(d, outdir / "actions" / agent / f"{task['id']}.jsonl")
+    fn = run_miniloop if agent == "miniloop" else run_dsh_local
     usage, steps, tcalls = fn(env, task["prompt"], model)
     kill_stragglers(d)
     tp = d / "test_task.py"
@@ -262,7 +262,7 @@ def run_swe(task, agent, model, outdir):
         raise RuntimeError(r.stderr[-300:])
     try:
         env = ContainerEnv(name)
-        fn = run_madsloop if agent == "madsloop" else run_dsh_container
+        fn = run_miniloop if agent == "miniloop" else run_dsh_container
         usage, steps, tcalls = fn(env, task["prompt"], model)
         patch, _ = env.bash("git add -A && git diff --cached", timeout=60)
     finally:
@@ -292,7 +292,7 @@ def resume_filter(tasks, out, only=None, fresh=False):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--agent", choices=["madsloop", "dsh"], required=True)
+    ap.add_argument("--agent", choices=["miniloop", "dsh"], required=True)
     ap.add_argument("--suite", choices=["mini", "swe"], required=True)
     ap.add_argument("--instances", default=str(REPO / "infra" / "swebench" / "instances.txt"))
     ap.add_argument("--model", default=os.environ.get("MODEL", "deepseek-flash"))

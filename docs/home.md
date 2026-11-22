@@ -61,4 +61,4 @@
 
 ---
 
-课程结构参考了 Harvard [CS2680 Modern AI Systems](https://cs2680.seas.harvard.edu/)，在此致谢。本课程的讲义、作业和代码均为独立编写，**与哈佛大学及 CS2680 课程团队没有任何关联，也未获其背书**。代码采用 MIT 许可，讲义采用 CC BY-SA 4.0 许可。
+课程结构参考了 Harvard [CS2680 Modern AI Systems](https://cs2680.seas.harvard.edu/)，在此致谢。本课程的讲义、作业和代码均为独立编写，**与哈佛大学及 CS2680 课程团队没有任何关联，也未获其背书**。本课程为非官方课程，与 DeepSeek 官方亦无关联；作业二的 miniLoop 等名称均为本课程自拟。代码采用 MIT 许可，讲义采用 CC BY-SA 4.0 许可。

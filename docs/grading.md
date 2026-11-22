@@ -10,7 +10,7 @@
 |---|---|---|
 | A0 环境自检 | 0%（完成即可，是后续作业的前提） | [Discussions 打卡](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1) |
 | A1 DSH-Lens | 10% | `check.py` 50% + 报告 50% |
-| A2 madsLoop | 15% | 自动检查 + 源码阅读题 + 对照实验报告 |
+| A2 miniLoop | 15% | 自动检查 + 源码阅读题 + 对照实验报告 |
 | A3 DSH-Opt | 20% | 排行榜提交 + 博客报告（以报告为主） |
 | A4 DSH-Serve | 20% | 数据检查 + 报告 |
 | A5 DSH-Stack | 15% | `check.py` + 博客报告 |

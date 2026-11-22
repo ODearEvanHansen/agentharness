@@ -17,7 +17,7 @@
 2026-11 用 35 条讲稿原句做过读音抽查（合成后再用 Whisper 转写比对），据此约定：
 - 数字一律写汉字（"零点一二元""百分之九十五点八"），读得准；`Q 四`、`三十 B A 三 B`、`WSL 二`、`rc 二` 都正常。
 - `JSON RPC` 写成 `JSON-RPC`（不加连字符时会连读走音）。
-- `zstd` 写成 `Z standard`；`mads loop` 写成 `M A D S loop`。
+- `zstd` 写成 `Z standard`。
 - 口播里不提"合成/AI 配音"：AIGC 标识由画面角标、片头小字、mp4 元数据和 B 站声明承担。
 - 太短的独立句（如"不需要 GPU。"）容易读含糊，并到上下文里或补几个字。
 - `llama dot cpp`、`杠 n p`、`K V cache`、`GGUF`、`GPTQ`、`AWQ`、`heredoc`、`PagedAttention` 实测可接受。

@@ -7,5 +7,5 @@ t07_rename_import                        solved=True      6.4s steps=  5 $0.0008
 t05_parse_duration                       solved=True      8.8s steps=  5 $0.001578
 t08_csv_quotes                           solved=True      8.1s steps=  6 $0.000949
 
-madsloop: solved 8/8  $0.0085
+miniloop: solved 8/8  $0.0085
 (dsh 同一批题: solved 8/8  $0.0064, 每题 3-4 步)
