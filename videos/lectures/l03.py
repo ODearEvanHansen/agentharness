@@ -36,9 +36,9 @@ LECTURE = {
                    "沙箱模式由环境变量 DSH_PERMISSION_MODE 控制",
                    "课程方案：容器负责隔离，容器内设为 danger-full-access"],
          "caption": "隔离交给 Docker，而不是交给 harness",
-         "narration": "还有一个坑。完整 profile 的 bash 默认运行在沙箱里，需要 bubblewrap 或者 Landlock，而普通容器里两样都没有，结果所有命令都被拒绝。沙箱模式由一个权限模式环境变量控制，名字见屏幕。课程的方案是：所有作业都在 Docker 容器里跑，由容器负责隔离，只在容器内部把权限模式设为完全放开。千万不要在宿主机上这样设置。"},
+         "narration": "还有一个坑，完整 profile 的 bash 默认运行在沙箱里，需要 bubblewrap 或者 Landlock，而普通容器里两样都没有，结果所有命令都被拒绝。沙箱模式由一个权限模式环境变量控制，名字见屏幕。课程的方案是：所有作业都在 Docker 容器里跑，由容器负责隔离，只在容器内部把权限模式设为完全放开。千万不要在宿主机上这样设置。"},
         {"type": "summary", "items": ["DSH = Cordis 插件 + profile + patch", "Python SDK 通过 JSON-RPC 驱动 dsh 运行时", "用 course.patch.yml 关闭会话日志上传", "隔离交给容器，容器内放开沙箱"],
          "exercise": "15 分钟：在容器里用 sdk-minimal 跑一句「创建 hello.py 并运行」，分别加载和不加载 course.patch.yml；预期只有不加载时事件里出现 delivery-accepted",
-         "narration": "小结一下。DSH 由插件、profile 和 patch 组成；Python SDK 通过 JSON-RPC 驱动运行时；课程补丁关闭了日志上传；隔离交给容器。作业一本周发布。课后花十五分钟，在容器里用 sdk minimal 跑一个小任务，对比加不加课程补丁，预期只有不加补丁时，事件里会出现日志上传成功的事件。下一讲，我们讲 DSH 产生的事件和会话日志。"},
+         "narration": "收个尾，回顾一下这一讲的重点。DSH 由插件、profile 和 patch 组成。Python SDK 通过 JSON-RPC 驱动运行时。课程补丁关闭了日志上传，隔离则交给容器来做。作业一本周发布。课后花十五分钟，在容器里用 sdk minimal 跑一个小任务，对比加不加课程补丁，预期只有不加补丁时，事件里会出现日志上传成功的事件。下一讲，我们讲 DSH 产生的事件和会话日志。"},
     ],
 }

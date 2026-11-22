@@ -10,7 +10,7 @@ LECTURE = {'id': 'l13',
              'rows': [('每一步', [('agent/pre-step', 300, 'purple'), ('请求模型', 220, 'blue'), ('agent/request-error', 340, 'red')]),
                       ('每次工具调用', [('tools/pre-execute', 320, 'orange'), ('执行工具', 220, 'gray'), ('tools/post-execute', 340, 'green')])],
              'caption': '钩子就是 loop 在固定位置留下的"插口"',
-             'narration': '先看背景。回忆一下 agent loop：每一步先组装消息、请求模型，模型如果要调用工具，就执行工具，再把结果放回历史。DSH 在这条流水线的固定位置留了插口，也就是钩子。每一步开始前有 pre step，请求失败时有 request '
+             'narration': '先回忆一下 agent loop：每一步先组装消息、请求模型，模型如果要调用工具，就执行工具，再把结果放回历史。DSH 在这条流水线的固定位置留了插口，也就是钩子。每一步开始前有 pre step，请求失败时有 request '
                           'error；每次工具调用，执行之前有 pre execute，执行之后有 post execute。插件做的事，就是在这些插口上登记一个函数，到了那个位置，loop 会调用它。'},
             {'type': 'code',
              'title': '最小的插件',
@@ -38,7 +38,7 @@ LECTURE = {'id': 'l13',
                      "      name: '/abs/path/to/assignment3/templates/trim-tool-output.ts'\n"
                      '      config: { maxChars: 2000 }',
              'caption': 'DSH 运行时直接加载 .ts：不需要编译，也不需要 Node',
-             'narration': '怎么加载？在 patch 文件里用 insert 插入一项，name 写插件文件的绝对路径，config 传参数。DSH 的运行时可以直接加载点 ts 文件，不需要编译，也不需要装 '
+             'narration': '加载的方法是：在 patch 文件里用 insert 插入一项，name 写插件文件的绝对路径，config 传参数。DSH 的运行时可以直接加载点 ts 文件，不需要编译，也不需要装 '
                           'Node。注意别忘了第一项，关闭会话日志上传。还有一个常见的坑：小题在容器里跑，仓库挂在斜杠 work；SWE 题在宿主机上跑，两边看到的绝对路径不同，所以作业三准备了两份 patch 模板，别用错。'},
             {'type': 'bullets',
              'title': '常用的挂载点',
@@ -79,5 +79,5 @@ LECTURE = {'id': 'l13',
             {'type': 'summary',
              'items': ['插件 = 导出 name 和 apply 的 .ts 文件', 'patch 里 insert，绝对路径，免编译', 'waterfall：返回决定，或调用 next()', 'agent/request 已弃用'],
              'exercise': '15 分钟：把 hello-plugin 改成挂在 tools/post-execute 上、打印工具名和输出长度后调用 next()；跑一个小任务，预期每次工具调用打印一行，结果不变',
-             'narration': '小结一下。插件就是一个导出名字和 apply 的 ts 文件，在 patch 里用绝对路径插入，不用编译；waterfall 钩子要么返回决定，要么调用 next。课后小练习：把最小插件改成挂在工具执行之后，打印工具名和输出长度，再交给 '
+             'narration': '这一讲的内容可以归成几条。插件就是一个导出名字和 apply 的 ts 文件，在 patch 里用绝对路径插入，不用编译；waterfall 钩子要么返回决定，要么调用 next。课后小练习：把最小插件改成挂在工具执行之后，打印工具名和输出长度，再交给 '
                           'next。跑一个小任务，预期每次工具调用都打印一行，而 agent 的结果不变。下一讲，我们讲成本与可靠性。'}]}

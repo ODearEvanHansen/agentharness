@@ -11,7 +11,7 @@ LECTURE = {'id': 'l08',
                       ('出网', [('api.deepseek.com ✓', 400, 'green'), ('其他地址 ✗', 300, 'red')]),
                       ('评测', [('官方 swebench 5.0.2', 420, 'blue'), ('判分', 200, 'green')])],
              'caption': '隔离由容器负责，出网由白名单负责',
-             'narration': '先看整体架构。每道题跑在 SWE bench 官方预构建的镜像里，容器限制四核 CPU 和八 GB 的内存。容器接入一个内部网络，默认断网，只能经过一个白名单代理访问 DeepSeek 的 API。最后，用官方的 '
+             'narration': '先看整体架构，每道题跑在 SWE bench 官方预构建的镜像里，容器限制四核 CPU 和八 GB 的内存。容器接入一个内部网络，默认断网，只能经过一个白名单代理访问 DeepSeek 的 API。最后，用官方的 '
                           'swebench 评测工具判分。'},
             {'type': 'code',
              'title': '出网白名单：四条命令',
@@ -24,7 +24,7 @@ LECTURE = {'id': 'l08',
                      '# assignment container:\n'
                      'docker run --network agentharness-net -e HTTPS_PROXY=http://agentharness-egress:8888 ...',
              'caption': '验证：DeepSeek 返回 401，github.com 连不上',
-             'narration': '白名单的搭法很简单。先构建代理镜像，再建一个 internal 网络，把代理接进去。作业容器只接这个网络，并把代理环境变量指向代理。怎么验证呢？在容器里访问 '
+             'narration': '白名单的搭法很简单。先构建代理镜像，再建一个 internal 网络，把代理接进去。作业容器只接这个网络，并把代理环境变量指向代理。验证的办法是这样的：在容器里访问 '
                           'DeepSeek，应该返回状态码四零一，说明连通了，只是没带 key；访问 GitHub 应该失败。'},
             {'type': 'bullets',
              'title': '镜像分发：为什么用 GHCR',
@@ -86,4 +86,4 @@ LECTURE = {'id': 'l08',
             {'type': 'summary',
              'items': ['任务跑在容器里，网络默认断开', '出网只放行 api.deepseek.com', '镜像经 GHCR 分发，约 3GB/题', '固定种子、锁定版本、换源重验', '专用 key + 消费上限'],
              'exercise': '15 分钟：按 infra/README.md 搭好白名单，在容器内 curl 两个地址；预期 api.deepseek.com 返回 401，github.com 连接失败',
-             'narration': '小结一下。任务在容器里跑，网络默认断开，只放行 DeepSeek；镜像通过 GHCR 分发；能固定的种子和版本都要固定。白名单防不住经 DeepSeek API 本身的外泄，所以要用专用、限额的 key。课后花十五分钟搭好白名单，预期访问 DeepSeek 返回状态码四零一，访问 GitHub 失败。下一讲，我们讲工具设计。'}]}
+             'narration': '最后把这一讲的要点串起来。任务在容器里跑，网络默认断开，只放行 DeepSeek；镜像通过 GHCR 分发；能固定的种子和版本都要固定。白名单防不住经 DeepSeek API 本身的外泄，所以要用专用、限额的 key。课后花十五分钟搭好白名单，预期访问 DeepSeek 返回状态码四零一，访问 GitHub 失败。下一讲，我们讲工具设计。'}]}
