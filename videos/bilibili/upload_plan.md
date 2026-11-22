@@ -4,7 +4,8 @@
 
 ## 总体建议
 
-- **分区（建议）**：知识 > 科学科普，或 知识 > 计算机技术（B 站分区会调整，以投稿页实际可选项为准）。
+- **分区（已定）**：知识 > 校园学习（tid 208，2026-11-22 从投稿接口核对）。
+- **平台（已定）**：只发 B 站；YouTube 暂不做。mp4 另挂 GitHub Releases 存档。
 - **类型**：自制。**必须**在投稿页勾选“作者声明：含 AI 生成内容”（与画面右上角“AI 合成（含 AI 配音）”标识、片头说明、mp4 元数据一致，见 `videos/README.md`）。
 - **单个多 P vs 分开投稿**：建议**每讲单独投稿**，再在创作中心建一个**合集**（如“AgentHarness 公开课”）把 28 个视频按讲次排序。理由：
   1. 网站每讲页面按 `videos/bilibili.json` 里**每讲一个 BV 号**嵌入播放器（`scripts/build_site.py` 的 `lecture_page`），多 P 只有一个 BV 号，无法给每讲独立链接/统计；
@@ -276,7 +277,16 @@
 4. 提交审核；通过后在创作中心 → 合集管理 中新建/选择合集“AgentHarness 公开课”，按讲次加入；
 5. 记录 BV 号（稿件管理页或视频网址 `https://www.bilibili.com/video/BVxxxx`）。
 
-### 方式二：第三方命令行工具 biliup（可选，有风险）
+### 方式二（已采用并验证）：服务器上的 social-auto-upload
+
+课程维护者在服务器上用 [social-auto-upload](https://github.com/dreammis/social-auto-upload)（底层 biliup）自动投稿，账号已扫码登录（凭据只存在服务器本地，权限 600）。2026-11-22 用 8 秒测试视频验证：上传成功、进入审核、稿件列表可查到 BV 号。实测限制：
+- 只能定时发布，不能设"仅自己可见"；
+- 删除稿件需要人工过验证码（接口返回 340022），要在创作中心手动删；
+- 没有"含 AI 生成内容"声明参数：发布后由账号所有者在创作中心逐个勾选（或手动投稿时勾选）。
+
+发布流程：渲染 → `meta.json` 取标题/简介/标签 → `sau bilibili upload-video --tid 208 --schedule ...` → 查稿件列表拿 BV 号写入 `videos/bilibili.json` → 重建网站。
+
+### 方式三：biliup 原生命令行（备选，有风险）
 
 - **项目现状**：原独立 CLI 仓库 `biliup/biliup-rs` 已归档，README 提示后续开发迁至 `biliup/biliup`（MIT）。来源：https://github.com/biliup/biliup-rs ，https://github.com/biliup/biliup
 - **安装**：从 biliup/biliup 的 Releases 下载对应平台 `biliupR-*` 二进制并放进 PATH，或 `npm i -g @biliup/cli`（见 biliup/biliup README）。
@@ -291,7 +301,7 @@ biliup -u cookies.json upload videos/out/l01.mp4 \
   --tag "$(jq -r '.lectures[0].tags|join(",")' videos/bilibili/meta.json)"
 ```
 
-  其他可用参数：`--dtime`（定时发布，10 位时间戳，需距提交 >4 小时）、`--line`（上传线路）、`-c config.yaml`（配置文件批量投稿）、`append`（向已有稿件追加分 P）、`list`/`show`（查看稿件）。`--tid` 默认 171，**必须改成目标分区的 ID**（分区 ID 未在此核实，请在投稿页或 B 站开放文档确认）。
+  其他可用参数：`--dtime`（定时发布，10 位时间戳，需距提交 >4 小时）、`--line`（上传线路）、`-c config.yaml`（配置文件批量投稿）、`append`（向已有稿件追加分 P）、`list`/`show`（查看稿件）。`--tid` 默认 171，**必须改成 208（知识 > 校园学习）**。
 - **AI 声明**：CLI 的参数列表中没有明确的“AI 生成内容”声明开关（可能需 `--extra-fields`，未核实）。用 CLI 上传后，**务必到创作中心编辑稿件补勾“含 AI 生成内容”**，合集也需在网页端添加。
 - **风险**：非官方工具，调用的是未公开接口，可能随时失效；自动化投稿可能触发风控，存在违反 B 站用户协议、导致限流或封号的风险；项目自身声明“仅供个人学习研究、后果自负”。课程官方账号建议优先用网页手动上传。
 
