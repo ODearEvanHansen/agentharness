@@ -10,7 +10,7 @@
 5. 影响力判据：发帖后 14 天内 ≥5 份外部排行榜提交（主），star ≥100 + ≥1 个外部讨论帖（辅）。
 
 ## 硬规则
-- 作业二的 loop 名为 **miniLoop**（目录 assignment2/miniloop）。不要使用 madsLoop 等源自其他课程的专有命名；提交前 `git grep -niI mads` 必须为空。
+- 作业二的 loop 名为 **miniLoop**（目录 assignment2/miniloop）。不要使用源自其他课程的专有命名（旧名已清除）；提交前 `git grep -niI 'm[a]ds'` 必须为空。
 - 课程结构参考 Harvard CS2680 并致谢，但与哈佛及其课程团队无关联、未获背书；声明见 README.md / docs/home.md / mkdocs 页脚，不要删。
 - 学员可见费用一律用 DeepSeek 官方人民币价格。
 - 付费调用（API / TTS）单次复现 >7 元先请示 owner；累计花费用 tools/usage_cost 类脚本按会话日志核算，TTS 以控制台账单为准。
