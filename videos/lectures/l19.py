@@ -1,6 +1,6 @@
 # 第 19 讲：成本与速度。框架参照 Harvard CS2680 第 8 讲公开幻灯片与 notes/cost-effective-agents（六因素成本拆解、每项节省的反成本、预算规则、关键路径、推测动作、三种 harness 架构）；用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：DSH sdk-minimal 基线跑效率赛道 20 题的一次运行（base-r1，2026-11-22）：2.44 元、17 题解决、458 次请求。
-# 数据：/opt/data/cache/scratch/dsh-course/memory/runs/base-r1、base-r2（swe-*.jsonl + 判分报告 + 会话日志时间戳）；videos/real/noagent_swe.jsonl；第 32 讲路由实测；tools/usage_cost.py 价格。
+# 数据：课程内部实验记录、base-r2（swe-*.jsonl + 判分报告 + 会话日志时间戳）；videos/real/noagent_swe.jsonl；第 32 讲路由实测；tools/usage_cost.py 价格。
 #   成功试次（两次共 35 个）：请求 p95 49.8、费用 p95 0.332 元、耗时 p95 443 s；失败试次最多 33 次请求、0.225 元。
 #   会话日志：base-r1 模型时间 1252 s、工具时间 954 s；458 步里只有 1 步一次发出多个工具调用。
 # DSH 核对 @ v0.2.2-rc.2：agent-loop README（无内置轮次预算；maxParallelToolCalls 默认 10）；fs-local FS_STALE_VERSION；session README（append-only log）；subagent-acp / -codex / -claude-code。

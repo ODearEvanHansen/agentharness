@@ -1,6 +1,6 @@
 # 第 12 讲：多 agent 架构。框架参照 Harvard CS2680 第 5 讲（5_agent_design_2）与第 3 讲十六 agent C 编译器案例的公开幻灯片（用我们自己的话和例子重讲，与该课程无关联）。
 # 贯穿例子：一道 SWE bench 修 bug 题——要不要让主 agent 把「探索」「复现/验证」交给子 agent？
-# 数据：/opt/data/docs/cs2680/exp/multiagent.md，videos/real/exp_multiagent_rows.jsonl（2026-11-23，deepseek-flash，DSH sdk-minimal，20 题，每组只跑 1 次）。
+# 数据：课程内部实验记录，videos/real/exp_multiagent_rows.jsonl（2026-11-23，deepseek-flash，DSH sdk-minimal，20 题，每组只跑 1 次）。
 # DSH 机制核对：dsh v0.2.2-rc.2 packages/subagent/tool-subagent（maxDepth 默认 1、depthLimit 能力）、tool-subagent-control（wait_agent）、
 #   subagent-spawn-in-process / subagent-fork-in-process / subagent-acp、team/agent-team（共享任务板，compare-and-set 认领）。
 LECTURE = {

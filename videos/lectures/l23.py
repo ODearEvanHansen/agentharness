@@ -1,6 +1,6 @@
 # 第 23 讲：推理性能估算。框架参照 Harvard CS2680 第 9 讲（系统算账表）与第 10 讲 2a/2b（GPU 入门：三种上限、kernel 时间、roofline、MBU/MFU），用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：作业四 E2 的 agent 式请求——4632 token 的提示 + 生成回答，Qwen3-8B Q4_K_M（5.02 GB），在课程机 Xeon Gold 6354 上。
-# 数据：/opt/data/docs/cs2680/exp/roofline.md（videos/real/exp_roofline_*.jsonl，8 线程，CPU 16–31）；videos/real/a4_E2.json、a4_E5.json（16 线程）。
+# 数据：课程内部实验记录（videos/real/exp_roofline_*.jsonl，8 线程，CPU 16–31）；videos/real/a4_E2.json、a4_E5.json（16 线程）。
 # 模型维度：GGUF 元数据（见第 22 讲，exp/tokenize_l22.txt）：36 层、8 个 KV 头、头维 128 → 144 KiB/token；参数 ≈ 8.2B。
 # GPU 数字（H200 4.8 TB/s、989 TFLOP/s、脊点 206、batch-1 decode 0.5%）引自哈佛 10_2a 幻灯片，只作概念对照，我们没有在 GPU 上测。
 LECTURE = {

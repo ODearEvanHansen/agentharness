@@ -3,7 +3,7 @@
 # 贯穿例子：django__django-15467 的 DSH 会话（14 步）。第 1 步 git status 结果 1596 字符、46 行是进度条。
 #   每步输入（未命中+命中）：第 1 步 920，第 10 步 8434，第 14 步 10982；合计命中 75008、未命中 6547、输出 4827。
 #   「第 10 步改写第 1 步结果」的代价为基于这些真实数字的估算：约 7500 token 由命中变未命中，约 0.015 元（全题约 0.055 元）。
-# 其他数据：/opt/data/docs/dsh-m0-report.md 第 5 步（SWE 20 题每题输入 703k / 415k，命中率 97.0% / 95.8%）；
+# 其他数据：课程内部实验记录 第 5 步（SWE 20 题每题输入 703k / 415k，命中率 97.0% / 95.8%）；
 #   noagent_swe.jsonl（无 agent 每题输入约 13.6k）；assignment3/README.md（裁剪插件：小实验成本约 1/3，SWE 20 题几乎为零）。
 #   Context Rot（Chroma）与 Lost in the Middle（Liu 等，TACL 2024）为外部公开结果，转引自 CS2680 第 4 讲。
 # DSH 核对：packages/spill/spill-policy（maxInlineTokens，默认关闭；仅追加，不使缓存失效）；

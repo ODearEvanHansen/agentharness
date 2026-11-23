@@ -1,6 +1,6 @@
 # 第 20 讲：实验方法。框架参照 Harvard CS2680 作业复盘（feedback_assignment：好的迭代循环、叠加改动、单次噪声、并行会话互踩）与 notes/cost-effective-agents「公平成本实验」、notes/agent-evaluation「用轨迹做诊断」；用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：「给 agent 一份仓库笔记，能不能更省」——按实验设计从头做一遍（数据即第 11 讲 / A3 选做 L6 的那次对照）。
-# 数据：/opt/data/cache/scratch/dsh-course/memory/runs（base-r1/r2、mem-r1/r2，2026-11-22，deepseek-flash，sdk-minimal）：
+# 数据：课程内部实验记录（base-r1/r2、mem-r1/r2，2026-11-22，deepseek-flash，sdk-minimal）：
 #   基线两次：17/18 题，0.122/0.112 元/题；逐题配对：两次都解 17、只第二次解 1、都没解 2；同一题两次费用之比 0.47–3.23。
 #   笔记组：17/18 题，0.123/0.134 元/题。高峰/低峰：自写 loop 20 题 3.4 / 1.7 元。
 # pass@k、配对 bootstrap、评分器偏差等统计细节在第 16 讲，这里只引用。

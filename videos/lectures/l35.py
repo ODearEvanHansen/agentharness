@@ -3,8 +3,8 @@
 # 用我们自己的话和例子重讲，与该课程无关联。论文数字均为原论文公开数字，课程未复测。
 # 贯穿例子：sympy-18199 —— agent 的「复现」在改代码前就已返回正确结果，最后失败；
 #   ACE 的 Reflector 从这条轨迹里提炼出 playbook 条目 b07。
-# 数据：/opt/data/docs/cs2680/exp/ace.md；videos/real/exp_ace_train.jsonl；
-#   运行目录 /opt/data/cache/scratch/dsh-course/exp/ace/（ace.py、playbook_v1/v2.json、reflections_v2.json、leakcheck.txt）。
+# 数据：课程内部实验记录；videos/real/exp_ace_train.jsonl；
+#   运行目录 课程内部实验记录（ace.py、playbook_v1/v2.json、reflections_v2.json、leakcheck.txt）。
 # 训练批 1/4 → 2/4 → 2/4 是噪声级；充值后补跑留出集 5 题 × 1 次：ACE v3 3/5、无手册 3/5，ACE 步数和成本约少三成，只看方向。
 # 机制：playbook 由 assignment3/templates/memory-notes.ts 的副本以 mode=prefix 注入系统提示（第 11 讲同一插件）。
 LECTURE = {

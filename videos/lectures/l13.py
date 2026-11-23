@@ -1,6 +1,6 @@
 # 第 13 讲：可靠性。框架参照 Harvard CS2680 第 6 讲（6_agent_design_3）可靠性部分的公开幻灯片（用我们自己的话和例子重讲，与该课程无关联）。
 # 贯穿例子：同一道 SWE bench 修 bug 题，故障注入插件让 bash/read/edit 以概率 p 失败——agent 会崩吗？
-# 数据：/opt/data/docs/cs2680/exp/reliability.md；videos/real/exp_reliability_compounding_rows.jsonl（120 次运行、2837 次工具调用）、
+# 数据：课程内部实验记录；videos/real/exp_reliability_compounding_rows.jsonl（120 次运行、2837 次工具调用）、
 #   exp_reliability_fault_rows.jsonl（4 组 × 8 题，每组只跑 1 次；silent 组充值后补跑 4 题 × 1 次：4/4 解出，步数 +90%，成本 +50%）。
 # DSH 机制核对：dsh v0.2.2-rc.2 packages/fs/fs-observation-policy（FS_NOT_OBSERVED / FS_STALE_VERSION）、fs-local（版本令牌、单目标锁）、
 #   shell/bash-local（timeoutMs 默认 120000、maxTimeoutMs 600000；非零退出与超时作为描述性结果返回）、tool-subagent-control wait_agent timeout_ms。

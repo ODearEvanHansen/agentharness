@@ -2,8 +2,8 @@
 # （调度、命中 vs 公平）与课表「高效 agent 系统：调度与前缀缓存」阅读（Parrot、Agentix、Ayo、Agentic AI Workload
 # Characteristics、SGLang/RadixAttention、Marconi），用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：一道 SWE-bench 题，DSH sdk-minimal 用 deepseek-flash 解（dsh-m0-report.md 的 20 题统计）。
-# 数据：/opt/data/docs/dsh-m0-report.md；videos/real/a4_E1.json、a4_E2.json、noagent_swe.jsonl、hard_set_runs.txt；
-#       /opt/data/docs/cs2680/exp/chunked.md；assignment5/README.md。
+# 数据：课程内部实验记录；videos/real/a4_E1.json、a4_E2.json、noagent_swe.jsonl、hard_set_runs.txt；
+#       课程内部实验记录；assignment5/README.md。
 LECTURE = {
     "id": "l33", "no": 33, "title": "系统级优化", "subtitle": "从 agent 负载出发：调度、缓存与三指标取舍",
     "scenes": [

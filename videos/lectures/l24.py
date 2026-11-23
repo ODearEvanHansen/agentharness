@@ -1,7 +1,7 @@
 # 第 24 讲：本地模型。剖析方法论（先看时间线、再看单算子、改一处再测）参照 Harvard CS2680 第 10 讲 2b 公开幻灯片，用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：作业四 L1——把本地模型接到 DSH，agent 只回一句 "Hello! How can I assist you today?"（原因不讲，作业里查）。
 # 数据：assignment4/README.md（L1、硬件表、R1-Distill 30 次 0 工具调用）；docs/setup-local.md（KV 公式、OOM、静默退回云端、/health）；
-#       /opt/data/docs/cs2680/exp/timings_l24.txt（2026-11-23 实测，llama-server 4783b11，Qwen3-8B Q4，-t 8 -c 4096 -np 1）；GGUF 元数据见 exp/tokenize_l22.txt。
+#       课程内部实验记录（2026-11-23 实测，llama-server 4783b11，Qwen3-8B Q4，-t 8 -c 4096 -np 1）；GGUF 元数据见 exp/tokenize_l22.txt。
 LECTURE = {
     'id': 'l24',
     'no': 24,

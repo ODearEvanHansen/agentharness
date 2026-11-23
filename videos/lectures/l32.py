@@ -1,7 +1,7 @@
 # 第 32 讲：路由与负载均衡。框架参照 Harvard CS2680 第 11 讲（LLM 服务为何不同于 web 服务）与
 # 课表「高效 agent 系统：路由与负载均衡」阅读（Preble、Llumnix、RouteLLM），用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：三个 agent 会话、每个四轮，打到两台 llama-server 上（本讲实验）；再上升到「主 agent 云端、子 agent 本地」。
-# 数据：videos/real/exp_routing_results.jsonl + /opt/data/docs/cs2680/exp/routing.md（Xeon 6354，Qwen3-8B Q4_K_M）；
+# 数据：videos/real/exp_routing_results.jsonl + 课程内部实验记录（Xeon 6354，Qwen3-8B Q4_K_M）；
 #       assignment5/README.md（8 题路由对照）。DSH：packages/subagent/tool-subagent/README.md @ dsh-v0.2.2-rc.2。
 LECTURE = {
     "id": "l32", "no": 32, "title": "路由与负载均衡", "subtitle": "请求该去哪台机器、哪个模型：缓存感知路由实测",

@@ -1,6 +1,6 @@
 # 第 25 讲：批处理与调度。框架参照 Harvard CS2680 第 11 讲公开幻灯片（LLM 服务为何特殊、指标时间线、goodput、吞吐-交互性、四个评测陷阱、选择性批、prefill/decode 优先、分块预填充），用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：exp_chunked——请求 A 正在流式解码，第 6 秒来了 1208 token 长提示的请求 B（Qwen3-8B Q4，llama-server -np 2）。
-# 数据：/opt/data/docs/cs2680/exp/chunked.md（videos/real/exp_chunked_results.jsonl）；/opt/data/docs/cs2680/exp/batched_l25.txt（2026-11-23 llama-batched-bench）；
+# 数据：课程内部实验记录（videos/real/exp_chunked_results.jsonl）；课程内部实验记录（2026-11-23 llama-batched-bench）；
 #       videos/real/a4_E1.json；assignment4/README.md M2（miniengine 静态/连续批）。PD 分离只点名，概念讲在第 31 讲；FCFS/SJF 只讲直觉。
 LECTURE = {
     'id': 'l25',

@@ -2,7 +2,7 @@
 # （pass@k vs pass^k 与无偏估计、agent harness 与 evaluation harness 分离、评分器三类及偏差、
 #  每次成功成本、配对比较与配对 bootstrap、为自己的 agent 设计评测与报告清单）；用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：scikit-learn-14629 —— DSH 同一配置跑 5 次，成功 3 次（失败/成/成/成/失败），恰好是讲义里的 3/5 例子。
-# 数据：/opt/data/docs/cs2680/exp/passk.md；videos/real/exp_passk_runs.jsonl（50 次尝试）、exp_passk_results.jsonl；
+# 数据：课程内部实验记录；videos/real/exp_passk_runs.jsonl（50 次尝试）、exp_passk_results.jsonl；
 #   M0 单次报告 exp/passk/{dsh,loop}_m0_all.report.json（这 10 题上 miniLoop 成 8、DSH 成 4）。
 # 泄漏四层与基准地图在第 15 讲，这里只回指。
 LECTURE = {

@@ -1,6 +1,6 @@
 # 第 22 讲：LLM 内部。框架参照 Harvard CS2680 第 9 讲公开幻灯片（LLM 入门：请求生命周期、Transformer、注意力、GQA/MLA），用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：第 11 讲那句「本地推理服务从 Ollama 换成 llama-server 了」，送进 Qwen3-8B 走一遍。
-# 数据：/opt/data/docs/cs2680/exp/tokenize_l22.txt（2026-11-23，llama-server 4783b11 /tokenize，Qwen3 分词器；GGUF 元数据直接读 header）。
+# 数据：课程内部实验记录（2026-11-23，llama-server 4783b11 /tokenize，Qwen3 分词器；GGUF 元数据直接读 header）。
 # 参数量按 GGUF 元数据推算：每层注意力 4096·4096·2 + 4096·1024·2 ≈ 41.9M，FFN 3·4096·12288 ≈ 151M（≈78%）；嵌入+输出 151936·4096·2 ≈ 1.24B。
 # 哈佛/论文数字（Llama 3 70B 690GB、320KB、DeepSeek-V2 MLA −93%/5.8×）只作量级参考，口播注明出处。
 LECTURE = {

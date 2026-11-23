@@ -2,7 +2,7 @@
 # shell 四属性与执行工具五要点、五种常用附加工具、五条最佳实践、SWE-agent ACI 消融），用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：django__django-15467（issue 写着 options.py 第 234 行；实际代码在第 272 行）。
 # 数据：DSH 会话日志 dsh-course-a2-dsh-django_1776_django-15467-98b13e（第 1 步 grep 命中 272 行；第 1 步工具结果 1596 字符里 46 行是 git 进度条）；
-#   /opt/data/docs/dsh-m0-report.md 第 3 步（小题请求数 4.9 vs 2.3）、第 5 步（SWE 20 题 32.0 vs 21.9 请求，18/20 vs 17/20）；
+#   课程内部实验记录 第 3 步（小题请求数 4.9 vs 2.3）、第 5 步（SWE 20 题 32.0 vs 21.9 请求，18/20 vs 17/20）；
 #   videos/real/noagent_swe.jsonl（无 agent 14/20，每题 0.16 元）。SWE-agent 数字为外部论文结果（GPT-4），转引自 CS2680 第 4 讲。
 # DSH 核对：docs/tool-catalog.zh.md（grep 最多 250 条、glob 100 条并保存全表；edit 的 old_string 须恰好一次/replace_all；apply_patch；
 #   bash：tail 截断+全文落盘、timeoutMs 到期转后台、沙箱拒绝勿重试；ask_user_question）；packages/lsp/tool-lsp（只读，需自配语言服务器）；
