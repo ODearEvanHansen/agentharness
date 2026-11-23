@@ -30,7 +30,7 @@
 |  | L18 | 插件开发 | 插件与钩子概念（扩展机制地图回指第 4 讲）；loop 上的插口位置（pre-step、request-error、pre/post-execute、turn-stopping）；挂载点→典型用途；最小插件；护栏插件（PreToolDecision 四种决定）；waterfall 规则；patch 加载与绝对路径；用基线验证护栏：注入 5/21→5/21→0/21，误拦 4 次，费用 0.16→0.21 元；好插件标准 | DSH docs/user/develop/basic、docs/subsystems/tools.md、docs/subsystems/core.md；assignment3/README.md 选做 L5；第 4 讲扩展机制地图 | **A2 截止 · 发布 A3** |
 |  | L19 | 成本与速度 | 每次成功成本为北极星（含失败试次，0.144 元/成功）；六因子成本拆解；减轮次、减步数（并行读取实测仅 1/458 步）、真的需要 LLM 吗；输出才是大头（约 2% token 花 57% 钱）、输出约束与自适应推理强度；单价：缓存、低峰、三种路由；每项节省的反成本（本地路由、无 agent、笔记实测）；预算=成功试次 p95×2 与停滞即停；关键路径与工具时间（43%/60%）；编排提速四法；推测动作；单体/模块化/微内核与 DSH 的位置（一切皆插件、只追加日志、STALE 编辑检查、外部 harness 子 agent） | Harvard CS2680 第 8 讲幻灯片与 notes/cost-effective-agents；AI Agents That Matter；DSH README（everything-is-a-plugin）、agent-loop README |  |
 | 8 | L20 | 实验方法 | 对照实验概念；六步迭代循环（先写预测、一次一改、无效即删）；基线阶梯（无 agent→默认→重跑→简单替代方案）；同配置两次的噪声（17/18 题，单题费用比 0.47–3.23）；逐题配对（回指第 16 讲 bootstrap）；事先定判断规则、不显著≠等价；统一计价与失败计入成本；运行卫生（输出目录、worktree、计时不干扰）；用轨迹做诊断与受控干预；报告清单 | Harvard CS2680 作业复盘（feedback_assignment）、notes/cost-effective-agents「公平成本实验」、notes/agent-evaluation「用轨迹决定改什么」；assignment3/README.md 方法要求 | **发布期末项目指南** |
-|  | L21 | 案例：工具输出裁剪 | 工具输出裁剪的想法与基线；动手前先算上限（未命中输入只占 0.72/2.44 元）；waterfall 实现；小实验成本降到约 1/3；SWE 20 题 17 题 2.27 元，落在两次基线 2.24–2.44 元之间；旧解释被会话日志推翻（27% 结果被裁剪、bash 上限 16,000 字符）；真正原因：省的是命中缓存的部分、模型本就会精确查看、输出是大头；找最贵路径表；四条教训与后续可检验假设 | assignment3/templates/trim-tool-output.ts；Harvard CS2680 第 8 讲（反成本、优化循环）与 notes/cost-effective-agents「Find the expensive path」；DSH tool-bash-persistent README |  |
+|  | L21 | 案例：工具输出裁剪 | 工具输出裁剪的想法与基线；动手前先算上限（按命中/未命中/输出拆账单）；waterfall 实现；小实验成本降到约 1/3；SWE 20 题 17 题 2.27 元，落在两次基线 2.24–2.44 元之间；第一版解释未查日志而被推翻（方法教训）；该查的五个日志问题（作业三 L2 由学员自己找原因）；找最贵路径表；教训与反成本 | assignment3/templates/trim-tool-output.ts；Harvard CS2680 第 8 讲（反成本、优化循环）与 notes/cost-effective-agents「Find the expensive path」；DSH tool-bash-persistent README |  |
 | 9 | L22 | LLM 内部：一句话在模型里走一遍 | 请求六阶段（分词→调度→预填充→解码→反分词→流式）；字节级 BPE 与 token 计费；采样参数与停止条件；Transformer 块（嵌入、RMSNorm、残差、注意力、SwiGLU 前馈、输出层）；Q/K/V 与因果掩码；注意力 O(n²) 与 FlashAttention；多头、GQA/MQA、KV 公式；MLA、滑动窗口、稀疏/线性注意力；参数分布与 2N FLOP/token | Harvard CS2680 L9 幻灯片（LLM 入门）；Vaswani et al. 2017《Attention Is All You Need》；Dao et al. 2022 FlashAttention；Ainslie et al. 2023 GQA；DeepSeek-V2 技术报告（MLA） |  |
 |  | L23 | 推理性能估算：动手之前先算账 | 三种上限（算力/带宽/容量）；kernel 时间 ≈ max(字节÷带宽, 运算÷算力)；算术强度与脊点；预填充估算（2N FLOP/token）与解码上限（带宽÷(权重+KV)）；CPU roofline 实测；线程扩展；KV 随上下文增长；CPU vs GPU（H200）概念对照；MBU/MFU | Harvard CS2680 L10a/10b 幻灯片（GPU 入门）；Williams et al. 2009 Roofline；课程 exp/roofline.md；作业四 E2/E5 | **发布 A4**（每个实验标注了学完哪一讲再做） |
 |  | L24 | 本地模型：跑起来，再证明它真在干活 | 本地推理的得失；Ollama vs llama-server；GGUF 与元数据；内存估算（权重 + 144 KiB×-c）与 OOM；静默失败（含静默退回云端）；就绪看 /health；读日志与 timings 对账；剖析方法：时间线→单点→假设→改一处再测；会推理≠会用工具 | docs/setup-local.md 第一、三部分；assignment4/README.md L1；llama.cpp server README；Harvard CS2680 L10b 剖析方法部分 |  |
@@ -80,9 +80,9 @@
 | 只想做 | 需要的作业部分 | 建议看的讲次 |
 |---|---|---|
 | 只做 A1（看清 agent） | A0 | L1、L2、L4、L5 |
-| 只做 A2（写 agent loop） | A0 | L1、L2、L7–L9、L14、L15 |
+| 只做 A2（写 agent loop） | A0 | L1、L2、L7–L9、L14–L16 |
 | 只做 A3（优化 DSH） | A0；A2 README 的\"准备\"和\"在容器里跑小题\"两节（学会用运行器跑题） | L1、L2、L4、L5、L10、L11、L14、L15、L17–L21 |
-| 只做 A4（本地推理） | A0 关卡 1–2 | L23–L30 |
+| 只做 A4（本地推理） | A0 关卡 1–2 | L22–L30 |
 | 只做 A5（全栈） | A0；A4 的 L1（Ollama 接入 DSH），内存不足 32GB 时改用 A5 提供的本地基线 | L4、L5、L12、L23、L24、L32、L33 |
 
 ## 评分权重（用于自评，不计学分）
