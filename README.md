@@ -12,7 +12,17 @@
 
 课程结构参考了 Harvard [CS2680 Modern AI Systems](https://cs2680.seas.harvard.edu/)，在此致谢。本课程的讲义、作业和代码均为独立编写，**与哈佛大学及 CS2680 课程团队没有任何关联，也未获其背书**。本课程为非官方课程，与 DeepSeek 官方亦无关联；作业二的 miniLoop 等名称均为本课程自拟。
 
-## 学员需要准备
+## 15 分钟上手（不需要 Docker，支持 macOS）
+
+```bash
+git clone https://github.com/ODearEvanHansen/agentharness && cd agentharness
+export DEEPSEEK_API_KEY=sk-...
+python3 quickstart/quickstart.py
+```
+
+一个约 150 行、只用标准库的 coding agent，在 3 道小题上跑完，打印你的解决率和花费（通常几分钱）。说明见 [quickstart/README.md](quickstart/README.md)。
+
+## 学员需要准备（完整课程）
 
 - x86_64 Linux，或 Windows + WSL2，**不支持 macOS**；100GB 磁盘；Docker。
 - 内存：16GB 可以完成 A0–A3 和 A4 的 8B 实验；A4 L3 和 A5 需要 32GB（内存不足的学员，A5 可以使用课程提供的本地基线）。

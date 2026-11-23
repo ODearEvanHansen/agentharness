@@ -3,6 +3,14 @@
 
 **基于 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的中文公开课：把一个编码 agent 从上到下拆开，看清它、写出它、优化它，再亲手部署它背后的推理服务。**
 
+!!! tip "15 分钟上手：不需要 Docker，支持 macOS"
+    ```bash
+    git clone https://github.com/ODearEvanHansen/agentharness && cd agentharness
+    export DEEPSEEK_API_KEY=sk-...
+    python3 quickstart/quickstart.py
+    ```
+    一个约 150 行、只用标准库的 coding agent，在 3 道小题上跑完，打印你的解决率和花费（通常几分钱）。[说明](https://github.com/ODearEvanHansen/agentharness/tree/main/quickstart)
+
 <div class="grid cards" markdown>
 
 - :material-eye-outline: **观察**
