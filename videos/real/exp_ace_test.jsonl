@@ -1,0 +1,10 @@
+{"arm": "ace_v3", "id": "django__django-15268", "resolved": true, "steps": 22, "cny": 0.143649, "seconds": 108.7, "empty_patch": false}
+{"arm": "ace_v3", "id": "django__django-12325", "resolved": false, "steps": 26, "cny": 0.134287, "seconds": 109.9, "empty_patch": false}
+{"arm": "ace_v3", "id": "pytest-dev__pytest-10356", "resolved": true, "steps": 22, "cny": 0.098306, "seconds": 81.0, "empty_patch": false}
+{"arm": "ace_v3", "id": "pydata__xarray-6992", "resolved": false, "steps": 15, "cny": 0.070539, "seconds": 64.6, "empty_patch": false}
+{"arm": "ace_v3", "id": "django__django-14007", "resolved": true, "steps": 28, "cny": 0.123299, "seconds": 403.3, "empty_patch": false}
+{"arm": "nobook", "id": "django__django-14007", "resolved": true, "steps": 29, "cny": 0.127884, "seconds": 86.7, "empty_patch": false}
+{"arm": "nobook", "id": "django__django-15268", "resolved": true, "steps": 23, "cny": 0.146811, "seconds": 431.2, "empty_patch": false}
+{"arm": "nobook", "id": "django__django-12325", "resolved": true, "steps": 44, "cny": 0.188836, "seconds": 456.2, "empty_patch": false}
+{"arm": "nobook", "id": "pytest-dev__pytest-10356", "resolved": false, "steps": 29, "cny": 0.177983, "seconds": 151.2, "empty_patch": false}
+{"arm": "nobook", "id": "pydata__xarray-6992", "resolved": false, "steps": 31, "cny": 0.152259, "seconds": 116.8, "empty_patch": false}
