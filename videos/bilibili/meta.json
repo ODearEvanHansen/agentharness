@@ -27,9 +27,9 @@
    "file": "videos/out/l01.mp4",
    "tid": 208,
    "highlights": [
-    "一个 agent 到底由哪几样东西组成，这门课五个部分怎么学",
-    "试做实测：不用 agent 只解出20题中14道，自写 loop 解出18道",
-    "看完能备好电脑、Docker 和专用 key，避开日志上传等隐私坑"
+    "同一模型：直接问 14/20，DSH 17/20",
+    "DSH 每道成功任务约 0.14 元，直接问约 0.23 元",
+    "难题集每道成功约 0.6 元，是原题集三到四倍"
    ]
   },
   {
@@ -58,9 +58,9 @@
    "file": "videos/out/l02.mp4",
    "tid": 208,
    "highlights": [
-    "驱动所有 agent 的 DeepSeek API，请求、工具调用和计费怎么回事",
-    "同一段输入，命中缓存每百万 token 0.04元，未命中要2元",
-    "看完能手写约20行的最小 agent 循环，并避开思考模式的400错误"
+    "django 题 14 次请求，输入从 920 涨到近 1.1 万",
+    "命中率 92%：0.055 元，全不命中要 0.20 元",
+    "命中与未命中差五十倍，开头写时间则全部零命中"
    ]
   },
   {
@@ -87,12 +87,16 @@
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l03/",
    "file": "videos/out/l03.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "一句话展开成 14 次模型调用、13 次工具执行",
+    "tail -20 截掉测试结果，模型仍判定「OK」",
+    "并行买墙钟时间不买质量；每会话一个 worktree"
+   ]
   },
   {
    "id": "l04",
    "no": 4,
-   "title": "【AgentHarness 第4讲】DSH 导论",
+   "title": "【AgentHarness 第4讲】DSH 架构与扩展机制",
    "desc": "本讲：DSH 导论——Cordis 插件架构、profile 与 patch、SDK 与运行时。服务作业 A1。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l04/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -110,20 +114,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第4讲\nDSH 导论",
+   "cover_text": "第4讲\nDSH 架构与扩展机制",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l04/",
    "file": "videos/out/l04.mp4",
    "tid": 208,
    "highlights": [
-    "工业级框架 DSH 由什么搭成，怎样不改源码就改变它的行为",
-    "连 sdk-minimal 默认也会上传会话日志，一个四行补丁即可关掉",
-    "看完能装好 SDK、选对 profile，在容器里正常跑起 DSH"
+    "DSH 是微内核：连 agent loop 也是插件",
+    "skill 管怎么做，MCP 管触达，hook 管时刻",
+    "skill 是建议，hook 是保证"
    ]
   },
   {
    "id": "l05",
    "no": 5,
-   "title": "【AgentHarness 第5讲】事件与会话日志",
+   "title": "【AgentHarness 第5讲】观测：事件、日志与成本",
    "desc": "本讲：事件与会话日志——turn、step、tool 事件，会话日志 v4 与用量字段。服务作业 A1。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l05/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -141,14 +145,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第5讲\n事件与会话日志",
+   "cover_text": "第5讲\n观测：事件、日志与成本",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l05/",
    "file": "videos/out/l05.mp4",
    "tid": 208,
    "highlights": [
-    "agent 运行时留下哪些记录，花了多少钱该去哪里查",
-    "三轮对话五次请求，从日志算出命中率62%，花费约半分钱",
-    "看完能读懂事件流与会话日志，算出含子 agent 的完整成本"
+    "django 题：等模型 39.4 秒，跑工具仅 4.8 秒",
+    "最贵一步输出 1102 token，约 0.0098 元",
+    "成本 = 根会话 + 所有子会话"
    ]
   },
   {
@@ -175,7 +179,11 @@
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l06/",
    "file": "videos/out/l06.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "直接问模型：平均每题输出 1.65 万 token",
+    "20 题里 5 题思考写满上限，没给答案",
+    "工具描述不同，同 8 题请求数 4.9 对 2.3"
+   ]
   },
   {
    "id": "l07",
@@ -203,9 +211,9 @@
    "file": "videos/out/l07.mp4",
    "tid": 208,
    "highlights": [
-    "agent loop 每一步内部到底发生了什么，为何影响成本",
-    "8道小题 loop 全解约0.057元，不给工具一次作答0.03元也全对",
-    "看完能照着四个阶段写出自己的主循环，并正确处理工具报错"
+    "例题 14 步修好，输入约九成二命中缓存",
+    "同题：无 agent 0.126 元，DSH 0.053 元",
+    "小题一次作答 0.03 元也全对：小题不需 agent"
    ]
   },
   {
@@ -234,9 +242,9 @@
    "file": "videos/out/l08.mp4",
    "tid": 208,
    "highlights": [
-    "用户取消、请求失败、多个工具并发时，agent loop 怎么不出错",
-    "少回填一条工具结果，下一次请求就直接返回400",
-    "看完能写出保持历史合法的恢复逻辑，并理解并行调用的屏障"
+    "难题集：自写 loop 10 题撞 60 次请求上限",
+    "重复调用第三、五、八次提醒，只提醒不强停",
+    "「结果未知」防止对同一文件改两遍"
    ]
   },
   {
@@ -265,15 +273,15 @@
    "file": "videos/out/l09.mp4",
    "tid": 208,
    "highlights": [
-    "同一个模型换一套工具，为什么步数和花费会差很多",
-    "8道小题自写 loop 平均4.9次请求，DSH 只要2.3次",
-    "看完能设计粒度合适、失败时会提示模型的编辑与运行工具"
+    "issue 写第 234 行，grep 发现实际在 272 行",
+    "同 8 题：每题请求 4.9 降到 2.3，全都解出",
+    "SWE-agent 消融：专用接口 18.0%，只给 shell 11.0%"
    ]
   },
   {
    "id": "l10",
    "no": 10,
-   "title": "【AgentHarness 第10讲】上下文工程",
+   "title": "【AgentHarness 第10讲】上下文管理",
    "desc": "本讲：上下文工程——系统提示、压缩、工具结果裁剪：token 都花在了哪里。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l10/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -291,14 +299,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第10讲\n上下文工程",
+   "cover_text": "第10讲\n上下文管理",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l10/",
    "file": "videos/out/l10.mp4",
    "tid": 208,
    "highlights": [
-    "agent 的 token 到底花在哪里，上下文该怎么管",
-    "无 agent 每题输入约1.4万 token，loop约70万，DSH 41万",
-    "看完能判断提示、工具输出裁剪和压缩各自值不值得做"
+    "例题输入从第一步约 900 涨到约 1.1 万 token",
+    "第十步才删进度条：多花约 0.015 元",
+    "准入外置不伤缓存，变换压缩从改动处失效"
    ]
   },
   {
@@ -327,9 +335,9 @@
    "file": "videos/out/l11.mp4",
    "tid": 208,
    "highlights": [
-    "用一句「换成 llama-server 了」走完一条记忆的六个决定",
-    "过期、注入、泄题：记忆常见的坏法，以及怎么评估",
-    "实测：给著名仓库写通用笔记，解题数和费用都没变"
+    "给仓库笔记：两组都解出 17、18 题，没测出收益",
+    "django 题六次里六次自己就用了 runtests.py",
+    "记忆要带有效时间和出处，遗忘要专门设计"
    ]
   },
   {
@@ -392,7 +400,7 @@
   {
    "id": "l14",
    "no": 14,
-   "title": "【AgentHarness 第14讲】评测基础设施",
+   "title": "【AgentHarness 第14讲】沙箱与评测基础设施",
    "desc": "本讲：评测基础设施——容器隔离、出网白名单、镜像分发与可复现性。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l14/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -410,20 +418,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第14讲\n评测基础设施",
+   "cover_text": "第14讲\n沙箱与评测基础设施",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l14/",
    "file": "videos/out/l14.mp4",
    "tid": 208,
    "highlights": [
-    "怎样让 agent 安全地执行命令，评测结果又能被别人复现",
-    "20题镜像约60GB，改从 GHCR 拉取后重评，18道与17道一题不差",
-    "看完能搭出只放行 DeepSeek 的容器网络，并知道它的盲区"
+    "被测者碰不到评分：隐藏测试、只读挂载、拒绝符号链接",
+    "一题一容器断网，只放行 DeepSeek；GHCR 重评 18/17 一致",
+    "同机沙箱挡误操作；风险越高，隔离边界越往外推"
    ]
   },
   {
    "id": "l15",
    "no": 15,
-   "title": "【AgentHarness 第15讲】评测",
+   "title": "【AgentHarness 第15讲】评测 I：SWE-bench",
    "desc": "本讲：评测——SWE-bench、Verified 子集、官方 harness、数据污染与难题集。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l15/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -441,14 +449,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第15讲\n评测",
+   "cover_text": "第15讲\n评测 I：SWE-bench",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l15/",
    "file": "videos/out/l15.mp4",
    "tid": 208,
    "highlights": [
-    "怎样可信地衡量一个编码 agent，高分背后可能藏着什么",
-    "无 agent 已解14/20，agent 18比17近饱和，难题集降到10比8",
-    "看完能用官方 harness 跑 SWE-bench 并读懂分数的含义"
+    "同一道题两次运行：0.065 元 vs 0.020 元，费用差三倍",
+    "原 20 题已饱和：无 agent 14、loop 18、DSH 17",
+    "四层泄漏：训练、运行时、环境、对测试集过拟合"
    ]
   },
   {
@@ -480,7 +488,7 @@
   {
    "id": "l17",
    "no": 17,
-   "title": "【AgentHarness 第17讲】前缀缓存与 request series",
+   "title": "【AgentHarness 第17讲】前缀缓存与 DSH",
    "desc": "本讲：前缀缓存与 request series——追加还是改写？“每一步都写入当前时间”的代价。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l17/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -498,14 +506,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第17讲\n前缀缓存与 request series",
+   "cover_text": "第17讲\n前缀缓存与 DSH",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l17/",
    "file": "videos/out/l17.mp4",
    "tid": 208,
    "highlights": [
-    "为什么只是在提示里写个时间，就能让成本翻好几倍",
-    "DSH 20题实花2.4元；若完全不命中缓存，约需18元",
-    "看完能把会变的信息放对位置，让 agent 稳定命中缓存"
+    "20 题命中率 95.8%，无缓存估算贵七倍多",
+    "1869 次请求的命中数全是 128 的整数倍",
+    "缓存保住后，输出占了近六成费用"
    ]
   },
   {
@@ -534,15 +542,15 @@
    "file": "videos/out/l18.mp4",
    "tid": 208,
    "highlights": [
-    "不改 DSH 一行源码，如何用插件改变 agent 的行为",
-    "插件是单个 .ts 文件，在 patch 里写绝对路径即可免编译加载",
-    "看完能写出第一个钩子插件，避开 waterfall 漏调 next 的坑"
+    "只查命令文本的护栏：注入 5/21，一次没拦住",
+    "扫描脚本内容后注入降到 0/21，代价 4 次误拦",
+    "费用 0.16→0.21 元：收益和代价要一起报告"
    ]
   },
   {
    "id": "l19",
    "no": 19,
-   "title": "【AgentHarness 第19讲】成本与可靠性",
+   "title": "【AgentHarness 第19讲】成本与速度",
    "desc": "本讲：成本与可靠性——重试策略、预算控制、模型选择。服务作业 A3。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l19/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -560,14 +568,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第19讲\n成本与可靠性",
+   "cover_text": "第19讲\n成本与速度",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l19/",
    "file": "videos/out/l19.mp4",
    "tid": 208,
    "highlights": [
-    "agent 跑几十步，怎样既不被偶发失败打断，也不超出预算",
-    "实测最贵的一题是均值的两倍多，DSH 均价0.12元而最贵0.29元",
-    "看完能设计重试与预算上限，并在 flash 与 pro 之间做选择"
+    "约 2% 的输出 token，花掉了 57% 的钱",
+    "预算按成功试次 p95 两倍：约 100 次请求、0.66 元",
+    "工具时间占四到六成：先测工具，再调模型"
    ]
   },
   {
@@ -596,15 +604,15 @@
    "file": "videos/out/l20.mp4",
    "tid": 208,
    "highlights": [
-    "agent 每次运行都不一样，怎样证明一个优化真的有效",
-    "同一 loop 跑20题，高峰价3.4元、低峰价1.7元，时段就差一倍",
-    "看完能设计只改一个变量、可量化噪声的对照实验"
+    "同一配置跑两次：17 和 18 题，单题费用差三倍",
+    "笔记组逐题配对：一进一出，净差为零",
+    "先写预测和判断规则，再看结果"
    ]
   },
   {
    "id": "l21",
    "no": 21,
-   "title": "【AgentHarness 第21讲】课程团队方案复盘",
+   "title": "【AgentHarness 第21讲】案例：工具输出裁剪",
    "desc": "本讲：课程团队方案复盘——一个在小实验里有效、在真实任务上无效的插件。服务作业 A3/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l21/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -622,20 +630,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第21讲\n课程团队方案复盘",
+   "cover_text": "第21讲\n案例：工具输出裁剪",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l21/",
    "file": "videos/out/l21.mp4",
    "tid": 208,
    "highlights": [
-    "一个看似必然省钱的优化，放到真实任务上会怎样",
-    "小实验成本从0.017元降到0.006元，在20道真题上却几乎无变化",
-    "看完能用“先测问题频率”的思路，避免在无效优化上花力气"
+    "小实验成本降到约 1/3，SWE 20 题上测不出差别",
+    "日志推翻旧解释：约四分之一的工具结果被裁剪",
+    "省下的多是本来就命中缓存的便宜部分"
    ]
   },
   {
    "id": "l22",
    "no": 22,
-   "title": "【AgentHarness 第22讲】LLM 内部",
+   "title": "【AgentHarness 第22讲】LLM 内部：一句话在模型里走一遍",
    "desc": "本讲：LLM 内部——请求六阶段、Transformer 块、注意力与 FlashAttention、GQA/MLA。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l22/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -652,16 +660,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第22讲\nLLM 内部",
+   "cover_text": "第22讲\nLLM 内部：一句话在模型里走一遍",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l22/",
    "file": "videos/out/l22.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "一句话切成 15 个 token：Ollama 三段，「换」两段字节",
+    "Qwen3-8B 用 GQA：每 token KV 144 KiB",
+    "前馈占每层参数近八成，每 token 约 16 GFLOP"
+   ]
   },
   {
    "id": "l23",
    "no": 23,
-   "title": "【AgentHarness 第23讲】推理基础：预填充与解码",
+   "title": "【AgentHarness 第23讲】推理性能估算：动手之前先算账",
    "desc": "本讲：推理基础：预填充与解码——KV cache、算力瓶颈与访存瓶颈。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l23/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -679,20 +691,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第23讲\n推理基础：预填充与解码",
+   "cover_text": "第23讲\n推理性能估算：动手之前先算账",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l23/",
    "file": "videos/out/l23.mp4",
    "tid": 208,
    "highlights": [
-    "大模型生成文字时为什么“读”快“写”慢，瓶颈在哪里",
-    "8B Q4 在 CPU 上预填充约116 tok/s，解码只有约17 tok/s",
-    "看完能用内存带宽估出本机解码速度的上限"
+    "课程机脊点约 17：解码强度 2–3，预填充上千",
+    "8B Q4/Q8 解码速度比 1.71，字节比 1.73",
+    "解码 4→8 线程只涨 1.6 倍，预填充近线性"
    ]
   },
   {
    "id": "l24",
    "no": 24,
-   "title": "【AgentHarness 第24讲】本地推理入门：Ollama 与 llama.cpp",
+   "title": "【AgentHarness 第24讲】本地模型：跑起来，再证明它真在干活",
    "desc": "本讲：本地推理入门：Ollama 与 llama.cpp——GGUF 格式，以及静默失败的排查方法。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l24/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -710,20 +722,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第24讲\n本地推理入门：Ollama 与 llama.cpp",
+   "cover_text": "第24讲\n本地模型：跑起来，再证明它真在干活",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l24/",
    "file": "videos/out/l24.mp4",
    "tid": 208,
    "highlights": [
-    "本地跑模型怎么入门，服务不报错却结果不对时怎么查",
-    "接上 Ollama 后，agent 对任务视而不见，只回了一句打招呼",
-    "看完能用 Ollama 和 llama-server 跑起模型，并会读日志对账"
+    "-c 65536 光 KV 约 9 GB，8 GB 容器加载即被杀",
+    "timings 实测：第二次复用 22 token，只新算 1 个",
+    "R1 蒸馏 7B：30 次请求 0 次工具调用"
    ]
   },
   {
    "id": "l25",
    "no": 25,
-   "title": "【AgentHarness 第25讲】批处理与调度",
+   "title": "【AgentHarness 第25讲】批处理与调度：一个长提示卡住了谁",
    "desc": "本讲：批处理与调度——静态批、连续批与 -np 并发槽位。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l25/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -741,20 +753,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第25讲\n批处理与调度",
+   "cover_text": "第25讲\n批处理与调度：一个长提示卡住了谁",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l25/",
    "file": "videos/out/l25.mp4",
    "tid": 208,
    "highlights": [
-    "推理服务如何同时接待多个请求，吞吐和延迟怎么取舍",
-    "8B 模型从1个槽位到4个，吞吐16.6升到41.1 tok/s，延迟反降",
-    "看完能用 -np 配好并发槽位，判断 agent 能否吃满它"
+    "长提示插队：默认配置下解码中的请求卡了 19.2 秒",
+    "分块 128：最长卡顿降到 2.0 秒，64 时 TTFT 升到 24 秒",
+    "批 16 总吞吐 ×4.6，每人速度降到 3.4 tok/s"
    ]
   },
   {
    "id": "l26",
    "no": 26,
-   "title": "【AgentHarness 第26讲】前缀复用",
+   "title": "【AgentHarness 第26讲】服务端前缀缓存",
    "desc": "本讲：前缀复用——cache_prompt、RadixAttention，以及 agent 与推理服务的协同设计。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l26/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -772,20 +784,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第26讲\n前缀复用",
+   "cover_text": "第26讲\n服务端前缀缓存",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l26/",
    "file": "videos/out/l26.mp4",
    "tid": 208,
    "highlights": [
-    "推理服务端的前缀缓存怎样实现，agent 该如何配合",
-    "打开 cache_prompt 后，第二次请求预填充从约40秒降到半秒",
-    "看完能在本地验证缓存命中，并写出对缓存友好的 agent"
+    "开缓存后第二次预填充 40553 ms 降到 493 ms",
+    "块哈希按块查，基数树按 token 找最长前缀",
+    "命中率由 harness 决定：DSH 试做 95.8%"
    ]
   },
   {
    "id": "l27",
    "no": 27,
-   "title": "【AgentHarness 第27讲】显存与内存管理",
+   "title": "【AgentHarness 第27讲】KV 管理与压缩",
    "desc": "本讲：显存与内存管理——PagedAttention 与 KV 量化。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l27/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -803,14 +815,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第27讲\n显存与内存管理",
+   "cover_text": "第27讲\nKV 管理与压缩",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l27/",
    "file": "videos/out/l27.mp4",
    "tid": 208,
    "highlights": [
-    "KV cache 占的内存怎么管，量化它一定更省更快吗",
-    "手写引擎里分页把内存利用率从6.4%提到90.6%",
-    "看完能估算 KV cache 大小，并按瓶颈判断某个优化是否值得"
+    "公式算出 30B-A3B 的 KV 3072 MiB，与日志一致",
+    "分页把 KV 利用率从 6.4% 提到 90.6%",
+    "CPU 上 KV 量化省 2158 MB，速度反而变慢"
    ]
   },
   {
@@ -839,9 +851,9 @@
    "file": "videos/out/l28.mp4",
    "tid": 208,
    "highlights": [
-    "推测解码如何在不改输出的前提下加速，草稿该多长",
-    "草稿长度3提速到20.8 tok/s，长度16反降到11.6，比不用还慢",
-    "看完能在 llama-server 正确开启推测解码并估算加速比"
+    "改名任务：n-gram 推测快 3.38 倍，无需第二个模型",
+    "公式预测 k=8 产出 2.43，实测 2.23：偏乐观",
+    "写作任务上 0.6B 草稿 k=8 只剩 0.47 倍"
    ]
   },
   {
@@ -870,15 +882,15 @@
    "file": "videos/out/l29.mp4",
    "tid": 208,
    "highlights": [
-    "同一个模型的 Q4、Q8 等文件差在哪，该选哪个",
-    "8B 模型 Q4 仅约5GB，生成17 tok/s，比 Q8 的10.7快约四成",
-    "看完能按内存和速度挑量化档位，并知道质量要自己测"
+    "Q4 比 Q8 快 1.71 倍，正好接近字节比 1.73",
+    "困惑度差 0.43 小于误差 0.47：单看分不出",
+    "KL 配对：首选一致 91.8%，但最大偏差 5.8"
    ]
   },
   {
    "id": "l30",
    "no": 30,
-   "title": "【AgentHarness 第30讲】MoE：混合专家模型",
+   "title": "【AgentHarness 第30讲】MoE 与模型结构",
    "desc": "本讲：MoE：混合专家模型——激活参数和总参数，为什么 30B-A3B 生成快但占内存大。服务作业 A4。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l30/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -896,14 +908,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第30讲\nMoE：混合专家模型",
+   "cover_text": "第30讲\nMoE 与模型结构",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l30/",
    "file": "videos/out/l30.mp4",
    "tid": 208,
    "highlights": [
-    "为什么一个30B 的模型，生成反而比8B 还快",
-    "30B-A3B 生成约35.6 tok/s，约为8B 两倍，但权重有18.6GB",
-    "看完能读懂 MoE 模型名，判断自己的机器能否跑得动"
+    "30B-A3B：128 选 8 专家，激活约 3.35B",
+    "生成约为 8B 的 2 倍，但权重就要 18.6 GB",
+    "四槽位批处理：8B 约 2.5 倍，MoE 只有 1.8 倍"
    ]
   },
   {
@@ -930,12 +942,16 @@
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l31/",
    "file": "videos/out/l31.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "按层切到两台：7.98 → 7.38 tok/s，没有变快",
+    "张量并行每 token 传 3.9 MB，流水线只传 16 KB",
+    "搬 20 GB KV 走 IB 400 ms，不到预填充 4%"
+   ]
   },
   {
    "id": "l32",
    "no": 32,
-   "title": "【AgentHarness 第32讲】全栈：多模型路由",
+   "title": "【AgentHarness 第32讲】路由与负载均衡",
    "desc": "本讲：全栈：多模型路由——主 agent 用云端模型，子 agent 用本地模型。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l32/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -953,20 +969,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第32讲\n全栈：多模型路由",
+   "cover_text": "第32讲\n路由与负载均衡",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l32/",
    "file": "videos/out/l32.mp4",
    "tid": 208,
    "highlights": [
-    "能否把简单子任务交给本机模型，让云端少花钱",
-    "实测路由到本地30B-A3B，8题云端花费反从0.111涨到0.154元",
-    "看完能用 tool-subagent 接上本地子 agent，并识别隐性成本"
+    "前缀哈希命中 74.7%，轮询仅 0.5%",
+    "后续轮次首 token：1.37 秒 vs 33.1 秒",
+    "子 agent 路由到本地：云端 0.111→0.154 元"
    ]
   },
   {
    "id": "l33",
    "no": 33,
-   "title": "【AgentHarness 第33讲】全栈：系统级优化",
+   "title": "【AgentHarness 第33讲】系统级优化",
    "desc": "本讲：全栈：系统级优化——解决率、成本、耗时三者的取舍；排行榜方法论。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l33/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -984,20 +1000,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第33讲\n全栈：系统级优化",
+   "cover_text": "第33讲\n系统级优化",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l33/",
    "file": "videos/out/l33.mp4",
    "tid": 208,
    "highlights": [
-    "解决率、成本、耗时同时要比时，怎样取舍和排名才公平",
-    "20题解决率几乎相同，自写 loop 耗时中位数132秒，DSH 仅55秒",
-    "看完能用帕累托前沿比较方案，设计可比的排行榜"
+    "一道题 21.9 次请求，输入约为输出 48 倍",
+    "分块到 128：解码最长卡顿 19.2→2.0 秒",
+    "不用 agent 14/20 vs DSH 17/20 的取舍"
    ]
   },
   {
    "id": "l34",
    "no": 34,
-   "title": "【AgentHarness 第34讲】agent 安全：提示注入与防护",
+   "title": "【AgentHarness 第34讲】agent 安全",
    "desc": "本讲：agent 安全：提示注入与防护——间接注入、越界动作、pre-execute 防护插件的效果与误拦。服务作业 A3 选做 L5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l34/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -1016,14 +1032,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第34讲\nagent 安全：提示注入与防护",
+   "cover_text": "第34讲\nagent 安全",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l34/",
    "file": "videos/out/l34.mp4",
    "tid": 208,
    "highlights": [
-    "agent 读到的文件里藏着恶意指令时，会发生什么",
-    "文字注入15次全被识破，藏进脚本后6次中了5次",
-    "看完能写出执行前拦截的防护插件，并清楚它的代价和局限"
+    "藏进脚本的注入 6 次中 5 次",
+    "扫描脚本的拦截：0/21，误拦 4 次，费用 +30%",
+    "CaMeL：77% 可证安全 vs 无防御 84%"
    ]
   },
   {
@@ -1076,12 +1092,16 @@
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l36/",
    "file": "videos/out/l36.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "同一 agent：随机题 17/20，难题仅 8/20",
+    "每步 0.95，二十步后只剩约 36%",
+    "全课五部分，围绕每次成功的成本"
+   ]
   },
   {
    "id": "l37",
    "no": 37,
-   "title": "【AgentHarness 第37讲】期末项目答疑与展示安排",
+   "title": "【AgentHarness 第37讲】期末项目",
    "desc": "本讲：期末项目答疑与展示安排——复现要求、报告与展示形式。服务作业 A5/期末项目。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l37/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -1099,14 +1119,14 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第37讲\n期末项目答疑与展示安排",
+   "cover_text": "第37讲\n期末项目",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l37/",
    "file": "videos/out/l37.mp4",
    "tid": 208,
    "highlights": [
-    "期末项目怎么选题、怎样做到可复现，最后交什么",
-    "评分中实验设计占30%，可复现性与分析写作各占25%",
-    "看完能把一个大想法缩成可回答、可对照的项目题目"
+    "对照与复现合计占评分 55%",
+    "先写假设和“多大差别才算数”",
+    "一条命令在全新容器里重跑主实验"
    ]
   }
  ]

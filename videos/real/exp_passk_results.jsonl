@@ -1,0 +1,35 @@
+{"cfg": "dsh_k5", "tasks": 10, "runs": 5, "overall": {"pass@1": 0.48, "pass@2": 0.53, "pass@3": 0.56, "pass@4": 0.58, "pass@5": 0.6, "pass^1": 0.48, "pass^2": 0.43, "pass^3": 0.41, "pass^4": 0.4, "pass^5": 0.4}, "per_run_resolve_rate": [0.5, 0.5, 0.5, 0.5, 0.4], "per_run_sd": 0.0447, "tasks_always_pass": 4, "tasks_never_pass": 4, "tasks_flaky": 2, "total_cny": 7.0857, "successes": 24, "attempts": 50, "cny_per_success": 0.2952, "cny_per_attempt": 0.1417}
+{"cfg": "dsh_k5", "task": "django__django-12325", "n": 5, "c": 0, "pass_at": [0.0, 0.0, 0.0, 0.0, 0.0], "pass_pow": [0.0, 0.0, 0.0, 0.0, 0.0], "cny_mean": 0.1016}
+{"cfg": "dsh_k5", "task": "django__django-14007", "n": 5, "c": 5, "pass_at": [1.0, 1.0, 1.0, 1.0, 1.0], "pass_pow": [1.0, 1.0, 1.0, 1.0, 1.0], "cny_mean": 0.1333}
+{"cfg": "dsh_k5", "task": "django__django-15268", "n": 5, "c": 5, "pass_at": [1.0, 1.0, 1.0, 1.0, 1.0], "pass_pow": [1.0, 1.0, 1.0, 1.0, 1.0], "cny_mean": 0.1315}
+{"cfg": "dsh_k5", "task": "django__django-15467", "n": 5, "c": 5, "pass_at": [1.0, 1.0, 1.0, 1.0, 1.0], "pass_pow": [1.0, 1.0, 1.0, 1.0, 1.0], "cny_mean": 0.0442}
+{"cfg": "dsh_k5", "task": "matplotlib__matplotlib-20859", "n": 5, "c": 5, "pass_at": [1.0, 1.0, 1.0, 1.0, 1.0], "pass_pow": [1.0, 1.0, 1.0, 1.0, 1.0], "cny_mean": 0.0508}
+{"cfg": "dsh_k5", "task": "matplotlib__matplotlib-25479", "n": 5, "c": 0, "pass_at": [0.0, 0.0, 0.0, 0.0, 0.0], "pass_pow": [0.0, 0.0, 0.0, 0.0, 0.0], "cny_mean": 0.1966}
+{"cfg": "dsh_k5", "task": "pydata__xarray-6992", "n": 5, "c": 1, "pass_at": [0.19999999999999996, 0.4, 0.6, 0.8, 1.0], "pass_pow": [0.2, 0.0, 0.0, 0.0, 0.0], "cny_mean": 0.1763}
+{"cfg": "dsh_k5", "task": "pytest-dev__pytest-10356", "n": 5, "c": 0, "pass_at": [0.0, 0.0, 0.0, 0.0, 0.0], "pass_pow": [0.0, 0.0, 0.0, 0.0, 0.0], "cny_mean": 0.2204}
+{"cfg": "dsh_k5", "task": "scikit-learn__scikit-learn-14629", "n": 5, "c": 3, "pass_at": [0.6, 0.9, 1.0, 1.0, 1.0], "pass_pow": [0.6, 0.3, 0.1, 0.0, 0.0], "cny_mean": 0.0779}
+{"cfg": "dsh_k5", "task": "sympy__sympy-20438", "n": 5, "c": 0, "pass_at": [0.0, 0.0, 0.0, 0.0, 0.0], "pass_pow": [0.0, 0.0, 0.0, 0.0, 0.0], "cny_mean": 0.2845}
+{"cfg": "loop_m0_k1", "tasks": 10, "runs": 1, "overall": {"pass@1": 0.8, "pass^1": 0.8}, "per_run_resolve_rate": [0.8], "per_run_sd": null, "tasks_always_pass": 8, "tasks_never_pass": 2, "tasks_flaky": 0, "total_cny": null, "successes": 8, "attempts": 10, "cny_per_success": null, "cny_per_attempt": null}
+{"cfg": "loop_m0_k1", "task": "django__django-12325", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "django__django-14007", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "django__django-15268", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "django__django-15467", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "matplotlib__matplotlib-20859", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "matplotlib__matplotlib-25479", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "pydata__xarray-6992", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "pytest-dev__pytest-10356", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "scikit-learn__scikit-learn-14629", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "loop_m0_k1", "task": "sympy__sympy-20438", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "tasks": 10, "runs": 1, "overall": {"pass@1": 0.4, "pass^1": 0.4}, "per_run_resolve_rate": [0.4], "per_run_sd": null, "tasks_always_pass": 4, "tasks_never_pass": 6, "tasks_flaky": 0, "total_cny": null, "successes": 4, "attempts": 10, "cny_per_success": null, "cny_per_attempt": null}
+{"cfg": "dsh_m0_k1", "task": "django__django-12325", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "django__django-14007", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "django__django-15268", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "django__django-15467", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "matplotlib__matplotlib-20859", "n": 1, "c": 1, "pass_at": [1.0], "pass_pow": [1.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "matplotlib__matplotlib-25479", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "pydata__xarray-6992", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "pytest-dev__pytest-10356", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "scikit-learn__scikit-learn-14629", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"cfg": "dsh_m0_k1", "task": "sympy__sympy-20438", "n": 1, "c": 0, "pass_at": [0.0], "pass_pow": [0.0], "cny_mean": null}
+{"tasks": 10, "diff_pass1": -0.32, "ci95": [-0.6, -0.08], "P(boot diff<=0)": 1.0, "B": 10000, "compare": "dsh_k5 - loop_m0_k1"}
+{"tasks": 10, "diff_pass1": 0.08, "ci95": [0.0, 0.22], "P(boot diff<=0)": 0.1666, "B": 10000, "compare": "dsh_k5 - dsh_m0_k1"}
