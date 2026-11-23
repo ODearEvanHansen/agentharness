@@ -1,0 +1,8 @@
+{"model": "Qwen3-0.6B-Q4_K_M-requant", "phase": "prefill(pp512)", "tok_s": 871.2, "achieved_GFLOPs": 1039.0, "pct_of_fp32_peak": 67.7, "AI_flop_per_byte": 1562.0}
+{"model": "Qwen3-0.6B-Q4_K_M-requant", "phase": "decode(tg64)", "tok_s": 121.09, "bytes_per_tok_GB": 0.391, "achieved_GBs": 47.3, "pct_of_triad": 52.4, "bw_ceiling_tok_s": 231.1, "AI_flop_per_byte": 3.05}
+{"model": "Qwen3-0.6B-Q8_0", "phase": "prefill(pp512)", "tok_s": 662.0, "achieved_GFLOPs": 789.0, "pct_of_fp32_peak": 51.4, "AI_flop_per_byte": 963.0}
+{"model": "Qwen3-0.6B-Q8_0", "phase": "decode(tg64)", "tok_s": 79.74, "bytes_per_tok_GB": 0.633, "achieved_GBs": 50.5, "pct_of_triad": 55.9, "bw_ceiling_tok_s": 142.5, "AI_flop_per_byte": 1.88}
+{"model": "Qwen3-8B-Q4_K_M", "phase": "prefill(pp512)", "tok_s": 77.4, "achieved_GFLOPs": 1269.0, "pct_of_fp32_peak": 82.6, "AI_flop_per_byte": 1670.0}
+{"model": "Qwen3-8B-Q4_K_M", "phase": "decode(tg64)", "tok_s": 12.57, "bytes_per_tok_GB": 5.022, "achieved_GBs": 63.1, "pct_of_triad": 69.9, "bw_ceiling_tok_s": 18.0, "AI_flop_per_byte": 3.26}
+{"model": "Qwen3-8B-Q8_0", "phase": "prefill(pp512)", "tok_s": 50.4, "achieved_GFLOPs": 826.0, "pct_of_fp32_peak": 53.8, "AI_flop_per_byte": 964.0}
+{"model": "Qwen3-8B-Q8_0", "phase": "decode(tg64)", "tok_s": 7.34, "bytes_per_tok_GB": 8.704, "achieved_GBs": 63.9, "pct_of_triad": 70.7, "bw_ceiling_tok_s": 10.4, "AI_flop_per_byte": 1.88}

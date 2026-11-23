@@ -1,6 +1,6 @@
 # 作业 1：DSH-Lens —— 观察 agent 在做什么
 
-> 预计 6–10 小时。第 2 周发布，第 4 周截止，对应第 3–5 讲（DSH 导论、事件与会话日志、子 agent）。需要先完成作业 0。
+> 预计 6–10 小时。第 2 周发布，第 4 周截止，对应第 4、5、12 讲（DSH 导论、事件与会话日志、子 agent）。需要先完成作业 0。
 
 用别人写的 agent 很容易，但想看清它每一步在干什么、为什么花这么多钱，就难多了。这个作业要你做一个网页，用 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）的 Python SDK 驱动 agent，并**实时**把它的执行过程展示出来。后面几个作业都要靠这个工具来分析 agent 的行为。
 

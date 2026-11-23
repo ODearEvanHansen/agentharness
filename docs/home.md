@@ -42,7 +42,7 @@
 
 本课程按自己的进度学，**没有统一开课日期**，你开始的那天就是第 1 周。
 
-1. 阅读[课程大纲](syllabus.md)：14 周授课 + 2 周项目期，共 29 讲，每讲 3–5 分钟视频，配讲稿全文。每周约 3–10 小时，全课约 85–110 小时（不含期末项目）；每周时间少于 6 小时，可以按大纲里的 [24 周节奏](syllabus.md#学习节奏)学。
+1. 阅读[课程大纲](syllabus.md)：14 周授课 + 2 周项目期，共 37 讲，每讲 3–5 分钟视频，配讲稿全文。每周约 3–10 小时，全课约 85–110 小时（不含期末项目）；每周时间少于 6 小时，可以按大纲里的 [24 周节奏](syllabus.md#学习节奏)学。
 2. 完成[作业 0：环境自检](assignments/a0.md)，在 [Discussions](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1) 发帖打卡。
 3. 从[第 1 讲](lectures/l01.md)开始。只想做其中某个作业，见[按需学习路线](syllabus.md#按需学习路线)。
 

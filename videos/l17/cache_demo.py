@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""第 13 讲演示：稳定的系统提示 vs 每步写入当前时间，对 DeepSeek 前缀缓存的影响（真实 API 调用）。"""
+"""第 17 讲演示：稳定的系统提示 vs 每步写入当前时间，对 DeepSeek 前缀缓存的影响（真实 API 调用）。"""
 import json, os, sys, time, urllib.request
 from datetime import datetime
 

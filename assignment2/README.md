@@ -1,6 +1,6 @@
 # 作业 2：miniLoop —— 自己写一个 agent loop
 
-> 预计 15–20 小时。第 4 周发布，第 7 周截止。对应第 2 讲（最小 agent 循环）、第 6–10 讲（agent loop、评测基础设施、工具设计、评测）。
+> 预计 15–20 小时。第 4 周发布，第 7 周截止。对应第 2 讲（最小 agent 循环）、第 7–9、14、15 讲（agent loop、评测基础设施、工具设计、评测）。
 
 agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Python 标准库写一个最小的 agent loop，让它在隔离容器里解真实的 SWE-bench 题目，再和工业级 harness（DSH）做对照。
 
@@ -52,7 +52,7 @@ mv miniloop.a2-mine.json assignment2/results/     # 官方评测把报告写在�
 4. **输出截断**：`Env.bash` 只返回输出的最后 8000 个字符。想一想模型读大文件时会发生什么。
 
 ## Part B：阅读 DSH 的 loop
-回答 [QUESTIONS.md](QUESTIONS.md) 里的 B1–B4。B5 选做（加分）。源码是 TypeScript，只需要能读懂函数结构和控制流，第 6、7 讲会带你读一遍。
+回答 [QUESTIONS.md](QUESTIONS.md) 里的 B1–B4。B5 选做（加分）。源码是 TypeScript，只需要能读懂函数结构和控制流，第 7、8 讲会带你读一遍。
 
 ## Part C：对照实验
 ```bash

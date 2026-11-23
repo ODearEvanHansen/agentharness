@@ -1,0 +1,4 @@
+{"model": "Qwen3-8B", "quant": "Q8_0", "role": "reference", "ppl": 10.7352, "ppl_err": 0.47289}
+{"model": "Qwen3-8B", "quant": "Q4_K_M", "ppl_q": 11.169314, "ppl_base": 10.640175, "ppl_ratio": 1.04973, "mean_kld": 0.041578, "kld_p99": 0.45052, "kld_median": 0.015078, "same_top_p_pct": 91.765, "rms_dp_pct": 6.534}
+{"model": "Qwen3-0.6B", "quant": "Q8_0", "role": "reference", "ppl": 23.3612, "ppl_err": 1.1154}
+{"model": "Qwen3-0.6B", "quant": "Q4_K_M(requant from Q8_0)", "ppl_q": 25.226052, "ppl_base": 23.072258, "ppl_ratio": 1.09335, "mean_kld": 0.111017, "kld_p99": 0.644047, "kld_median": 0.078926, "same_top_p_pct": 82.804, "rms_dp_pct": 7.536}

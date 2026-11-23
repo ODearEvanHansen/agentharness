@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""第 13 讲样片：前缀缓存与 request series（无声，画面字幕）。Pillow 逐帧绘制 → ffmpeg 编码。"""
+"""第 17 讲样片：前缀缓存与 request series（无声，画面字幕）。Pillow 逐帧绘制 → ffmpeg 编码。"""
 import math, subprocess, sys
 from PIL import Image, ImageDraw, ImageFont
 
@@ -38,7 +38,7 @@ def text(d, xy, s, size, color=FG, a=1.0, bold=False, mono=False, anchor="la"):
 
 
 def chrome(d, t, title, sub=None):
-    text(d, (80, 60), "第 13 讲 · 前缀缓存与 request series", 28, DIM)
+    text(d, (80, 60), "第 17 讲 · 前缀缓存与 request series", 28, DIM)
     text(d, (W - 80, 60), "AI 合成视频", 24, DIM, anchor="ra")
     text(d, (80, 120), title, 56, FG, ease(t / 0.6), bold=True)
     if sub:
@@ -65,7 +65,7 @@ def block(d, x, y, w, h, color, label, a=1.0, size=26):
 # ---------------------------------------------------------------- scenes  (dur, fn(d, t))
 def s_title(d, t):
     a = ease(t / 1.0)
-    text(d, (W / 2, 400), "第 13 讲", 48, DIM, a, anchor="mm")
+    text(d, (W / 2, 400), "第 17 讲", 48, DIM, a, anchor="mm")
     text(d, (W / 2, 500), "前缀缓存与 request series", 96, FG, a, bold=True, anchor="mm")
     text(d, (W / 2, 620), "为什么同一个 agent，换个写法就贵 7 倍", 44, BLUE, ease((t - 1) / 1), anchor="mm")
     text(d, (W / 2, 900), "AgentHarness · 基于 DeepSeek Harness 的 Agent 系统公开课", 28, DIM, ease((t - 2) / 1), anchor="mm")
