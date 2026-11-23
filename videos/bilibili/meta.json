@@ -343,7 +343,7 @@
   {
    "id": "l12",
    "no": 12,
-   "title": "【AgentHarness 第12讲】子 agent 与编排",
+   "title": "【AgentHarness 第12讲】多 agent 架构",
    "desc": "本讲：子 agent 与编排——spawn 与 fork、深度限制、结果回传。服务作业 A1。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l12/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -361,20 +361,20 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第12讲\n子 agent 与编排",
+   "cover_text": "第12讲\n多 agent 架构",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l12/",
    "file": "videos/out/l12.mp4",
    "tid": 208,
    "highlights": [
-    "什么时候值得把任务拆给子 agent，DSH 怎样派发和回收",
-    "实测：子任务交给本地模型答对了，主 agent 却又自己算一遍",
-    "看完能分清 spawn 与 fork，判断委派在成本上是否划算"
+    "加子 agent：都解出 18/20，钱 ×5、时间 ×3",
+    "主 agent 查看的文件 69% 子 agent 已看过",
+    "工具可选时，二十题模型委派次数为零"
    ]
   },
   {
    "id": "l13",
    "no": 13,
-   "title": "【AgentHarness 第13讲】可靠性",
+   "title": "【AgentHarness 第13讲】可靠性：错在哪一层",
    "desc": "本讲：可靠性——0.95ⁿ 复利、五层故障模型、检查点与回滚、超时。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l13/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
@@ -391,11 +391,15 @@
    "copyright": "自制",
    "ai_declaration": "作者声明：含AI生成内容",
    "collection": "AgentHarness 公开课（视频合集）",
-   "cover_text": "第13讲\n可靠性",
+   "cover_text": "第13讲\n可靠性：错在哪一层",
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l13/",
    "file": "videos/out/l13.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "公式说 20 步 36%，实测 15–24 步解出 79%",
+    "注入 20% 故障仍 8/8 全解，步数 +66%",
+    "看得见的错误可恢复，静默失败才累积"
+   ]
   },
   {
    "id": "l14",
@@ -483,7 +487,11 @@
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l16/",
    "file": "videos/out/l16.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "同一配置十题五次：pass@5 0.60，pass^5 0.40",
+    "每次成功 0.295 元，是每次尝试 0.142 元的两倍多",
+    "配对 bootstrap 报差值区间，单次对照会让区间偏窄"
+   ]
   },
   {
    "id": "l17",
@@ -1066,7 +1074,11 @@
    "lecture_url": "https://odearevanhansen.github.io/agentharness/lectures/l35/",
    "file": "videos/out/l35.mp4",
    "tid": 208,
-   "highlights": []
+   "highlights": [
+    "DGM 案例：删掉检测器的日志就拿到满分",
+    "ACE 复现：12 条通用手册，泄题检查 0 处",
+    "训练批 1/4→2/4 是噪声；留出集未跑，结论待定"
+   ]
   },
   {
    "id": "l36",
