@@ -21,7 +21,7 @@
 | 5 | L9 | 工具设计 | 工具粒度对步数的影响、编辑工具、输出截断 | DSH `tools` 子系统文档 | |
 | | L10 | 评测 | SWE-bench 的任务形态（issue → patch → 测试）、Verified 子集、数据污染、为什么需要难题集 | SWE-bench 论文 | |
 | 6 | L11 | 上下文工程 | 系统提示、压缩、工具结果裁剪；token 都花在了哪里 | `compaction` 子系统 | |
-| | L12 | 记忆：让 agent 记住该记的 | 记忆的四种形态；DSH 的 AGENTS.md 加载与只追加刷新；有/无笔记对照实验；记忆与前缀缓存；记忆投毒 | [CoALA](https://arxiv.org/abs/2309.02427)、[MemGPT](https://arxiv.org/abs/2310.08560) | A3 选做 L6 |
+| | L12 | 记忆：让 agent 记住该记的 | 上下文窗口与记忆存储；一条记忆的六个决定（写不写、表示、存储、读写时机与取回、归纳、遗忘）与归属；有效时间与出处；失败模式与评估；DSH 的 AGENTS.md 只追加刷新；有/无笔记对照：只记模型推不出来的 | [CS2680 第 2 讲](https://cs2680.seas.harvard.edu/slides/2_agent_use_1.pdf)、[第 6 讲](https://cs2680.seas.harvard.edu/slides/6_agent_design_3.pdf)幻灯片、[MemGPT](https://arxiv.org/abs/2310.08560)、[CoALA](https://arxiv.org/abs/2309.02427) | A3 选做 L6 |
 | | L13 | 前缀缓存与 request series | 追加与改写的区别；在每一步写入当前时间的代价 | `agent-loop` README | |
 | 7 | L14 | 插件开发 | `tools/post-execute`、`agent/pre-step`、`agent/request-error`；`.ts` 免编译加载 | `develop/basic` | **A2 截止 · 发布 A3** |
 | | L15 | 成本与可靠性 | 重试、预算、flash 和 pro 怎么选 | | |

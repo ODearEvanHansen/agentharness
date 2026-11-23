@@ -346,7 +346,7 @@
    "id": "l12",
    "no": 12,
    "title": "【AgentHarness 第12讲】记忆：让 agent 记住该记的",
-   "desc": "本讲：记忆：让 agent 记住该记的——项目说明文件、跨会话笔记与记忆的代价。服务作业 A2。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l12/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
+   "desc": "本讲：记忆：让 agent 记住该记的——项目说明文件、跨会话笔记与记忆的代价。服务作业 A3。讲稿：https://odearevanhansen.github.io/agentharness/lectures/l12/ 仓库：https://github.com/ODearEvanHansen/agentharness 画面由程序生成，配音由 DeepSeek TTS 合成（AI合成）。与哈佛大学及 CS2680 无关联。许可 CC BY-SA 4.0",
    "tags": [
     "AI Agent",
     "DeepSeek",
@@ -368,9 +368,9 @@
    "file": "videos/out/l12.mp4",
    "tid": 208,
    "highlights": [
-    "agent 的记忆到底存在哪里，DSH 怎样把它放回上下文",
-    "给20道题配上手写仓库笔记：解出数不变，费用差在噪声内",
-    "看完能判断什么值得写进记忆，并防住记忆投毒和泄题"
+    "用一句「换成 llama-server 了」走完一条记忆的六个决定",
+    "过期、注入、泄题：记忆常见的坏法，以及怎么评估",
+    "实测：给著名仓库写通用笔记，解题数和费用都没变"
    ]
   },
   {
