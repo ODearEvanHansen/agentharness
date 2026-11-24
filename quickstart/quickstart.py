@@ -30,7 +30,7 @@ TOOLS = [{"type": "function", "function": {"name": n, "description": d, "paramet
 
 def is_peak(now=None):
     """北京时间工作日 9–12、14–18 点为高峰（不含节假日，此处不判断节假日）。"""
-    bj = (now or datetime.datetime.utcnow()) + datetime.timedelta(hours=8)
+    bj = (now or datetime.datetime.now(datetime.timezone.utc)) + datetime.timedelta(hours=8)
     return bj.weekday() < 5 and (9 <= bj.hour < 12 or 14 <= bj.hour < 18)
 
 
