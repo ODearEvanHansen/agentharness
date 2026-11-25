@@ -84,7 +84,7 @@ LECTURE = {
          "caption": "skill 是建议，hook 是保证",
          "narration": "参考答案：第一条是 skill，它是流程知识。第二条是 MCP，它是外部数据。第三条是 hook，挂在工具执行后。第四条也是 hook，挂在即将停止时。第五条用 hook 或权限策略，最好由上一讲的沙箱和审批兜底。第六条是 plugin。边界情况的判断原则是：必须一定执行的，不要写进 skill，因为写在 skill 里，模型可能不照做；skill 是建议，hook 是保证。有的需求要组合，比如任务完成后发通知，是 hook 触发、MCP 发送。"},
         {"type": "bullets", "title": "回到底层：SDK、补丁与隐私",
-         "sub": "pip install deepseek-harness-sdk==0.2.2rc2",
+         "sub": "pip install deepseek-harness-sdk==0.2.2rc2（上游开发者预览，有破坏性改动）",
          "items": ["Python SDK 经 stdin/stdout 上的 JSON-RPC 驱动 dsh 运行时",
                    "sdk-minimal：只有 bash，一句话系统提示",
                    "sdk：工具、审批、后台任务，提示加工具约 1 万 token",

@@ -72,7 +72,7 @@ LECTURE = {
         # 9 DSH
         {'type': 'bullets',
          'title': 'DSH 是怎么做的',
-         'sub': 'dsh v0.2.2-rc.2：agent 自管的纯文件记忆',
+         'sub': 'dsh v0.2.2-rc.2（上游开发者预览，会变）：agent 自管的纯文件记忆',
          'items': ['AGENTS.md / CLAUDE.md：首个请求前作为用户消息进历史', '文件改了：下一步追加新版本，不改写旧消息', 'todo 与 goal：会话内的工作记忆', 'Ralph 循环：每轮全新 agent，工作区就是长期记忆'],
          'caption': '能追加就不改写，前缀缓存才保得住',
          'narration': '落到 DSH，它走的是 agent 自管的纯文件路线。agent instructions 插件在第一个请求之前，读取 AGENTS 点 md 和 CLAUDE 点 md，作为一条用户消息放进历史，有字节预算，和其他历史一样能压缩、能恢复。文件中途被改，下一步追加新版本，而不改写旧消息，这样前缀缓存保得住。Ralph 循环每轮启动全新的 agent，共享工作区就是长期记忆。注意作业三的 sdk minimal 配置没挂这个插件，要用插件放笔记。'},

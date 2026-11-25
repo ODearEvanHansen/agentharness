@@ -57,7 +57,7 @@ LECTURE = {
          "caption": "根会话加上所有子会话，才是完整成本",
          "narration": "有子 agent 时，树会分叉。父会话派出子 agent，SDK 推送一个子 agent 开始事件，只有两个字段：父会话编号和子会话编号。之后子 agent 自己的步骤和工具事件都带着子会话编号，按编号归到对应节点就行，结束时还有一个结束事件。注意普通的会话分叉不会产生这个开始事件。算钱时也一样，子 agent 有自己的会话日志，要和根会话加在一起才是完整成本，作业一会练这一步。"},
         {"type": "bullets", "title": "两个容易搞错的地方",
-         "sub": "试做阶段踩过",
+         "sub": "试做阶段踩过；以 DSH 0.2.2rc2 为准，上游开发者预览会变",
          "items": ["turn、step、tool 是持久会话事件，不是同名 Cordis 事件",
                    "写插件要监听 session/event，再看 event.type",
                    "完整 sdk profile 的会话不写 session.v4.jsonl",

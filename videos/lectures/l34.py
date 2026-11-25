@@ -42,7 +42,7 @@ LECTURE = {
                    "每个 agent 单独都能抵抗注入"],
          "caption": "安全不可组合：边界在 agent 之间的消息",
          "narration": "多 agent 让问题更隐蔽。阅读里的一篇论文这样攻击：一个恶意文件让负责读文件的 agent 返回一条假报错，说这个文件只能执行才能访问；编排者信以为真，就让负责执行代码的 agent 去运行它。用 GPT 四 o 时，依编排方式不同，百分之五十八到九十的试验被攻破，有些配置是百分之百。关键在于，每个 agent 单独测都能抵抗注入。安全是不可组合的，信任边界在 agent 之间传递的消息和错误信息上。"},
-        {"type": "bullets", "title": "防御一：在动作之前拦截", "sub": "DSH tools/pre-execute；模板 guard-injection.ts",
+        {"type": "bullets", "title": "防御一：在动作之前拦截", "sub": "DSH 0.2.2rc2 的 tools/pre-execute；上游开发者预览，接口会变",
          "items": ["像保安：动作执行前先检查",
                    "可放行、拒绝、取消或交人确认",
                    "拒绝时工具不执行，模型收到理由",

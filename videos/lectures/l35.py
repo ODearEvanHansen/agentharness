@@ -55,7 +55,7 @@ LECTURE = {
          'caption': '论文用的就是 DeepSeek，我们能在 DSH 上直接做',
          'narration': '论文报告，在 agent 基准上平均提升百分之十点六，金融任务提升百分之八点六，适配延迟降低百分之八十六点九，而且不需要标注答案，用执行反馈就行。我们选它来复现，有两个原因。第一，论文的三个角色用的就是 DeepSeek V 三点一，我们的模型也是 DeepSeek。第二，它只改上下文，不改代码；在 DSH 里，这正好是第十一讲讲过的记忆插件：把一段固定文字放进系统提示前缀，既不破坏前缀缓存，也不需要动 agent 本身。'},
         {'type': 'bullets', 'title': '我们的复现：怎么搭的',
-         'sub': 'DSH sdk-minimal + deepseek-flash；脚本 exp/ace/ace.py',
+         'sub': 'DSH 0.2.2rc2 sdk-minimal + flash；上游预览版，接口会变',
          'items': ['Generator：DSH + 记忆插件注入 playbook', 'Reflector 只拿到计数：成没成、几条测试挂了',
                    '看不到参考补丁，也看不到测试名', 'Curator 只加删条目；合并、去重、限长由代码做',
                    '训练 8 题与测试 5 题不重叠；泄题检查 0 处'],

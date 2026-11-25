@@ -70,7 +70,7 @@ LECTURE = {
          "narration": "跨进程的通信有两类协议。MCP 是 agent 到能力的边界，标准化工具、资源和提示，一次调用得到一个结果，暴露什么由宿主决定，而不是模型，第四讲的扩展机制地图里讲过。A 二 A 是 agent 到 agent 的边界：对方用一张 Agent Card 声明自己的技能、端点和认证方式；工作单元是带编号、有生命周期的任务，会经历提交、执行、等待输入、完成或失败；长任务可以轮询、流式或推送跟踪。一个远端 agent 自己可能又调二十个 MCP 服务。但要记住，协议只标准化通信，委派、拆分、停止仍然是 harness 的事。DSH 里相近的机制是 ACP，可以把别的 agent 程序挂成进程外子 agent。"},
         # 9
         {"type": "bullets", "title": "DSH 里的子 agent",
-         "sub": "packages/subagent @ dsh-v0.2.2-rc.2",
+         "sub": "packages/subagent @ dsh-v0.2.2-rc.2（课程锁定；上游开发者预览，接口会变）",
          "items": ["spawn：空白上下文，只拿任务描述",
                    "fork：以父级历史为起点，输入更长",
                    "maxDepth 默认 1；设 0 禁止委派",

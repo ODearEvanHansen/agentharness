@@ -29,7 +29,7 @@ LECTURE = {
          'caption': '先算上限，再决定值不值得做',
          'narration': '动手之前，先按第十九讲的办法算账。把一次基线运行的费用按三种 token 拆开：命中缓存的输入、未命中的输入和输出，各花了多少钱。然后问两个问题：裁剪能碰到哪一种，碰不到哪一种；被裁掉的文字在之后的步骤里重发时，是按什么价格计费的。插件能省的上限，只是它碰得到的那一部分，而不是总费用。这一步只需要会话日志和价格表，不花一分钱，最好在写代码之前就做。'},
         # 4 代码
-        {'type': 'code', 'title': '核心代码', 'sub': 'assignment3/templates/trim-tool-output.ts（节选）', 'lang': 'ts',
+        {'type': 'code', 'title': '核心代码', 'sub': 'assignment3/templates/trim-tool-output.ts（节选）· DSH 0.2.2rc2', 'lang': 'ts',
          'code': "ctx.on('tools/post-execute', async (exec, result, next) => {\n  ...\n  const head = Math.floor(maxChars * headRatio)\n  const tail = maxChars - head\n  const omitted = block.text.length - head - tail\n  return { ...block,\n    text: block.text.slice(0, head) + NOTE(omitted) + block.text.slice(-tail) }\n  ...\n  return changed ? { kind: 'accept', content } : next()\n})",
          'caption': '改了就 accept，没改就交给下一个',
          'narration': '插件挂在工具执行之后的插口上，核心只有十几行。按开头比例算出开头保留多少，剩下的留给结尾，中间记下省略了多少字符。最后一行是 waterfall 的标准写法：改了就返回 accept，没改就调用 next 交给下一个插件。整个过程不改 DSH 源码。'},
