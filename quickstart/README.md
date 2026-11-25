@@ -1,6 +1,8 @@
 # 15 分钟轻量入口：用约 150 行代码跑一个 coding agent，算出解决率和花费
 
-不需要 Docker，不需要 GPU，macOS / Linux / Windows 都可以，只要 Python 3.9+ 和一个 DeepSeek API key。
+不需要 Docker，不需要 GPU，macOS / Linux / Windows 都可以，只要 Python 3.9+ 和一个 DeepSeek API key（在 [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys) 申请）。
+
+已实测：Linux / Python 3.9、3.14；macOS 14（Apple Silicon）/ Homebrew Python 3.14，3/3 通过。
 
 ```bash
 git clone https://github.com/ODearEvanHansen/agentharness && cd agentharness
@@ -8,7 +10,26 @@ export DEEPSEEK_API_KEY=sk-...        # 建议为本课程单独创建 key，只
 python3 quickstart/quickstart.py
 ```
 
-不需要 pip 安装任何依赖（只用标准库）。跑完会打印每道题是否通过、请求次数、花费（元），以及总解决率和缓存命中率。3 道题合计通常只要几分钱。
+不需要 pip 安装任何依赖（只用标准库）。跑完会打印每道题是否通过、请求次数、花费（元），以及总解决率和缓存命中率。3 道题合计通常不到 1 分钱（实测 0.007–0.008 元）。
+
+## 正常输出长什么样
+
+```text
+[t01_sum_range]
+    · read_file src/...
+    · write_file src/...
+    · run_tests
+    · done
+    → 通过  请求 4 次  0.0025 元
+...
+模型 deepseek-flash（低谷价）
+解决率 3/3   总花费 0.0074 元   缓存命中率 78%
+```
+
+题目名、行数和金额每次会略有不同。几点说明：
+
+- **"请求 N 次"比工具调用行数少是正常的**：模型一次回复可以同时发起多个工具调用，每个工具调用打印一行。
+- **高峰价 / 低谷价**：DeepSeek 在北京时间工作日 9–12、14–18 点按高峰价计费，其余时间是低谷价，低谷价是高峰价的一半。脚本按运行时刻自动选择（不判断节假日），所以白天跑花费大约翻倍。
 
 ## 这 150 行在做什么
 

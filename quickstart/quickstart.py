@@ -98,7 +98,7 @@ def solve(work, prompt, model, max_steps=20):
                 args = json.loads(c["function"]["arguments"] or "{}")
             except json.JSONDecodeError:
                 args = {}
-            print(f"    · {name} {args.get('path', '')}")
+            print(f"    · {name} {args.get('path', '')}".rstrip())
             messages.append({"role": "tool", "tool_call_id": c["id"],
                              "content": "好的" if name == "done" else run_tool(work, name, args)})
             if name == "done":
@@ -112,7 +112,10 @@ def main():
     ap.add_argument("--tasks", nargs="*", default=sorted(p.name for p in TASKS.iterdir() if p.is_dir()))
     a = ap.parse_args()
     if not os.environ.get("DEEPSEEK_API_KEY"):
-        raise SystemExit("请先设置环境变量 DEEPSEEK_API_KEY（建议为本课程单独创建 key，只充值少量金额）")
+        raise SystemExit("请先设置环境变量 DEEPSEEK_API_KEY（建议为本课程单独创建 key，只充值少量金额）\n"
+                         "  申请 key：https://platform.deepseek.com/api_keys\n"
+                         "  macOS / Linux：export DEEPSEEK_API_KEY=sk-...\n"
+                         "  Windows PowerShell：$env:DEEPSEEK_API_KEY=\"sk-...\"")
     hit_p, miss_p, out_p = [x * (1 if is_peak() else 0.5) for x in PRICES[a.model]]
     rows = []
     for t in a.tasks:
