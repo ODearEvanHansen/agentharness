@@ -288,7 +288,21 @@ R = {"title": r_title, "bullets": r_bullets, "bars": r_bars, "blocks": r_blocks,
 
 
 # ------------------------------------------------------------------ build
+EXT_SPOKEN = {"md": "M D", "py": "P Y", "json": "jason", "jsonl": "jason L", "yaml": "yaml", "toml": "toml",
+              "sh": "S H", "txt": "text", "mp4": "M P 4"}
+FILE_RE = re.compile(r"\b([A-Za-z][A-Za-z0-9_]*)\.(md|py|jsonl|json|yaml|toml|sh|txt|mp4)\b")
+
+
+def spoken(text_):
+    """只改送给 TTS 的文本，字幕/画面不变：AGENTS.md → agents dot M D，避免逐字母拼读。"""
+    def sub(m):
+        stem = m.group(1).replace("_", " ")
+        return f" {stem.lower() if stem.isupper() else stem} dot {EXT_SPOKEN[m.group(2)]} "
+    return FILE_RE.sub(sub, text_)
+
+
 def tts(text_, f):
+    text_ = spoken(text_)
     if f.exists():
         with wave.open(str(f)) as w:
             return w.getnframes() / w.getframerate()
