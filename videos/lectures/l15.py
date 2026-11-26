@@ -12,7 +12,7 @@ LECTURE = {
         {'type': 'bullets',
          'title': '先说清楚：评测到底在评什么',
          'sub': '五种评测目标，越往下越接近 agent',
-         'items': ['预测文本：给参考文本高概率（困惑度）',
+         'items': ['预测文本：给参考文本高概率',
                    '正确答案：和标准答案匹配（选择题、短答）',
                    '偏好回复：人或裁判模型更喜欢哪个',
                    '可运行代码：通过测试（SWE-bench 在这里）',
@@ -106,7 +106,7 @@ LECTURE = {
         # 12 summary
         {'type': 'summary',
          'items': ['五种评测目标；SWE-bench 评可运行代码', '判分：FAIL_TO_PASS 变绿，PASS_TO_PASS 不红', '端到端告诉你成没成，组件告诉你为什么', '无 agent 14；agent 18/17 已饱和；难题集 10/8', '四层泄漏：训练、运行时、环境、过拟合'],
-         'exercise': '20 分钟：用 run.py 挑 Django 后台空选项题和另一题跑 miniLoop，官方 harness 判分；预期每题约 0.02–0.2 元，报告出现 resolved 数，并在日志里找到 FAIL_TO_PASS 那条测试',
+         'exercise': '20 分钟：用 run.py --only 跑 assignment2/README.md 里已验证的 Django 空选项题和另一题（miniLoop），官方 harness 判分；预期每题约 0.02–0.2 元，报告出现 resolved 数，并在日志里找到 FAIL_TO_PASS 那条测试',
          'narration': '回头看看这一讲的要点。评测有五种目标，SWE bench 评的是可运行代码：一条该变绿的测试要变绿，六十二条不该变红的不能变红。端到端分数告诉你成没成，组件评测告诉你为什么。原二十题已经饱和，难题集才有区分度。还要警惕四层泄漏。课后挑空选项这道题和另一道题跑 mini loop，用官方 harness 判分，预期每题零点零二到零点二元，并在判分日志里找到那条该变绿的测试。下一讲，评测二：统计与方法。'},
     ],
 }

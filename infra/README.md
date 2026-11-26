@@ -46,6 +46,8 @@ docker run --rm --network agentharness-net -e HTTPS_PROXY=http://agentharness-eg
    docker tag ghcr.io/odearevanhansen/agentharness-runner:0.1 agentharness-runner:0.1
    docker tag ghcr.io/odearevanhansen/agentharness-egress:0.1 agentharness-egress:0.1
    ```
+作业 1 的 `alpine/socat` 端口转发同样来自 Docker Hub，用第 2 种办法时它仍需镜像加速（或按作业 1 README 改用容器 IP）。
+
 PyPI 慢时，构建运行器可以换源：`docker build --build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple -t agentharness-runner:0.1 infra/runner`。
 
 ## 运行器镜像

@@ -60,8 +60,8 @@ LECTURE = {
                  'docker network connect agentharness-net agentharness-egress\n'
                  '# assignment container:\n'
                  'docker run --network agentharness-net -e HTTPS_PROXY=http://agentharness-egress:8888 ...',
-         'caption': '验证：DeepSeek 401，GitHub 不通',
-         'narration': '白名单的搭法很简单。先构建代理镜像，再建一个 internal 网络，把代理接进去。作业容器只接这个网络，并把代理环境变量指向代理。验证办法是：在容器里访问 DeepSeek，应该返回状态码四零一，说明连通了，只是没带 key；访问 GitHub 应该失败。白名单还顺带堵住了一种评测泄漏：agent 不能上网搜这道题后来的官方修复。'},
+         'caption': '验证三条：401、GitHub 不通、绕代理也不通',
+         'narration': '白名单的搭法很简单。先构建代理镜像，再建一个 internal 网络，把代理接进去。作业容器只接这个网络，并把代理环境变量指向代理。验证办法是：在容器里访问 DeepSeek，应该返回状态码四零一，说明连通了，只是没带 key；访问 GitHub 应该失败；第三条最关键，绕过代理直连任何网站也必须失败，否则说明网络不是 internal，白名单形同虚设。白名单还顺带堵住了一种评测泄漏：agent 不能上网搜这道题后来的官方修复。'},
         # 7 隔离光谱
         {'type': 'bullets',
          'title': '隔离有几档：从沙箱到远程执行',
@@ -72,7 +72,7 @@ LECTURE = {
                    '容器、微虚拟机、远程执行：换掉整个执行能力',
                    '先沙箱后审批：沙箱里自由跑，越界才问人'],
          'caption': '风险越高，隔离边界越要往外推',
-         'narration': '隔离不只有容器一档。DSH 自带同机沙箱，在 Linux 上用 bwrap 或 Landlock，提供三种模式：只读、只能写会话工作区、完全放开。它的说明写得很清楚，这种沙箱和宿主共享内核和文件系统，适合挡住误操作。更强的隔离，是容器、微虚拟机和远程执行器，它们不是往沙箱里注册规则，而是把整个执行能力换掉。还有一种常见设计叫先沙箱后审批：命令默认在无网沙箱里自由执行，只有要越出边界时才请求人批准。课程评测选的是容器加断网，第四讲讲过为什么完整 profile 的沙箱在容器里跑不起来。'},
+         'narration': '隔离不只有容器一档。DSH 自带同机沙箱，在 Linux 上用 bwrap 或 Landlock，提供三种模式：只读、只能写会话工作区、完全放开。它的说明写得很清楚，这种沙箱和宿主共享内核和文件系统，适合挡住误操作。更强的隔离，是容器、微虚拟机和远程执行器，它们不是往沙箱里注册规则，而是把整个执行能力换掉。还有一种常见设计叫先沙箱后审批：命令默认在无网沙箱里自由执行，只有要越出边界时才请求人批准。课程评测选的是容器加断网：容器默认权限下，嵌套的同机沙箱通常起不来，所以隔离交给外层容器。'},
         # 8 白名单防不住什么
         {'type': 'bullets',
          'title': '白名单防不住什么',
@@ -90,16 +90,16 @@ LECTURE = {
          'sub': '都写进了课程文档',
          'items': ['每题一个镜像约 3GB；20 题约 60GB，拉取约 15 分钟',
                    '课程同步到 ghcr.io，每个实例一个 tag',
-                   '数据集名用 SWE-bench/SWE-bench_Verified',
+                   '在线加载才需新数据集名；本课用本地 JSON',
                    '插件和 patch 用绝对路径；DSH 运行时只读挂入',
                    '每题设超时：运行器默认 1200 秒'],
          'caption': '小坑不写下来，每个学员都要重踩一遍',
-         'narration': '再看镜像分发和几个坑。每道题一个镜像，大约三 GB，二十题约六十 GB，试做阶段拉取用了大约十五分钟。课程把镜像同步到 GHCR，每个实例一个 tag，由 GitHub Actions 直接复制。swebench 五点几必须用新数据集名，旧名会报错。插件和 patch 要写绝对路径；DSH 运行时是自包含的二进制，只读挂进容器就能跑，不需要 Node。运行器默认每题超时一千二百秒，因为耗时长尾很明显。'},
+         'narration': '再看镜像分发和几个坑。每道题一个镜像，大约三 GB，二十题约六十 GB，试做阶段拉取用了大约十五分钟。课程把镜像同步到 GHCR，每个实例一个 tag，由 GitHub Actions 直接复制。如果在线指定数据集，swebench 五点几必须用新数据集名，旧名会报错；本课用仓库里的本地数据集文件，不受影响。插件和 patch 要写绝对路径；DSH 运行时是自包含的二进制，只读挂进容器就能跑，不需要 Node。运行器默认每题超时一千二百秒，因为耗时长尾很明显。'},
         # 10 真实日志
         {'type': 'terminal',
          'title': '真实运行日志：难题集',
          'sub': '试做阶段 难题集，loop 与 DSH 交替运行（节选）',
-         'cmd': 'python run_swe.py loop,dsh 3   # 试做阶段 hard set, 20 tasks x 2 agents',
+         'cmd': 'python run_swe.py loop,dsh 3   # 试做期内部脚本；公开版是 assignment2/run.py',
          'lines': ['loop Django 联合查询排序                     247.4s req= 60 tools= 60 0.3750元  patch=   0 err=None',
                    'loop Django 合并删除查询                     337.3s req= 60 tools= 65 0.5326元  patch=  41 err=None',
                    'dsh  Django 联合查询排序                     365.4s req= 68 tools= 67 0.5737元  patch=  13 err=None',
@@ -125,7 +125,7 @@ LECTURE = {
         # 12 小结
         {'type': 'summary',
          'items': ['评测循环：重置 → 预算内行动 → 判分', '被测者碰不到评分：隐藏测试、只读挂载', '一题一容器，断网，只放行 DeepSeek', '同机沙箱挡误操作；风险高就往外推边界', '固定种子与版本，换源重验'],
-         'exercise': '15 分钟：按 infra/README.md 搭好白名单，在容器内 curl 两个地址；预期 api.deepseek.com 返回 401，github.com 连接失败',
-         'narration': '最后把这一讲串起来。评测是一个循环：重置环境，在预算内行动，最后判分；被测的 agent 碰不到评分规则，隐藏测试不在它的容器里，配置只读挂载。每题一个容器，默认断网，只放行 DeepSeek。同机沙箱挡误操作，风险越高隔离边界越往外推。能固定的种子和版本都要固定。课后花十五分钟搭好白名单，预期访问 DeepSeek 返回状态码四零一，访问 GitHub 连接失败。下一讲，评测一：SWE bench。'},
+         'exercise': '15 分钟：按 infra/README.md 搭好白名单，在容器内跑三条验证；预期 api.deepseek.com 返回 401，github.com 失败，--noproxy 直连 example.com 也失败',
+         'narration': '最后把这一讲串起来。评测是一个循环：重置环境，在预算内行动，最后判分；被测的 agent 碰不到评分规则，隐藏测试不在它的容器里，配置只读挂载。每题一个容器，默认断网，只放行 DeepSeek。同机沙箱挡误操作，风险越高隔离边界越往外推。能固定的种子和版本都要固定。课后花十五分钟搭好白名单，预期访问 DeepSeek 返回状态码四零一，访问 GitHub 连接失败，绕过代理直连也失败。下一讲，评测一：SWE bench。'},
     ],
 }
