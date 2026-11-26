@@ -68,7 +68,7 @@ python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl assignment2/re
 
 ## 小内存路线：Qwen3-4B（16GB 电脑可以亲手跑）
 
-内存不到 32GB 的学员把本地模型换成 `Qwen3-4B-Q4_K_M.gguf`（2.5GB，官方仓库 `Qwen/Qwen3-4B-GGUF`，sha256 `7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5`）。启动命令同上，只改三处：`--model /models/Qwen3-4B-Q4_K_M.gguf`、`-c 24576 -np 1`、加 `-fa on`，容器 `--memory 8g` 就够；patch 里的模型 id 改成 `qwen3-4b`，运行器用 `--parallel 1`。
+内存不到 32GB 的学员把本地模型换成 `Qwen3-4B-Q4_K_M.gguf`（2.5GB，官方仓库 `Qwen/Qwen3-4B-GGUF`，sha256 `7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5`）。启动命令同上，只改三处：`--model /models/Qwen3-4B-Q4_K_M.gguf`、`-c 24576 -np 1`、加 `-fa on`，容器 `--memory 8g` 就够；`--cpus 16` 和 `-t 16` 改成本机可用核数（如 8 核机器用 `--cpus 8`、`-t 8`，否则 Docker 会拒绝启动）；patch 里的模型 id 改成 `qwen3-4b`（共两处：`models` 下的 `id` 与 `agentOptions.model`），运行器用 `--parallel 1`。
 
 **先算 KV 占多少内存，再定上下文。** Qwen3-4B 的 f16 KV 约 144KB/token（36 层 × 8 个 KV 头 × 128 维 × K、V 两份 × 2 字节）。课程团队第一次用 `-c 65536 -np 2`，光 KV 就要约 9GB，容器在加载时被 OOM 杀掉。**DSH 没有报错，8 道题全部由云端悄悄解完**，`by_model` 里一次本地请求都没有。所以每次跑完都要看 `by_model`。
 
@@ -77,7 +77,7 @@ python assignment5/check.py assignment2/results/mini-dsh-a5.jsonl assignment2/re
 | 配置 | 解决 | 云端请求 | 本地请求 | 云端成本 | 中位耗时 | 8 题合计 |
 |---|---|---|---|---|---|---|
 | 不路由（对照，同上表） | 8/8 | — | 0 | 0.111 元 | 11.9 s | 约 1 分钟 |
-| 路由到 Qwen3-4B | 8/8 | 72 | 28 | 0.205 元 | 424 s | 约 63 分钟 |
+| 路由到 Qwen3-4B | 8/8 | 72 | 28 | 0.204 元 | 424 s | 约 63 分钟 |
 
 原始记录在 [`baseline/mini-dsh-a5-qwen3-4b.jsonl`](baseline/mini-dsh-a5-qwen3-4b.jsonl)。
 
