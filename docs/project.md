@@ -25,6 +25,8 @@
 2. 博客形式的报告（2000–5000 字，中英文均可），发布在任何公开平台；
 3. 5 分钟以内的演示视频（可选）。
 
+想要别人看，可以把仓库和报告链接发到 [Discussions 的 Show and tell](https://github.com/ODearEvanHansen/agentharness/discussions/categories/show-and-tell)。
+
 ## 评分要点
 
 | 维度 | 权重 |

@@ -276,7 +276,7 @@ docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
 
 - [ ] 容器里只有运行器镜像自带的依赖（Python 3.12、`deepseek-harness-sdk`、`zstandard`、git、curl）。需要别的包，就在复现脚本里显式安装并锁版本；但隔离网络只放行 `api.deepseek.com`，装不了包，这时另做一个基于 `agentharness-runner:0.1` 的 Dockerfile 并写进 README。
 - [ ] 复现脚本只用相对路径，不依赖 `$HOME` 下的文件或之前运行留下的 `dsh-home*/`。
-- [ ] 用到本地模型时，README 写清模型文件、sha256、启动命令和 `/health` 检查（按[第一部分](#一本地模型服务)），并在 docker run 里加 `-e NO_PROXY=<模型容器名>`。
+- [ ] 用到本地模型时，README 写清模型文件、sha256、启动命令和 `/health` 检查（按[第一部分](#一本地模型服务)），并在 docker run 里加 `-e NO_PROXY=<模型容器名> -e LOCAL_LLM_KEY`。
 - [ ] 跑完用 `tools/usage_cost.py` 算出花费（元），和你报告里的数字对得上量级。
 - [ ] 仓库和日志里没有 API key（`git grep -n "sk-"` 应该为空）。
 - [ ] 结束后 `rm -rf "$FRESH"`。
