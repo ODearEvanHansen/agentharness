@@ -81,7 +81,12 @@ python assignment4/check.py
 
 ### L1 入门：用 Ollama 接入 DSH（学完第 24 讲再做；1–2 小时）
 1. 用容器运行 Ollama（锁定版本标签 `ollama/ollama:0.12.6`），名字 `agentharness-ollama`，接入 `agentharness-net`，模型放在挂载卷里。先拉好 `qwen3-coder:30b`（16GB 内存改用 `qwen3:8b`）。完整命令见 [infra/README.md 的"本地模型服务"一节](../infra/README.md#本地模型服务接入隔离网络)。
-2. 在 DSH 的 `llm-pi-ai` 里加一个 `openai-completions` 类型的 provider，地址 `http://agentharness-ollama:11434/v1`，用完整 profile 让 agent 写一个脚本并运行它。agent 在运行器容器里跑，启动时加 `-e NO_PROXY=agentharness-ollama`。
+2. 在 DSH 的 `llm-pi-ai` 里加一个 `openai-completions` 类型的 provider，地址 `http://agentharness-ollama:11434/v1`，用完整 profile 让 agent 写一个脚本并运行它。provider 配置的模板是 [`templates/l1-ollama.patch.yml`](templates/l1-ollama.patch.yml)，复制到 `assignment4/submission/<昵称>/` 再改。用课程运行器跑一道小题即可（在运行器容器里执行，容器命令同作业 2 的"在容器里跑小题"，另加 `-e NO_PROXY=agentharness-ollama -e OLLAMA_KEY=x`）：
+   ```bash
+   python assignment2/run.py --agent dsh --suite mini --only t01_sum_range --profile sdk \
+     --provider ollama --model qwen3-coder:30b --patch /work/assignment4/submission/<昵称>/l1-ollama.patch.yml --tag l1
+   ```
+   跑完用 `python tools/usage_cost.py assignment2/results/dsh-home-mini/t01_sum_range` 看 `by_model`，确认请求确实发给了本地模型。
 3. **你会发现 agent 只回了一句 "Hello! How can I assist you today?"**。用第 24 讲介绍的排查方法找出原因并修好。报告里要回答：是什么机制导致的？为什么它"静默"发生、没有任何报错？
 
 ### L2 推理服务实验（`llama-server`）

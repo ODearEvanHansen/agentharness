@@ -1,0 +1,11 @@
+# 作业 4 L1：给 DSH 加一个指向 Ollama 容器的 provider（OpenAI 兼容接口）。
+# 运行器用法见 assignment4/README.md L1；provider 名 ollama 对应 run.py 的 --provider ollama。
+- id: llm-pi-ai
+  config:
+    providers:
+      ollama:
+        apiKeyEnv: OLLAMA_KEY        # Ollama 不校验 key，但环境变量必须非空（例如 -e OLLAMA_KEY=x）
+        api: openai-completions
+        baseURL: http://agentharness-ollama:11434/v1
+        models:
+          - id: qwen3-coder:30b      # 16GB 内存路线改成 qwen3:8b（和 ollama pull 的名字一致），运行时 --model 也要一致

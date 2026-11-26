@@ -33,6 +33,7 @@ NET = os.environ.get("AH_NET", "agentharness-net")
 EGRESS = os.environ.get("AH_EGRESS", "agentharness-egress")
 PROXY = f"http://{EGRESS}:8888"
 PROFILE = "sdk-minimal"          # --profile 可改
+PROVIDER = "deepseek-official"   # --provider 可改（作业 4 L1：本地模型，需同时用 --patch 加载 provider 配置）
 OUTDIR = HERE / "results"        # --out 可改；所有中间产物都写在这里
 EXTRA_PATCHES: list[Path] = []   # --patch 可追加（作业 3/5：你的配置和插件）
 TASKS_DIR = HERE / "tasks"       # --suite-dir 可改（作业 3 选做 L5：assignment3/security/tasks）
@@ -185,7 +186,7 @@ def run_dsh_local(env, prompt, model):
     home = OUTDIR / "dsh-home-mini" / Path(env.workdir).name
     shutil.rmtree(home, ignore_errors=True)
     home.mkdir(parents=True, exist_ok=True)
-    with DeepSeekHarness(provider="deepseek-official", model=model, cwd=env.workdir, dsh_home=str(home),
+    with DeepSeekHarness(provider=PROVIDER, model=model, cwd=env.workdir, dsh_home=str(home),
                          profile=PROFILE, patches=all_patches(), initialize_timeout_seconds=180) as h:
         s = h.start_session()
         res = s.run(prompt)
@@ -196,7 +197,7 @@ def run_dsh_local(env, prompt, model):
 def run_dsh_container(env, prompt, model):
     """DSH runtime 在任务容器内运行（只读挂载进容器），SDK 通过 docker exec 的 stdin/stdout 与之通信。"""
     from deepseek_harness import DeepSeekHarness
-    with DeepSeekHarness(provider="deepseek-official", model=model, cwd="/testbed", runtime_cwd=str(HERE),
+    with DeepSeekHarness(provider=PROVIDER, model=model, cwd="/testbed", runtime_cwd=str(HERE),
                          dsh_home="/dshhome", dsh_bin=str(HERE / "dsh-in-container.sh"), profile=PROFILE,
                          patches=all_patches(),
                          env={"DSH_CTR": env.ctr, "AH_PROXY": PROXY}, initialize_timeout_seconds=180) as h:
@@ -335,6 +336,7 @@ def main():
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--out", default=str(HERE / "results"))
     ap.add_argument("--profile", default="sdk-minimal", help="DSH profile（仅 --agent dsh）")
+    ap.add_argument("--provider", default="deepseek-official", help="DSH 主 agent 的 provider（仅 --agent dsh；本地模型见 docs/setup-local.md 第三部分）")
     ap.add_argument("--patch", action="append", default=[],
                     help="追加的 DSH patch 文件（可重复）。SWE 模式下其所在目录会只读挂载进任务容器，插件 .ts 请放在同一目录并用绝对路径引用")
     ap.add_argument("--tag", default="", help="结果文件名后缀，用于区分不同配置的运行")
@@ -343,10 +345,11 @@ def main():
     ap.add_argument("--suite-dir", help="--suite mini 时改用别的题目目录（例如 assignment3/security/tasks）")
     ap.add_argument("--prompt-suffix-file", help="追加到每道题 prompt 末尾的文本文件（作业 5：路由指引）")
     a = ap.parse_args()
-    global PROFILE, OUTDIR, TASKS_DIR
+    global PROFILE, PROVIDER, OUTDIR, TASKS_DIR
     if a.suite_dir:
         TASKS_DIR = Path(a.suite_dir).resolve()
     PROFILE = a.profile
+    PROVIDER = a.provider
     OUTDIR = Path(a.out).resolve()
     EXTRA_PATCHES.extend(Path(p).resolve() for p in a.patch)
     outdir = OUTDIR
