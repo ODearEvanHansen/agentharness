@@ -1,3 +1,4 @@
+<!-- 本文件由 scripts/build_site.py 用于生成网站，站内链接在 GitHub 仓库里直接浏览会失效，请访问 https://odearevanhansen.github.io/agentharness/ -->
 # 环境搭建指南
 
 这一页一步步带你装好课程需要的环境：**Docker + Python 虚拟环境 + DeepSeek API key**，最后用[作业 0](assignments/a0.md) 的自检脚本确认。只支持两种平台：
@@ -215,7 +216,7 @@ chmod 600 ~/.config/agentharness/env
 key 文件放在仓库**之外**：作业容器会把仓库挂载成可写目录，所以不要在仓库里放 `.env`，也不要写进 `~/.bashrc`。每次开新终端：
 
 ```bash
-source ~/.venvs/agentharness/bin/activate && set -a && . ~/.config/agentharness/env && set +a
+source ~/.venvs/agentharness/bin/activate && source ~/.config/agentharness/env
 ```
 
 ## 四、验证清单

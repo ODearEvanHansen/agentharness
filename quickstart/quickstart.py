@@ -16,7 +16,7 @@ API = os.environ.get("DEEPSEEK_API_BASE", "https://api.deepseek.com") + "/chat/c
 HERE = Path(__file__).resolve().parent
 TASKS = HERE / "tasks"
 # 元 / 1M tokens：(缓存命中输入, 未命中输入, 输出)。来源 api-docs.deepseek.com/zh-cn/quick_start/pricing（2026-11-22）
-PRICES = {"deepseek-flash": (0.04, 2, 8), "deepseek-v4-pro": (0.30, 9.0, 27.0)}  # 高峰价；低谷价减半
+PRICES = {"deepseek-flash": (0.04, 2, 8), "deepseek-v4-pro": (0.30, 9.0, 27.0)}  # 高峰价；低峰价减半
 
 SYSTEM = ("你是一个编码 agent。工作目录里有一道小题：先读题目涉及的源文件和 test_task.py，"
           "再用 write_file 修改源文件，用 run_tests 验证；测试通过后调用 done。不要修改 test_task.py。")
@@ -47,6 +47,12 @@ def chat(messages, model):
                 time.sleep(2 ** attempt)
                 continue
             raise SystemExit(f"API 错误 {e.code}：{e.read().decode(errors='replace')[:300]}")
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+            if attempt < 4:
+                time.sleep(2 ** attempt)
+                continue
+            raise SystemExit(f"连不上 DeepSeek API（{API}）：{getattr(e, 'reason', e)}\n"
+                             "请检查网络、代理设置，或稍后重试。")
 
 
 def run_tests(work):
@@ -111,6 +117,10 @@ def main():
     ap.add_argument("--model", default="deepseek-flash", choices=sorted(PRICES))
     ap.add_argument("--tasks", nargs="*", default=sorted(p.name for p in TASKS.iterdir() if p.is_dir()))
     a = ap.parse_args()
+    valid = sorted(p.name for p in TASKS.iterdir() if p.is_dir())
+    bad = [t for t in a.tasks if t not in valid]
+    if bad:
+        raise SystemExit(f"没有这道题：{'、'.join(bad)}\n可选题名：{'、'.join(valid)}")
     if not os.environ.get("DEEPSEEK_API_KEY"):
         raise SystemExit("请先设置环境变量 DEEPSEEK_API_KEY（建议为本课程单独创建 key，只充值少量金额）\n"
                          "  申请 key：https://platform.deepseek.com/api_keys\n"
@@ -133,7 +143,7 @@ def main():
             print(f"    → {'通过' if ok else '未通过'}  请求 {u['requests']} 次  {cny:.4f} 元")
     n_ok = sum(r[1] for r in rows)
     hit, tot = sum(r[2]["hit"] for r in rows), sum(r[2]["hit"] + r[2]["miss"] for r in rows)
-    print(f"\n模型 {a.model}（{'高峰' if is_peak() else '低谷'}价）")
+    print(f"\n模型 {a.model}（{'高峰' if is_peak() else '低峰'}价）")
     print(f"解决率 {n_ok}/{len(rows)}   总花费 {sum(r[3] for r in rows):.4f} 元   "
           f"缓存命中率 {hit / tot:.0%}   用时 {sum(r[4] for r in rows):.0f} 秒" if tot else "无请求")
     print("下一步：读 quickstart/README.md 里的“这 150 行在做什么”，再到课程网站看完整版作业 2。")

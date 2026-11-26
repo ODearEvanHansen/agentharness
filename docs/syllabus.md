@@ -1,6 +1,7 @@
+<!-- 本文件由 scripts/build_site.py 用于生成网站，站内链接在 GitHub 仓库里直接浏览会失效，请访问 https://odearevanhansen.github.io/agentharness/ -->
 # 课程大纲
 
-共 14 周授课 + 2 周项目期，37 讲（第 2、3、8、10、12 周各 2 讲，其余每周 3 讲；第 3、6、12、13、16、22、31、35、36 讲为新增或重写中，讲稿待写）。**每讲由三部分组成**：一段 3–5 分钟的导读视频（B 站，程序合成，见文末说明），讲稿全文，以及必读材料加一个 10–20 分钟、写明预期结果的小练习。每周约 2 小时用于阅读和练习，加上作业时间，每周合计见下面的"学习节奏"。学习问题请到 [Discussions 的 Q&A](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a) 提问，脚本问题和内容错误请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)；作业 0 到 [Discussions](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1) 发帖打卡。
+共 14 周授课 + 2 周项目期，37 讲（第 2、3、8、10、12 周各 2 讲，其余每周 3 讲）。**每讲由三部分组成**：一段 3–5 分钟的导读视频（B 站，程序合成，见文末说明），讲稿全文，以及必读材料加一个 10–20 分钟、写明预期结果的小练习。每周约 2 小时用于阅读和练习，加上作业时间，每周合计见下面的"学习节奏"。学习问题请到 [Discussions 的 Q&A](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a) 提问，脚本问题和内容错误请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)；作业 0 到 [Discussions](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1) 发帖打卡。
 
 **先修**：熟练使用 Python；会用 git 和 Docker；了解 HTTP；能读简单的 HTML/JavaScript 和 TypeScript（作业 1 有前端部分，作业 2、3 需要读或写少量 TS）。**不要求**有 GPU 或机器学习背景。
 

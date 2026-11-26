@@ -52,7 +52,7 @@
 ## 关卡 2：运行自检
 新开的终端要先激活虚拟环境、载入 key，再运行：
 ```bash
-source ~/.venvs/agentharness/bin/activate && set -a && . ~/.config/agentharness/env && set +a && python assignment0/selfcheck.py
+source ~/.venvs/agentharness/bin/activate && source ~/.config/agentharness/env && python assignment0/selfcheck.py
 ```
 所有 ❌ 都必须修好，⚠️ 按提示处理。常见问题：
 

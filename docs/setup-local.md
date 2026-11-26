@@ -164,7 +164,7 @@ python3 tools/usage_cost.py <dsh_home> [model] [peak|offpeak]
 
 - `dsh_home`：DSH 的 home 目录（里面有 `sessions/`）。课程运行器的位置：小题在 `assignment2/results/dsh-home-mini/<题目>/`，SWE 题在 `assignment2/results/dsh-homes/<容器名>/`；你自己用 SDK 时就是传给 `DeepSeekHarness(dsh_home=...)` 的目录。
 - `model`：会话日志里没记录模型时的兜底模型，默认 `deepseek-flash`；
-- 第三个参数：`peak`（默认，课程统一按高峰价）或 `offpeak`（低谷价，高峰价的一半）。
+- 第三个参数：`peak`（默认，课程统一按高峰价）或 `offpeak`（低峰价，高峰价的一半）。
 - 日志是 `.zstd` 时需要 `pip install zstandard`（运行器镜像里已装）。
 
 示例（课程团队一次作业 2 运行的真实输出）：

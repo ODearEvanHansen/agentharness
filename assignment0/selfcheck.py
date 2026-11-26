@@ -37,7 +37,11 @@ def check_os():
     s, m = platform.system(), platform.machine()
     if s == "Linux":
         wsl = "microsoft" in platform.release().lower()
-        add("✅", "操作系统", f"Linux {m}" + (" (WSL2)" if wsl else ""))
+        if m.lower() in ("x86_64", "amd64"):
+            add("✅", "操作系统", f"Linux {m}" + (" (WSL2)" if wsl else ""))
+        else:
+            add("❌", "操作系统", f"Linux {m}" + (" (WSL2)" if wsl else ""),
+                "本课程只支持 x86_64（amd64）Linux：SWE-bench 评测镜像仅有 x86_64 版本；请换用 x86_64 云主机或 Windows+WSL2")
     elif s == "Darwin":
         add("❌", "操作系统", f"macOS {platform.mac_ver()[0]} {m}",
             "本课程不支持 macOS（SWE-bench 镜像仅 x86_64，本地模型实验按 x86 Linux 设计）；请使用 x86_64 Linux 云主机或 Windows+WSL2")
@@ -80,15 +84,15 @@ def check_resources():
     except (ValueError, OSError, AttributeError):
         add("⚠️", "内存", "无法检测")
     free = shutil.disk_usage(os.path.expanduser("~")).free / 1024**3
-    add("✅" if free >= 80 else "⚠️", "磁盘空闲", f"{free:.0f} GB",
-        "" if free >= 80 else "SWE-bench 镜像约 3GB/题，完整评测集建议预留 ≥80GB")
+    add("✅" if free >= 100 else "⚠️", "磁盘空闲", f"{free:.0f} GB",
+        "" if free >= 100 else "SWE-bench 镜像约 3GB/题，全课建议预留 ≥100GB")
     add("✅", "CPU 核数", str(os.cpu_count()))
 
 
 def check_container_runtime():
     exe = shutil.which("docker")
     if not exe:
-        add("❌", "Docker", "未安装", "安装 Docker Desktop（Mac/Windows）或 Docker Engine（Linux）")
+        add("❌", "Docker", "未安装", "安装 Docker Engine（Linux）或 Docker Desktop（Windows+WSL2），见 docs/setup.md")
         return
     rc, out = run([exe, "info", "--format", "{{.ServerVersion}} {{.NCPU}}cpu"])
     if rc != 0:
@@ -99,7 +103,7 @@ def check_container_runtime():
              "--cpus", "1", "--memory", "256m", "--network", "none", "alpine:3.20", "true"]
     rc, out = run(probe, timeout=180)
     add("✅" if rc == 0 else "⚠️", "Docker 运行容器", "ok" if rc == 0 else out[-160:],
-        "" if rc == 0 else "拉取探测镜像 alpine:3.20（Docker Hub）失败；若只是 Docker Hub 不通可忽略，关卡 3 会用 GHCR 镜像再验证一次")
+        "" if rc == 0 else "拉取探测镜像 alpine:3.20（Docker Hub）失败；Docker Hub 不通不能忽略：按 infra/README.md 配置镜像加速，或拉 GHCR 预构建镜像后 docker tag 成本地名字")
 
 
 def check_network():

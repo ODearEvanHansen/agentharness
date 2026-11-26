@@ -16,7 +16,7 @@ docker network create --internal agentharness-net
 docker run -d --name agentharness-egress agentharness-egress:0.1
 docker network connect agentharness-net agentharness-egress
 ```
-搭好后在隔离网络里的容器内验证（用运行器镜像，下面整段可直接复制），三条都必须满足：
+**先完成下面“运行器镜像”一节的构建（或按“Docker Hub 不通时”拉取预构建镜像）**，再在隔离网络里的容器内验证（用运行器镜像，下面整段可直接复制），三条都必须满足：
 ```bash
 docker run --rm --network agentharness-net -e HTTPS_PROXY=http://agentharness-egress:8888 \
   agentharness-runner:0.1 sh -c '
@@ -87,4 +87,4 @@ docker run -d --name agentharness-llm --cpus 16 --memory 30g --network agentharn
 - **官方评测**：`python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json -p preds.jsonl -id run1`，难题集改用 `dataset_hard.json`。评测要调用宿主机上的 Docker，所以请在宿主机上运行，并先执行 `pip install swebench==5.0.2`。
 - **来源与许可**：镜像原样复制自 Docker Hub 上 SWE-bench 官方的 `swebench/sweb.eval.x86_64.*`，没有做任何修改。SWE-bench 的数据集和工具采用 MIT 许可；镜像中的各上游项目（django、sympy 等）和系统软件包遵循它们各自的许可证。课程转存这些镜像只是为了方便国内访问，不主张任何额外权利。
 - **国内访问**：课程团队在国内机器上实测过，GHCR 的下载速度可以接受。如果你那里很慢，可以把环境变量 `SWE_IMAGE_REPO` 和数据集 JSON 中的 `image` 字段改成你自己的镜像仓库（用 `make_dataset_cn.py --repo` 重新生成）。
-- **注意**：`swebench` 5.x 必须使用数据集名 `SWE-bench/SWE-bench_Verified`。
+- **注意**：仅在线从 Hugging Face 指定数据集时，`swebench` 5.x 必须使用数据集名 `SWE-bench/SWE-bench_Verified`；本课用本地的 `infra/swebench/dataset.json`，不涉及这一点。
