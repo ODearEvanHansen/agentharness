@@ -28,7 +28,8 @@ TOOLS = [
 
 
 def chat(messages, model, tools, max_tokens=8192):
-    """调用 DeepSeek（OpenAI 格式）。已提供：含 429/5xx 重试。返回原始 JSON。"""
+    """调用 DeepSeek（OpenAI 格式）。已提供：含 429/5xx 与网络错误重试。返回原始 JSON。
+    max_tokens 是单步上限；返回的 finish_reason == "length" 表示这一步被截断了。"""
     body = {"model": model, "messages": messages, "tools": tools, "max_tokens": max_tokens}
     req = urllib.request.Request(API, data=json.dumps(body).encode(), headers={
         "Content-Type": "application/json", "Authorization": "Bearer " + os.environ["DEEPSEEK_API_KEY"]})
@@ -38,6 +39,11 @@ def chat(messages, model, tools, max_tokens=8192):
                 return json.load(r)
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503) and attempt < 4:
+                time.sleep(2 ** attempt)
+                continue
+            raise
+        except (urllib.error.URLError, TimeoutError):  # 网络抖动 / 超时：同样退避重试
+            if attempt < 4:
                 time.sleep(2 ** attempt)
                 continue
             raise

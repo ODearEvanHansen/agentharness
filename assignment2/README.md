@@ -33,7 +33,7 @@ docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
 ```
 判分在一份干净副本里进行：只采用你对原有源文件的修改。新增的文件（例如 `conftest.py`）不会带入判分副本，改动 `test_task.py` 的解答直接判为不通过。
 
-**SWE 题**：运行器在宿主机上为每道题启动一个隔离的任务容器，agent 只在任务容器里执行命令：
+**SWE 题**：运行器在宿主机上为每道题启动一个隔离的任务容器，agent 只在任务容器里执行命令（新开终端先按 docs/setup.md 激活 `~/.venvs/agentharness` 并加载 `~/.config/agentharness/env`）：
 ```bash
 python assignment2/run.py --agent miniloop --suite swe --parallel 1
 python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
@@ -109,4 +109,4 @@ docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
 | SWE 20 题（oracle 文件） | 14/20 | 3.19 元（每题 0.16 元） | 65 s | 18/20 / 17/20 |
 | 课程小题 8 题 | 8/8 | 0.03 元 | 2 s | — / 8/8 |
 
-SWE 的 6 道失败里有 5 道是思考过程用满 32768 个输出 token、一行答案都没给（这 5 道就花了约 1.3 元）；另有 2 道模型给的 diff 漏了 `---/+++` 文件头，脚本按唯一的 oracle 文件补头后通过（不补头是 12/20）。只跑了一次，方差未测。
+SWE 的 6 道失败里有 5 道是思考过程用满 32768 个输出 token、一行答案都没给（这 5 道就花了约 1.58 元）；另有 2 道模型给的 diff 漏了 `---/+++` 文件头，脚本按唯一的 oracle 文件补头后通过（不补头是 12/20）。只跑了一次，方差未测。

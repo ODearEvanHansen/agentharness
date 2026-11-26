@@ -246,14 +246,17 @@ def in_container():
 
 
 def run_swe(task, agent, model, outdir):
-    import deepseek_harness_runtime
     suffix = task["id"].replace("__", "_1776_")
     name = f"{NAME_PREFIX}{agent}-{suffix.lower()}-{uuid.uuid4().hex[:6]}"[:120]
-    runtime = Path(deepseek_harness_runtime.__file__).parent / "runtime"
+    dsh_mount = []
+    if agent == "dsh":  # 只有 DSH 需要 SDK 运行时；miniLoop 不依赖它
+        import deepseek_harness_runtime
+        runtime = Path(deepseek_harness_runtime.__file__).parent / "runtime"
+        dsh_mount = ["-v", f"{host_path(runtime)}:/dsh:ro"]
     infra = REPO / "infra"
     cmd = ["docker", "run", "-d", "--name", name, "--label", LABEL, "--cpus", "4", "--memory", "8g",
            "--network", NET, "-e", f"HTTPS_PROXY={PROXY}", "-e", f"HTTP_PROXY={PROXY}",
-           "-v", f"{host_path(runtime)}:/dsh:ro", "-v", f"{host_path(infra)}:{infra}:ro",
+           *dsh_mount, "-v", f"{host_path(infra)}:{infra}:ro",
            *[x for d in sorted({p.parent for p in EXTRA_PATCHES}) for x in ("-v", f"{host_path(d)}:{d}:ro")],
            f"{IMAGE_REPO}:{suffix}", "sleep", "infinity"]
     CONTAINERS[task["id"]] = name
@@ -264,7 +267,10 @@ def run_swe(task, agent, model, outdir):
         env = ContainerEnv(name)
         fn = run_miniloop if agent == "miniloop" else run_dsh_container
         usage, steps, tcalls = fn(env, task["prompt"], model)
-        patch, _ = env.bash("git add -A && git diff --cached", timeout=60)
+        # 补丁不走 env.bash：那里只保留输出的最后 MAX_OUT 个字符，长 diff 会丢掉文件头
+        p = subprocess.run(["docker", "exec", name, "bash", "-lc", "cd /testbed && git add -A && git diff --cached"],
+                           capture_output=True, text=True, timeout=60)
+        patch = p.stdout
     finally:
         subprocess.run(["docker", "rm", "-f", name], capture_output=True)
     return {"solved": None, "usage": usage, "steps": steps, "tool_calls": tcalls, "model_patch": patch}
