@@ -386,13 +386,32 @@ def main():
             r = ex.submit(_with_cancel, ev, runner, t, a.agent, a.model, outdir).result(timeout=a.timeout)
         except Exception as e:
             err = f"{type(e).__name__}: {str(e)[:300]}"
+            usage = {"requests": 0, "input_miss": 0, "cache_read": 0, "output": 0}
             if isinstance(e, cf.TimeoutError):
                 # 超时：miniLoop 在下一次请求模型前停下（见 _patch_chat）；DSH 随任务容器删除而退出
                 ev.set()
+                home = None
+                if a.agent == "dsh" and a.suite == "mini":
+                    home = OUTDIR / "dsh-home-mini" / t["id"]
+                elif a.agent == "dsh" and t["id"] in CONTAINERS:
+                    # 删容器前先把会话日志拷出来，超时这段时间花的钱才算得出来
+                    home = OUTDIR / "dsh-homes" / CONTAINERS[t["id"]]
+                    home.mkdir(parents=True, exist_ok=True)
+                    subprocess.run(["docker", "cp", f"{CONTAINERS[t['id']]}:/dshhome/sessions", str(home / "sessions")],
+                                   capture_output=True)
                 if t["id"] in CONTAINERS:
                     subprocess.run(["docker", "rm", "-f", CONTAINERS[t["id"]]], capture_output=True)
-            r = {"solved": False if a.suite == "mini" else None, "steps": 0, "tool_calls": 0,
-                 "usage": {"requests": 0, "input_miss": 0, "cache_read": 0, "output": 0}, "model_patch": ""}
+                if home is not None:
+                    time.sleep(2)   # 让 DSH 把最后一行会话日志写完
+                    try:
+                        usage = usage_cost.summarize(home, a.model, "peak")
+                        err += f"（超时前已花费 {usage['cny']:.4f} 元，按会话日志统计）"
+                    except Exception as ue:
+                        err += f"（超时前的花费没能从会话日志统计：{type(ue).__name__}，请用余额核对）"
+                else:
+                    err += "（miniLoop 超时的题不记录已花费用，记为 0 元；请用账户余额核对）"
+            r = {"solved": False if a.suite == "mini" else None, "steps": usage.get("requests", 0), "tool_calls": 0,
+                 "usage": usage, "model_patch": ""}
         finally:
             ex.shutdown(wait=False)
         u = {k: r["usage"].get(k, 0) for k in ("requests", "input_miss", "cache_read", "output")}

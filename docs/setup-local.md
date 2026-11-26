@@ -66,6 +66,22 @@ docker run -d --name agentharness-ollama --cpus 16 --memory 30g --network agenth
 
 agent 容器里要加 `-e NO_PROXY=agentharness-ollama`，provider 地址是 `http://agentharness-ollama:11434/v1`（配置写法见[第三部分](#三在-dsh-里接入本地-provider)）。
 
+**线程数（`num_thread`）**：Ollama 按**宿主机**的核数开线程，看不到容器的 `--cpus` 限制。课程试做时宿主机 36 核、容器 `--cpus 8`，日志里却是 `NumThreads:18`，严重超订，8B 模型每次请求都在约 5 分钟处被断开（HTTP 500）。解决办法是用 Modelfile 派生一个固定线程数的模型，`num_thread` 和 `--cpus` 一致：
+
+```bash
+# 在 Ollama 容器里执行（以 --cpus 8 为例）
+docker exec agentharness-ollama sh -c 'printf "FROM qwen3:8b\nPARAMETER num_thread 8\n" > /tmp/Modelfile && ollama create qwen3-8b-t8 -f /tmp/Modelfile'
+```
+
+之后 provider 里的模型名用 `qwen3-8b-t8`。慢 CPU 上 8B + 约 7.4k token 的系统提示 + 思考模式，单次请求仍可能超过 5 分钟，先用 `qwen3:0.6b` 验证链路。
+
+**上下文长度（`num_ctx`）——作业 4 L1 的排查对象，做完 L1 第 3 步再读**：Ollama 0.12.6 默认上下文只有 4096 token（[官方 FAQ](https://github.com/ollama/ollama/blob/v0.12.6/docs/faq.md#how-can-i-specify-the-context-window-size)），超出的部分被静默截掉，只在服务端日志里留下一行 `truncating input prompt limit=4096 prompt=7449`。DSH 的系统提示加工具定义约 7.4k token，所以必须调大到 ≥ 16384。DSH 走的是 OpenAI 兼容的 `/v1` 接口，不能在请求里带 Ollama 的 `options.num_ctx`，只能在服务端设：
+
+- 起服务时加环境变量：`docker run ... -e OLLAMA_CONTEXT_LENGTH=16384 ... ollama/ollama:0.12.6`（对所有模型生效）；
+- 或在上面的 Modelfile 里再加一行 `PARAMETER num_ctx 16384`（只对派生模型生效）。
+
+改完用 `docker logs agentharness-ollama 2>&1 | grep -i truncat` 确认不再出现截断。上下文越大，KV 占的内存越多，16GB 机器注意 `--memory`。
+
 ### 3. 路线 B：llama.cpp `llama-server`
 
 **作业 4 L2（宿主机上跑，源码编译、锁定 commit）**：llama-server 只做推理、不执行命令，可以直接在宿主机运行；L2 的实验脚本 `assignment4/engine/bench.py` 会自己启动它。

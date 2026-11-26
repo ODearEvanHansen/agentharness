@@ -87,7 +87,7 @@ python assignment4/check.py
      --provider ollama --model qwen3-coder:30b --patch /work/assignment4/submission/<昵称>/l1-ollama.patch.yml --tag l1
    ```
    跑完用 `python tools/usage_cost.py assignment2/results/dsh-home-mini/t01_sum_range` 看 `by_model`，确认请求确实发给了本地模型。
-3. **你会发现 agent 只回了一句 "Hello! How can I assist you today?"**。用第 24 讲介绍的排查方法找出原因并修好。报告里要回答：是什么机制导致的？为什么它"静默"发生、没有任何报错？
+3. **你会发现 agent 回了一句和任务无关的话（例如 "Hello! How can I assist you today?"），没有调用任何工具、没有生成文件**。用第 24 讲介绍的排查方法找出原因并修好。报告里要回答：是什么机制导致的？为什么它"静默"发生、没有任何报错？（修好之后，Ollama 的线程数和上下文设置见[本地模型与进阶工具](https://odearevanhansen.github.io/agentharness/setup-local/#2-路线-aollama-容器作业-4-l1)。限核容器里一定要设 `num_thread`，否则 8B 请求可能约 5 分钟就超时。）
 
 ### L2 推理服务实验（`llama-server`）
 每个实验都要给出**可复现的命令**、**原始数据**和**一段解释**。参考结果来自课程团队的机器（Xeon Gold 6354，32 核，`-t 16`，Qwen3-8B Q4_K_M）。你的数字会不一样，但应该能看到同样的趋势，或者能解释为什么不一样。

@@ -31,11 +31,21 @@ def leaves(x, path=""):
         yield path, x
 
 
+MEASURED_SUFFIXES = ("_ms", "_s", "_tok_s", "rss_mb", "pp512", "tg128")
+
+
+def is_measured(path):
+    """只有耗时 / 吞吐 / 内存这类随机器和运行而变的字段才用来判断是否复制。
+    token 计数（*_n、total_tokens）、草稿计数（draft_n/draft_accepted）、accept_rate、size_gb
+    由提示、模型和锁定 commit 决定：任何人用锁定版本诚实重跑都会得到和参考逐位相同的值，不能作为证据。"""
+    return path.rsplit("/", 1)[-1].endswith(MEASURED_SUFFIXES)
+
+
 def looks_copied(d, r):
-    """数值叶子多数和参考结果完全相同 → 判定为复制参考数据（真实测量不可能几乎全部相同）。"""
+    """测量值（耗时/吞吐/内存）多数和参考结果完全相同 → 判定为复制参考数据。"""
     mine, ref = dict(leaves(d.get("results"))), dict(leaves(r.get("results")))
-    common = [k for k in mine if k in ref]
-    if len(common) < 3:
+    common = [k for k in mine if k in ref and is_measured(k)]
+    if len(common) < 2:
         return False
     same = sum(1 for k in common if mine[k] == ref[k])
     return same / len(common) >= 0.5
@@ -60,7 +70,7 @@ def load(e):
             r = json.loads(ref.read_text(encoding="utf-8"))
         except ValueError:
             r = {}
-        if d == r or (d.get("cpu"), d.get("seconds")) == (r.get("cpu"), r.get("seconds")) or looks_copied(d, r):
+        if d == r or looks_copied(d, r):
             print(f"⚠️  {e}: results/{e}.json 的数据和 reference/{e}.json 基本相同，这是课程参考数据，不是你的结果")
             return None
     return d["results"]
