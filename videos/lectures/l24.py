@@ -38,10 +38,10 @@ LECTURE = {
         {'type': 'bars',
          'title': '起服务前先算内存：权重 + KV',
          'sub': 'KV ≈ 每 token 144 KiB × 上下文长度 -c（Qwen3-4B 与 8B 相同）',
-         'rows': [('-c 4096', 0.56, 'green', '≈ 0.6 GB'),
-                  ('-c 24576（小内存路线）', 3.4, 'blue', '≈ 3.4 GB'),
-                  ('-c 65536', 9.0, 'red', '≈ 9 GB')],
-         'highlight': '4B 权重 2.5 GB + 9 GB KV > 8 GB 容器 → 加载时被杀',
+         'rows': [('-c 4096', 0.56, 'green', '≈ 0.56 GiB'),
+                  ('-c 24576（小内存路线）', 3.4, 'blue', '≈ 3.4 GiB'),
+                  ('-c 65536', 9.0, 'red', '≈ 9 GiB')],
+         'highlight': '4B 权重 2.5 GB + 9 GiB KV > 8 GB 容器 → 加载时被杀',
          'highlight_color': 'orange',
          'caption': '-c 是所有槽位共享的总长度，KV 与它成正比',
          'narration': '起服务之前，先算内存，等于权重加 K V。K V 用第二十二讲的公式：Qwen 三 四 B 和八 B 一样是三十六层、八个 K V 头、头维度一百二十八，每 token 一百四十四 KiB。llama server 的杠 c 是所有槽位共享的上下文总长度，K V 和它成正比。设四千零九十六，K V 约零点六 GB；作业五的小内存路线设两万四千多，约三点四 GB；如果照抄大机器的六万五千五百三十六，光 K V 就约九 GB，加上二点五 GB 的权重，八 GB 的容器在加载时就会被系统杀掉。所以容器设多大内存、杠 c 设多少、杠 n p 开几个槽位，是一起算出来的。'},
@@ -101,7 +101,7 @@ LECTURE = {
         # 12 小结
         {'type': 'summary',
          'items': ['Ollama 入门快；llama-server 参数可控、有 timings', '起服务前算内存：权重 + 144 KiB × -c', '静默失败：就绪看 /health，读日志，看 by_model', '对账：token 数和时间两边对得上，再改一处'],
-         'exercise': '15 分钟、不花钱：按 docs/setup-local.md 起 llama-server，同一提示发两次；预期第二次 cache_n 约等于第一次 prompt_n 减一，且 prompt_ms + predicted_ms 接近你测的总时间',
+         'exercise': '15 分钟、不花钱：按 docs/setup-local.md 起 llama-server，同一提示发两次（按第 9 屏发 /completion 并带 cache_prompt: true）；预期第二次 cache_n 约等于第一次 prompt_n 减一，且 prompt_ms + predicted_ms 接近你测的总时间',
          'narration': '小结：Ollama 适合入门，llama server 参数可控，还会返回逐段计时。起服务前先算内存，等于权重加每 token 一百四十四 KiB 乘上下文长度。静默失败要靠三件事发现：就绪看健康检查，读服务端日志，跑完看按模型统计的用量。排查时把客户端和服务端的 token 数和时间对上，再一次只改一处。课后练习，十五分钟不花钱：按本地模型说明起一个 llama server，把同一个提示发两次，预期第二次复用的 token 数约等于第一次的提示长度减一，而且预填充加解码的时间接近你自己测的总时间。下一讲，批处理与调度。'},
     ],
 }

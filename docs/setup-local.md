@@ -59,7 +59,7 @@ cd ..
 # ① 拉模型（临时容器，普通网络）；16GB 用 qwen3:8b，32GB 用 qwen3-coder:30b
 docker run --rm -v "$HOME/.ollama":/root/.ollama --entrypoint sh ollama/ollama:0.12.6 \
   -c 'ollama serve & sleep 3; ollama pull qwen3:8b'
-# ② 在隔离网络里起服务（镜像锁定 0.12.6）
+# ② 在隔离网络里起服务（镜像锁定 0.12.6）；16GB 机器把 --cpus/--memory 改成如 --cpus 4 --memory 12g
 docker run -d --name agentharness-ollama --cpus 16 --memory 30g --network agentharness-net \
   -v "$HOME/.ollama":/root/.ollama ollama/ollama:0.12.6
 ```

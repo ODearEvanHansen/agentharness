@@ -66,8 +66,11 @@ cd ..
 S=llama.cpp/build/bin/llama-server
 python assignment4/engine/bench.py --exp E1 --model models/Qwen3-8B-Q4_K_M.gguf --server $S
 python assignment4/engine/bench.py --exp E3 --model models/Qwen3-8B-Q4_K_M.gguf --draft models/Qwen3-0.6B-Q8_0.gguf --server $S
+# E5 二选一：16GB 路线
+python assignment4/engine/bench.py --exp E5 --model models/Qwen3-8B-Q4_K_M.gguf --model models/Qwen3-8B-Q8_0.gguf --server $S
+# E5 二选一：32GB 路线（多加 30B-A3B）
 python assignment4/engine/bench.py --exp E5 --model models/Qwen3-8B-Q4_K_M.gguf --model models/Qwen3-8B-Q8_0.gguf \
-       [--model models/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf] --server $S
+       --model models/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --server $S
 python assignment4/check.py
 ```
 线程数默认取 CPU 核数的一半（`--threads` 可改）。结果写入 `assignment4/results/E*.json`，提交时一并提交。课程团队的参考结果在 `assignment4/reference/E*.json`；`check.py` 只读 `results/`，如果某个结果文件和参考文件一模一样（CPU 和耗时都相同），会判为不通过。
