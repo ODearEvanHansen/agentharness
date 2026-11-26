@@ -66,7 +66,7 @@ mv dsh.a2-mine.json assignment2/results/
 ```
 在同一批题上比较 miniLoop 和 DSH，写一页分析，至少包括：
 - 一张表：解决率、平均步数、输入/输出 token、缓存命中率、每题成本、中位耗时；
-- **一道两边结果不同的题**：用作业 1 的工具对比两边的轨迹，解释差别从哪里来；
+- **一道两边结果不同的题**：对比两边的轨迹，解释差别从哪里来。DSH 一侧用作业 1 的离线载入（L6）打开它的 DSH home（SWE 在 `assignment2/results/dsh-homes/<容器名>/`，小题在 `assignment2/results/dsh-home-mini/<题名>/`）；miniLoop 一侧没有 DSH 会话日志，请在 `solve()` 里把 `messages` 存成 jsonl（例如 `assignment2/results/miniloop-msgs/<题名>.jsonl`），用它对照；
 - 工具设计对步数的影响：DSH 一次 bash 调用就能同时写文件和运行，你的 loop 是怎么做的？
 
 > 解读差异时参考第 16 讲：每边各跑一次时，差一两道题通常在随机波动内；按题配对对比，并在报告里写明各跑了几次。不要求为此额外重复运行（不增加 API 花费）。

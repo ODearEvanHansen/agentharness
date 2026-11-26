@@ -52,6 +52,7 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
 | L3 | **状态**：单个调用 pending → ok/error；整轮 running → completed；**续聊**（同一会话多轮） | ✅ |
 | L4 | **成本**：请求数、未命中输入 / 缓存命中 / 输出 token、缓存命中率、成本（元）、耗时、轮数 | ✅ |
 | L5 | **子 agent 树**：子 agent 的事件挂在对应节点下，侧边栏显示树结构 | ✅ |
+| L6 | **离线载入**：不经过 `/api/run`，直接读一个已有的 DSH home 目录，显示其中某个会话的轨迹和 summary。作业 2 Part C 和作业 5 L2 会用它分析 `run.py` 跑出来的会话 | ✅（后端部分） |
 | 加做 | 见下文 | — |
 
 ### 后端契约（自动检查依赖它）
@@ -68,11 +69,13 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
 ```
 `usage` 要把根会话和所有子会话加起来，价格按 DeepSeek 官方高峰价计算（`usage_cost.PRICES`）。
 
+L6 再实现 `GET /api/offline/summary?dsh_home=<目录>&session_id=<根会话 id>`，返回和上面**同样结构**的 JSON（`status` 固定为 `idle`）。数据只能来自 `<目录>/sessions/**/session.v4.jsonl(.zstd)`，不能依赖服务内存里的状态：会话日志第一行（`type: session`）的 `parentSession` 给出父子关系，`turn/start`、`turn/end`、`tool/call`、`tool/result` 记录分别对应轮次和工具调用。课程在 `assignment1/fixtures/offline-home/` 放了一份真实的会话日志（一次自动检查的运行，含一个子 agent），可以先拿它调试。前端加一个入口：输入目录（和会话 id，或者列出目录里的根会话让用户选），用 L2–L5 同样的界面显示。
+
 ### 运行自动检查
 ```bash
 docker exec agentharness-a1 python assignment1/check.py --url http://127.0.0.1:8765 --dsh-home assignment1/starter/.dsh-home
 ```
-检查会真实调用 API，跑 2 轮对话，其中包括一次子 agent，花费约 0.02 元。全部 ✅ 才算通过 L1–L5。
+检查会真实调用 API，跑 2 轮对话，其中包括一次子 agent，花费约 0.02 元。全部 ✅ 才算通过 L1–L6。只想检查 L6 时加 `--offline-only`：只读课程自带的离线样例，不调用 API。
 
 用没改过的起始代码跑，只有 L1 能通过：summary 等接口还没实现，会看到 `❌ L2+ 接口 /api/sessions/<id>/summary 返回 500` 之类的提示，脚本随即以非零退出码结束。这是正常的，实现完接口再跑。
 
