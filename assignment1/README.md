@@ -29,6 +29,7 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
   docker network connect agentharness-net agentharness-portfwd
   curl -s 127.0.0.1:8765/ | head      # 能看到页面 HTML 就通了
   ```
+  `alpine/socat` 来自 Docker Hub：如果你之前因为 Docker Hub 不通改用了 GHCR 运行器镜像，这里要先配好镜像加速（见 [setup](../docs/setup.md)），或者改用上面第一种方式直接访问容器 IP。
   之后浏览器打开 `http://127.0.0.1:8765`（WSL2 下 Windows 浏览器一般也能直接访问；远程主机用 `ssh -L 8765:127.0.0.1:8765 <主机>` 再在本地打开）。用完执行 `docker rm -f agentharness-portfwd`。
 
   WSL2 下 Windows 浏览器打不开时：先在 WSL 里跑上面的 `curl`，这一步不通就是容器问题；WSL 里通而浏览器不通，检查 Docker Desktop → Settings → Resources → WSL integration 是否启用了你的发行版；还不行就在 PowerShell 执行 `wsl hostname -I`，用第一个 IP 打开 `http://<IP>:8765`。详见 [FAQ](../docs/faq.md)。
@@ -59,7 +60,7 @@ docker run --rm -it --name agentharness-a1 --cpus 4 --memory 8g --network agenth
 {
   "session_id": "session-...",
   "status": "idle | running",
-  "turns": [{"n": 1, "status": "completed", "seconds": 12.3}],
+  "turns": [{"n": 1, "status": "completed（或 stop / error 等，非空即可）", "seconds": 12.3}],
   "tool_calls": [{"call_id": "call_...", "name": "bash", "status": "pending | ok | error", "session_id": "所属会话（根或子 agent）"}],
   "usage": {"requests": 9, "input_miss": 3008, "cache_read": 84992, "output": 1590, "cny": 0.022},
   "agents": [{"session_id": "session-...", "parent": null}, {"session_id": "...", "parent": "session-..."}]
@@ -76,7 +77,7 @@ docker exec agentharness-a1 python assignment1/check.py --url http://127.0.0.1:8
 用没改过的起始代码跑，只有 L1 能通过：summary 等接口还没实现，会看到 `❌ L2+ 接口 /api/sessions/<id>/summary 返回 500` 之类的提示，脚本随即以非零退出码结束。这是正常的，实现完接口再跑。
 
 ## 你会踩的坑（提前告诉你）
-1. **事件里没有 token 用量。** `step/end` 只有轮次和步数编号。用量只记录在会话日志 `$DSH_HOME/sessions/**/session.v4.jsonl(.zstd)` 里，每次请求对应一条 `assistant/message` 记录的 `usage` 字段（`inputTokens` 是**未命中缓存**的输入，`cacheReadTokens` 是命中的部分）。
+1. **事件里没有 token 用量。** `step/end` 只有轮次和步数编号。用量只记录在会话日志 `$DSH_HOME/sessions/**/session.v4.jsonl(.zstd)` 里（完整 `sdk` 和 `sdk-minimal` 都写在这里，完整 profile 通常是 `.zstd` 压缩；`$DSH_HOME/storages/` 只是缓存，不含用量），每次请求对应一条 `assistant/message` 记录的 `usage` 字段（`inputTokens` 是**未命中缓存**的输入，`cacheReadTokens` 是命中的部分）。
 2. **子 agent 的归属**：用 `subagent.started` 事件的 `parentSessionId` / `childSessionId` 建立父子关系；子 agent 的 `session.event` 带着它自己的 `sessionId`。
 3. **工具调用配对**：`tool/call.data.callId` ↔ `tool/result.data.message.toolCallId`。
 4. **前端依赖**（markdown 渲染等）请下载到 `static/` 本地引用，国内学员加载 CDN 很慢。

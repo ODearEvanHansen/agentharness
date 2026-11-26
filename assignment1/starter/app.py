@@ -8,9 +8,7 @@
   - GET  /api/sessions/{sid}/summary   按 README 中的"后端契约"返回结构化摘要（自动检查依赖它）
   - static/index.html                   前端：轨迹、工具调用、状态、成本、子 agent 树
 
-运行：
-  export DEEPSEEK_API_KEY=...
-  python -m uvicorn app:app --port 8765        # 在 assignment1/starter 目录下
+运行：必须在课程运行器容器里启动（否则下面的检查会拒绝启动），完整的 docker run 命令见 assignment1/README.md「启动」。
 """
 import json
 import os

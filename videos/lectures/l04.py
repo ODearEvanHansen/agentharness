@@ -1,4 +1,4 @@
-# 第 4 讲：DSH 架构与扩展机制。框架参照 Harvard CS2680 第 2 讲（四种扩展机制 skill/MCP/hook/plugin、在 loop 上的位置、七题分类练习）
+# 第 4 讲：DSH 架构与扩展机制。框架参照 Harvard CS2680 第 2 讲（四种扩展机制 skill/MCP/hook/plugin、在 loop 上的位置、六题分类练习）
 # 与第 8 讲（harness 三架构光谱、DSH「一切皆插件 / 请求是日志的冻结视图」）公开幻灯片；与该课程无关联。
 # 贯穿例子：把 django-15467 那次修复做成团队可复用的「修 bug 流程」，看每个需求落到哪种扩展机制。
 # DSH 核对（v0.2.2-rc.2）：docs/architecture.zh.md（轮次流程、"模型可见即已记录"）；packages/skill（.dsh/skills、.agents/skills，<name>/SKILL.md，
@@ -22,9 +22,9 @@ LECTURE = {
         {"type": "compare", "title": "harness 的三种架构，DSH 在哪一端",
          "sub": "单体 → 模块化 → 微内核",
          "left": ("单体与模块化", ["单体：loop、工具、权限写在一起", "改行为要改源码、发新版", "模块化：留出钩子和配置开关"], "gray"),
-         "right": ("DSH：微内核这一端", ["底座 Cordis：一个插件框架", "连 agent loop 本身也是插件", "工具、日志、模型适配器都是插件", "配置层可以替换任何一个"], "blue"),
+         "right": ("DSH：微内核这一端", ["底座 Cordis：TypeScript 插件框架", "连 agent loop 本身也是插件", "工具、日志、模型适配器都是插件", "配置层可以替换任何一个"], "blue"),
          "caption": "DSH：一切皆插件，连循环也是",
-         "narration": "harness 的架构大致有三种。单体，循环、工具、权限写在一起，想改行为就得改源码；模块化，在固定的骨架上留出钩子和配置开关；微内核，核心只负责装配，其余都是可替换的插件。DSH 在微内核这一端：它的底座是 Cordis 插件框架，连 agent loop 本身都是插件，工具、会话日志、模型适配器也都是。DSH 属于极简核心一类，特点就是一切皆插件。"},
+         "narration": "harness 的架构大致有三种。单体，循环、工具、权限写在一起，想改行为就得改源码；模块化，在固定的骨架上留出钩子和配置开关；微内核，核心只负责装配，其余都是可替换的插件。DSH 在微内核这一端：它的底座是 Cordis，一个 TypeScript 写的插件框架，连 agent loop 本身都是插件，工具、会话日志、模型适配器也都是。DSH 属于极简核心一类，特点就是一切皆插件。"},
         {"type": "blocks", "title": "一个 step 的流水线：插件在哪里插手",
          "sub": "docs/architecture.zh.md「轮次流程」，简化版",
          "rows": [("开始", [("agent/created", 300, "gray"), ("agent/pre-step", 320, "blue"), ("agent/request", 300, "blue")]),
@@ -32,7 +32,7 @@ LECTURE = {
                   ("工具", [("tools/pre-execute", 340, "orange"), ("tools/execute", 280, "orange"), ("tools/post-execute", 340, "orange")]),
                   ("收尾", [("step/end → 下一步", 400, "green"), ("agent/turn-stopping", 400, "green")])],
          "caption": "模型可见即已记录：请求是日志的冻结视图",
-         "narration": "看一个 step 的流水线。会话创建时有 agent created；每一步开始前有 agent pre step，插件可以在这里接纳、改写或拒绝这一步的输入；发请求前有 agent request。然后 DSH 从会话日志派生出模型历史并冻结，再调模型。模型提出工具调用后，依次经过工具执行前、执行、执行后三个挂载点；最后是这一步结束，以及整轮即将停止。DSH 有一条铁律，叫模型可见即已记录：每个请求都必须能从日志重建，请求就是日志的冻结视图。第七讲会逐行读这条流水线。"},
+         "narration": "看一个 step 的流水线。会话创建时有 agent created；每一步开始前有 agent pre step，插件可以在这里接纳、改写或拒绝这一步的输入；发请求前有 agent request，前者管这一步的输入，后者管这一次模型调用本身的参数。然后 DSH 从会话日志派生出模型历史并冻结，再调模型。模型提出工具调用后，依次经过工具执行前、执行、执行后三个挂载点；最后是这一步结束，以及整轮即将停止。DSH 有一条铁律，叫模型可见即已记录：每个请求都必须能从日志重建，请求就是日志的冻结视图。第七讲会逐行读这条流水线。"},
         {"type": "compare", "title": "四种扩展机制：各回答一个问题",
          "sub": "不能互相替代",
          "left": ("是什么", ["skill：该怎么做（知识与流程）", "MCP：能触达什么（外部数据与动作）", "hook：某个时刻自动做什么", "plugin：怎么打包、分发给别人"], "blue"),
@@ -52,7 +52,7 @@ LECTURE = {
                    "名字带服务器前缀：mcp__github__create_issue",
                    "DSH CLI 随附客户端，但默认不启用任何服务器"],
          "caption": "装 MCP 服务器，等于装一个可信程序",
-         "narration": "再看 MCP，模型上下文协议。一台 MCP 服务器把一个外部系统，比如 GitHub、数据库、浏览器，暴露成一组工具和资源。在模型眼里，它和本地工具几乎一样，同样的参数 schema，同样的调用方式，DSH 给它的名字加上服务器前缀，比如 mcp 下划线 github 下划线 create issue。区别在进程边界和信任：服务器命令跑在 agent 的沙箱之外，所以 DSH 的命令行虽然带着 MCP 客户端，却默认不启用任何服务器。装一个 MCP 服务器，就等于装一个你信任的程序。"},
+         "narration": "再看 MCP，模型上下文协议。一台 MCP 服务器把一个外部系统，比如 GitHub、数据库、浏览器，暴露成一组工具和资源。在模型眼里，它和本地工具几乎一样，同样的参数 schema，同样的调用方式，DSH 给它的名字加上服务器前缀，比如 mcp 双下划线 github 双下划线 create issue。区别在进程边界和信任：服务器命令跑在 agent 的沙箱之外，所以 DSH 的命令行虽然带着 MCP 客户端，却默认不启用任何服务器。装一个 MCP 服务器，就等于装一个你信任的程序。"},
         {"type": "compare", "title": "hook：在固定时刻确定性地执行",
          "sub": "左：常见的五类事件；右：DSH 的挂载点",
          "left": ("事件 → 典型用途", ["会话开始：注入上下文", "收到提示：校验、补充", "工具执行前：检查、阻断", "工具执行后：格式化、记日志", "即将停止：验证测试再放行"], "orange"),
@@ -93,7 +93,7 @@ LECTURE = {
          "caption": "patch 最简单的例子：关掉一个插件",
          "narration": "最后回到作业会直接用到的底层。pip 装好 SDK，它会带上自包含的 dsh 运行时，你的 Python 代码通过标准输入输出上的 JSON-RPC 驱动它，课程锁定零点二点二的第二个候选版。sdk minimal 只有一个 bash 工具和一句话的系统提示，是作业二的对照组；完整的 sdk 有更多工具、审批和后台任务，系统提示加工具定义约一万 token。会话日志插件默认会把日志随请求上传，连 sdk minimal 也开着；课程补丁只有四行，把它的 enabled 设成 false。这就是 patch 最简单的例子。"},
         {"type": "summary", "items": ["DSH 是微内核：一切皆插件，连 loop 也是", "请求是日志的冻结视图：模型可见即已记录", "skill 怎么做、MCP 触达什么、hook 何时做、plugin 怎么分发", "必须一定执行的交给 hook 或权限，不写进 skill"],
-         "exercise": "15 分钟：在容器里对 sdk 与 sdk-minimal 各运行 dsh --profile <名字> --dump-config，搜索 tool-skill 与 agent-instructions；预期 sdk 里能找到两者，sdk-minimal 里找不到",
+         "exercise": "15 分钟：dsh 已装在运行器镜像的 PATH 里，不需要 key：docker run --rm --network none agentharness-runner:0.1 dsh --profile sdk --dump-config（镜像名同 docs/setup.md），再把 sdk 换成 sdk-minimal 跑一次，搜索 tool-skill 与 agent-instructions；预期 sdk 里能找到两者，sdk-minimal 里找不到",
          "narration": "这一讲的要点：DSH 是微内核架构，一切皆插件，连循环也是；请求是会话日志的冻结视图，模型可见即已记录。四种扩展机制，skill 管怎么做，MCP 管能触达什么，hook 管某个时刻自动做什么，plugin 管怎么分发；必须一定执行的，交给 hook 或权限，而不是写进 skill。课后在容器里，分别对 sdk 和 sdk minimal 打印完整配置，搜索 tool skill 和 agent instructions，预期完整 sdk 里两者都有，sdk minimal 里都没有。下一讲，我们讲观测：事件、日志与成本。"},
     ],
 }

@@ -2,9 +2,10 @@
 # Agent = Model × Harness），用我们自己的话和例子重讲，与该课程无关联。
 # 贯穿例子：SWE-bench Verified django__django-15467（radio_fields 覆盖了用户的 empty_label）。
 # 数据：assignment2/results/dsh-homes/dsh-course-a2-dsh-django_1776_django-15467-98b13e 会话日志（14 步、13 次 bash、
-#   缓存读 75008 / 未命中 6547 / 输出 4827 token，按高峰价约 0.055 元）；assignment2/README.md（miniLoop 24 步 0.087 元，DSH 0.053 元）；
+#   缓存读 75008 / 未命中 6547 / 输出 4827 token，按高峰价约 0.055 元）；assignment2/README.md（miniLoop 24 步 0.087 元，DSH 0.055 元）；
 #   videos/real/noagent_swe.jsonl（同题无 agent 一次作答 0.126 元，已给出该改的文件）；videos/real/a2_mini.txt、noagent_mini.jsonl。
 # DSH 核对：packages/core/agent-loop/README.md L75（step 组装、会话日志）、L120（重试复用组装）。
+# 外部数字（scene 3）：CS2680 第 4 讲公开幻灯片 p51–p53，同模型只改 harness，SWE-bench Verified 子集 43/169 → 72/169（未在本课复现）。
 LECTURE = {
     "id": "l07", "no": 7, "title": "Agent loop 剖析（上）", "subtitle": "ReAct、一个 step 的生命周期、错误也是结果",
     "scenes": [
@@ -23,13 +24,12 @@ LECTURE = {
          "narration": "落到代码，最小的 agent loop 只有二十行左右。一个消息列表保存全部历史；每转一圈，带着历史和工具清单调用一次模型，把回复追加进去；如果回复里没有工具调用，就认为做完了；否则逐个校验参数、执行工具，把结果带着同一个调用编号追加回去。循环用完步数还没结束，就报错退出，这就是最简单的停止规则。所以一个用户请求，其实是很多次模型调用加很多次工具执行。模型只负责提议，真正动手的是 harness。"},
         {"type": "blocks", "title": "harness 设计者的四个工作点",
          "sub": "模型＋循环、工具＋护栏、状态：共用一个上下文窗口",
-         "rows": [("组装", [("① 组装上下文：放什么进窗口", 1000, "blue")]),
-                  ("工具", [("② 写工具定义：名字、描述、参数", 1000, "orange")]),
-                  ("执行", [("③ 校验请求、检查权限、执行", 1000, "red")]),
-                  ("结果", [("④ 处理结果、管理上下文", 1000, "green")]),
-                  ("本课", [("本讲·第十讲", 330, "gray"), ("第九讲", 330, "gray"), ("本讲·第八讲", 330, "gray")])],
+         "rows": [("组装", [("① 组装上下文：放什么进窗口（本讲、第十讲）", 1000, "blue")]),
+                  ("工具", [("② 写工具定义：名字、描述、参数（第九讲）", 1000, "orange")]),
+                  ("执行", [("③ 校验请求、检查权限、执行（本讲、第八讲）", 1000, "red")]),
+                  ("结果", [("④ 处理结果、管理上下文（第十讲）", 1000, "green")])],
          "caption": "模型定上限，harness 定实际表现",
-         "narration": "站在 harness 设计者的角度，这个循环里有四个要你动手的地方：组装上下文，决定这一步把什么放进窗口；写工具定义；校验模型发来的请求、检查权限、再执行；以及可选地处理结果、管理上下文。这背后是一个 coding agent 的三个组件：模型加循环、工具加护栏、状态也就是上下文加记忆，它们共用同一个上下文窗口，必须一起设计。有一组外部数字：同一个模型，只改 harness，SWE bench Verified 的一个子集上从四十三题提升到七十二题。模型决定上限，harness 决定实际能做到多少。"},
+         "narration": "站在 harness 设计者的角度，这个循环里有四个要你动手的地方：组装上下文，决定这一步把什么放进窗口；写工具定义；校验模型发来的请求、检查权限、再执行；以及可选地处理结果、管理上下文。这背后是一个 coding agent 的三个组件：模型加循环、工具加护栏、状态也就是上下文加记忆，它们共用同一个上下文窗口，必须一起设计。有一组外部数字，来自一门公开课程讲义：同一个模型，只改 harness，在 SWE bench Verified 一个一百六十九题的子集上，解出的题从四十三道提升到七十二道。模型决定上限，harness 决定实际能做到多少。"},
         {"type": "blocks", "title": "一个 step 的生命周期",
          "sub": "例题第一步：模型要求 grep empty_label",
          "rows": [("组装", [("派生历史", 300, "blue"), ("有效系统提示", 300, "blue"), ("可见工具 schema", 320, "blue")]),
@@ -65,13 +65,13 @@ LECTURE = {
          "caption": "messages 就是你自己的会话日志",
          "narration": "作业二的起始代码就是那二十行的完整版。messages 列表就是你自己的会话日志；usage 记下命中、未命中和输出三种 token，因为它们价格不同；max steps 是停止规则。主循环留给你补全。有一个问题要提前想清楚：模型没有调用工具、也没说做完的时候，loop 该怎么办？不同的处理方式，对步数和成本影响很大，答案写进你的报告里。"},
         {"type": "bars", "title": "同一道例题，三种做法", "sub": "Django 后台空选项，都通过官方评测；每题费用（元，高峰价）",
-         "rows": [("无 agent（直接给出要改的文件）", 0.126, "gray", "0.126"), ("miniLoop 参考实现，24 步", 0.087, "orange", "0.087"), ("DSH sdk-minimal，14 步", 0.053, "blue", "0.053")],
+         "rows": [("无 agent（直接给出要改的文件）", 0.126, "gray", "0.126"), ("miniLoop 参考实现，24 步", 0.087, "orange", "0.087"), ("DSH sdk-minimal，14 步", 0.055, "blue", "0.055")],
          "highlight": "loop 的价值：自己找到该改的文件", "highlight_color": "green",
          "caption": "先和最简单的基线比",
-         "narration": "最后和最简单的基线比。同一道例题，不用 agent，把问题和该改的那个文件全文一次发给模型，它也写对了补丁，花了零点一二六元，而且这是很宽松的条件，现实里没人告诉你该改哪个文件。mini loop 参考实现走了二十四步，零点零八七元；DSH 十四步，零点零五三元。在八道小题上则反过来：不用 agent 一次作答，八道全对，合计约零点零三元，比 loop 的零点零五七元还便宜。小题用不着 agent；loop 的价值，是在陌生的真实仓库里自己找到该看的代码。"},
+         "narration": "最后和最简单的基线比。同一道例题，不用 agent，把问题和该改的那个文件全文一次发给模型，它也写对了补丁，花了零点一二六元，而且这是很宽松的条件，现实里没人告诉你该改哪个文件。mini loop 参考实现走了二十四步，零点零八七元；DSH 十四步，零点零五五元。在八道小题上则反过来：不用 agent 一次作答，八道全对，合计约零点零三元，比 loop 的零点零五七元还便宜。小题用不着 agent；loop 的价值，是在陌生的真实仓库里自己找到该看的代码。"},
         {"type": "summary",
          "items": ["ReAct：思考引导动作，观察纠正思考", "四个工作点：组装、工具、执行、结果处理", "step＝组装→请求→分发→记录", "会话日志是唯一事实；错误以文本返回"],
-         "exercise": "15 分钟（环境见 docs/setup.md）：用 sdk-minimal 跑「写 fib.py 并运行」，在会话日志里数 step 和 tool/call；预期 2–4 个 step，每个 tool/call 都有配对的 tool/result",
+         "exercise": "15 分钟（环境见 docs/setup.md）：按 assignment1/README.md 启动起始代码并加 -e LENS_PROFILE=sdk-minimal，在网页里让它「写 fib.py 并运行」；会话日志在 assignment1/starter/.dsh-home/sessions/ 下（若是 .zstd，用 tools/usage_cost.py 的 iter_session_lines 读），数 step 和 tool/call；预期 2–4 个 step，每个 tool/call 都有配对的 tool/result",
          "narration": "最后小结一下：ReAct 让思考引导动作、观察纠正思考；harness 设计者有四个工作点：组装上下文、写工具定义、校验执行、处理结果；一个 step 就是组装、请求、分发、记录，会话日志是唯一的事实来源；工具出错以文本返回。课后练习十五分钟，环境照 setup 文档准备：用 sdk minimal 跑一个写斐波那契脚本并运行的任务，在会话日志里数一数 step 和工具调用，预期两到四个 step，每个调用都有配对的结果。下一讲是 agent loop 的下半部分：停止规则、取消、失败恢复和并行。"},
     ],
 }
