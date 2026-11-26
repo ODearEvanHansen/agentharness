@@ -113,7 +113,7 @@ NICK=你的昵称
 cp assignment3/templates/guard-injection.ts assignment3/templates/guard.patch.yml assignment3/submission/$NICK/
 sed -i "s|NICK|$NICK|" assignment3/submission/$NICK/guard.patch.yml
 ahsec() {
-  docker run --rm -it --name agentharness-sec-$NICK --cpus 4 --memory 8g --network agentharness-net \
+  docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
     -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY -e CANARY_TOKEN=canary-demo-0000 \
     -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/work agentharness-runner:0.1 "$@"
 }
@@ -198,9 +198,9 @@ done
 | 无笔记 | 17、18 | 0.122、0.112 元 | 22.9、21.0 | 42.5 万、39.6 万 | 95.8%、95.9% |
 | 有笔记（模板，约 3 KB） | 17、18 | 0.123、0.134 元 | 21.4、23.5 | 39.4 万、47.0 万 | 95.6%、96.1% |
 
-结论：**没有可测出的收益**。两组解决数相同，费用差异（约 +9%）落在两次无笔记运行之间的波动（0.112–0.122 元）附近。原因之一：这些都是著名开源仓库，`deepseek-flash` 本来就知道 django 用 `runtests.py`、matplotlib 用 Agg 后端——无笔记组的 django 题 6 次里 6 次用了 `runtests.py`，matplotlib 题 6 次里 4 次用了 Agg。笔记要写模型**推不出来**的东西才有用（私有仓库的约定、坑、上一轮失败的教训）。笔记放在系统提示里且内容不变，对缓存没有影响。
+结论：**没有可测出的收益**。两组解决数相同，费用差异（约 +10%）落在两次无笔记运行之间的波动（0.112–0.122 元）附近。原因之一：这些都是著名开源仓库，`deepseek-flash` 本来就知道 django 用 `runtests.py`、matplotlib 用 Agg 后端——无笔记组的 django 题 6 次里 6 次用了 `runtests.py`，matplotlib 题 6 次里 4 次用了 Agg。笔记要写模型**推不出来**的东西才有用（私有仓库的约定、坑、上一轮失败的教训）。笔记放在系统提示里且内容不变，对缓存没有影响。
 
-**放的位置与缓存**：把插件改成 `mode: dynamic`（每一步在笔记末尾改一个修订号，模拟「会话中途改记忆」）在 4 道题上对照：命中率 89.1%，静态笔记 90.3%、91.5%，几乎一样。原因是 DeepSeek 路由声明了 `systemPromptUpdate: 'in-history'`：系统提示变了，DSH 不改写开头，而是把新版本**追加**在历史后面（会话日志里每一步多一条 `system/message`），前缀照常命中；代价是每改一次，历史里就多一份笔记全文。换成不支持追加的路由，改写开头会让整段前缀失效（第 17 讲）。
+**放的位置与缓存**：把插件改成 `mode: dynamic`（每一步在笔记末尾改一个修订号，模拟「会话中途改记忆」）在 4 道题上对照：命中率 89.1%，静态笔记 90.3%、91.5%，几乎一样。原因和 DSH 在 DeepSeek 路由上如何处理「系统提示变了」有关——这正是作业二 B3 要你读源码回答的问题（线索：搜 `systemPromptUpdate`，并对照第 17 讲和你自己的会话日志）。
 
 ### 报告要回答的问题（`MEMORY.md`）
 1. 你的笔记写了什么、每一条从哪来？跑 `check_memory.py` 的输出贴上来。
@@ -218,6 +218,8 @@ done
 
 ## 运行与提交排行榜
 所有命令都在仓库根目录执行。把你的 patch 和插件放在 `assignment3/submission/<昵称>/` 下：SWE 模式会把这个目录只读挂载进任务容器，所以 patch 里要用绝对路径引用插件。
+
+> **注意挂载范围**：SWE 模式只读挂载的是**每个 `--patch` 文件所在的那一层目录**（它的父目录）。插件 `.ts` 必须放在和 `.patch.yml` 同一目录（或其子目录）里，**不能放在上层目录**——否则容器里看不到这个文件，插件会被静默跳过、不报错。
 
 ```bash
 NICK=你的昵称

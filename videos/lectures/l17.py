@@ -30,7 +30,7 @@ LECTURE = {
          'sub': 'DSH 会话日志 usage，单位 token；命中 / 未命中',
          'rows': [('第 1 步', 768, 'green', '命中 768 / 未命中 152'), ('第 5 步', 2304, 'green', '2,304 / 340'), ('第 10 步', 5376, 'green', '5,376 / 395'), ('第 15 步', 8064, 'green', '8,064 / 1,344'), ('第 19 步', 13824, 'green', '13,824 / 178')],
          'caption': '命中部分越滚越大，未命中始终只是零头',
-         'narration': '看这次真实会话。第一步命中七百六十八个 token，未命中一百五十二个；到第十步，命中涨到五千三百多，未命中还是三百多；到第十九步，命中一万三千八百多，未命中只有一百七十八个。第十五步未命中多一些，是因为上一步的工具输出比较长。命中的部分越滚越大，未命中的始终是零头，这正是追加式请求该有的样子。'},
+         'narration': '看这次真实会话。这是同一道例题的另一次运行，一共十九步；前面几讲用的是一次十四步的运行。第一步命中七百六十八个 token，未命中一百五十二个；到第十步，命中涨到五千三百多，未命中还是三百多；到第十九步，命中一万三千八百多，未命中只有一百七十八个。第十五步未命中多一些，是因为上一步的工具输出比较长。命中的部分越滚越大，未命中的始终是零头，这正是追加式请求该有的样子。'},
         # 4b 怎么读命中率
         {'type': 'bullets',
          'title': '在自己的日志里读命中率',
@@ -60,7 +60,7 @@ LECTURE = {
         {'type': 'terminal',
          'title': '实验：stable 与 timestamp 各跑五步',
          'sub': '同一段对话，真实 DeepSeek API',
-         'cmd': 'python cache_demo.py stable timestamp append',
+         'cmd': 'python3 videos/l17/cache_demo.py stable timestamp append',
          'lines': ['=== stable ===', 'step 1: prompt= 3177  cache_hit=    0  miss= 3177  hit_rate= 0.0%', 'step 2: prompt= 3208  cache_hit= 3072  miss=  136  hit_rate=95.8%', 'step 3: prompt= 3252  cache_hit= 3072  miss=  180  hit_rate=94.5%', 'step 5: prompt= 3293  cache_hit= 3072  miss=  221  hit_rate=93.3%', '', '=== timestamp ===', 'step 1: prompt= 3197  cache_hit=    0  miss= 3197  hit_rate= 0.0%', 'step 2: prompt= 3225  cache_hit=    0  miss= 3225  hit_rate= 0.0%', 'step 5: prompt= 3306  cache_hit=    0  miss= 3306  hit_rate= 0.0%', '', '=== append ===', 'step 2: prompt= 3251  cache_hit= 3072  miss=  179  hit_rate=94.5%', 'step 5: prompt= 3406  cache_hit= 3200  miss=  206  hit_rate=94.0%'],
          'color_rules': [('hit_rate= 0.0%', 'red'), ('===', 'purple')],
          'caption': '同样的时间信息：放开头 0%，追加到末尾 94%',
@@ -105,7 +105,7 @@ LECTURE = {
         # 11 summary
         {'type': 'summary',
          'items': ['缓存按前缀匹配；命中:未命中:输出 = 1:50:200', '空选项题：命中越滚越大，未命中只是零头', '缓存保住之后，输出成了账单的大头', '系统提示更新：追加还是改写，读 DSH 源码', '改写历史的省钱法，先算重建缓存的账'],
-         'exercise': '15 分钟：同一约 3k token 提示连发 3 次，再把时间戳放到开头连发 3 次；预期前者第 2、3 次命中约 3k，后者命中为 0',
+         'exercise': '15 分钟：运行或改写 videos/l17/cache_demo.py，同一约 3k token 提示连发 3 次，再把时间戳放到开头连发 3 次；预期前者第 2、3 次命中约 3k，后者命中为 0',
          'narration': '把这一讲的要点串起来。缓存按前缀匹配，命中、未命中和输出的价格是一比五十比二百。空选项那次会话里，命中越滚越大，未命中只是零头。二十道题命中率百分之九十五点八，缓存保住之后，输出占了近六成。DSH 什么时候追加、什么时候改写开头，留给你读源码回答。改写历史的省钱办法，要先算重建缓存的账。课后把三千 token 左右的提示连发三次，再把时间放到开头连发三次，预期前者从第二次起几乎全部命中，后者始终是零。下一讲，我们讲插件开发。'},
     ],
 }

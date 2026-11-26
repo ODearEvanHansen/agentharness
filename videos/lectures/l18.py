@@ -45,9 +45,9 @@ LECTURE = {
          'title': '最小的插件',
          'sub': 'docs/user/develop/basic/index.zh.md',
          'lang': 'ts',
-         'code': "import type { Context } from '@deepseek-ai/cordis'\n\nexport const name = 'hello-plugin'\n\nexport function apply(ctx: Context) {\n  // Required dependencies are ready before apply runs.\n  console.log('[hello-plugin] plugin loaded!')\n}",
+         'code': "import type { Context } from '@deepseek-ai/cordis'\n\nexport const name = 'hello-plugin'\n\nexport function apply(ctx: Context) {\n  // Required dependencies are ready before apply runs.\n  console.error('[hello-plugin] plugin loaded!')\n}",
          'caption': '导出 name 和 apply，就是一个插件',
-         'narration': '先看最小的插件，来自 DSH 的开发文档。一个 TypeScript 文件，导出一个名字和一个 apply 函数。apply 拿到上下文对象 ctx，在里面用 ctx 点 on 监听钩子。文件被加载时，apply 调用一次，插件就生效了。'},
+         'narration': '先看最小的插件，来自 DSH 的开发文档。一个 TypeScript 文件，导出一个名字和一个 apply 函数。apply 拿到上下文对象 ctx，在里面用 ctx 点 on 监听钩子。文件被加载时，apply 调用一次，插件就生效了。注意日志用 console 点 error：SDK 模式下标准输出承载着 JSON RPC 协议，插件的日志要写到标准错误或者文件里，护栏模板就是用 appendFileSync 写文件的。'},
         # 6 护栏代码
         {'type': 'code',
          'title': '护栏：在工具执行之前做决定',
@@ -73,7 +73,7 @@ LECTURE = {
          'lang': 'yaml',
          'code': "- id: session-log-deepseek\n  config: { enabled: false }\n- insert:\n    - id: guard-injection\n      name: '/work/assignment3/submission/NICK/guard-injection.ts'\n      config: {}",
          'caption': '直接加载 .ts：免编译，也不需要 Node',
-         'narration': '插件写好了，怎么让 DSH 用上？靠 patch 文件，它是一份配置补丁，只在默认配置上增删几项。加载插件，就是在 patch 里用 insert 插入一项，name 写插件文件的绝对路径。DSH 运行时能直接加载点 ts 文件，不需要编译，也不需要装 Node。别忘了第一项，关闭会话日志上传。还有一个常见坑：小题在容器里跑，仓库挂在斜杠 work；SWE 题在宿主机上发起，两边的绝对路径不同，要准备两份 patch。逐步操作见作业三的说明文档。'},
+         'narration': '插件写好了，怎么让 DSH 用上？靠 patch 文件，它是一份配置补丁，只在默认配置上增删几项。加载插件，就是在 patch 里用 insert 插入一项，name 写插件文件的绝对路径。DSH 运行时能直接加载点 ts 文件，不需要编译，也不需要装 Node。别忘了第一项，关闭会话日志上传。课程的 run 点 py 会自动加载 infra 目录下的 course 点 patch 点 yml；自己单独跑 dsh 时，要自己把它加上。还有一个常见坑：小题在容器里跑，仓库挂在斜杠 work；SWE 题在宿主机上发起，两边的绝对路径不同，要准备两份 patch。逐步操作见作业三的说明文档。'},
         # 9 验证：实测
         {'type': 'bars',
          'title': '验证：护栏真的挡住了吗',
@@ -97,7 +97,7 @@ LECTURE = {
         # 11 summary
         {'type': 'summary',
          'items': ['插件 = 导出 name 和 apply 的 .ts 文件', 'patch 里 insert，绝对路径，免编译', '挑最晚、最窄的插口；waterfall 要么决定要么 next', '护栏实测：注入 5/21 → 0/21，误拦 4 次', '收益和代价一起报告'],
-         'exercise': '20 分钟：写一个挂在 tools/post-execute 的插件，打印工具名和输出长度后调用 next；跑作业二的 8 道小题，预期每次工具调用打印一行，仍 8/8 解出、费用与基线相近',
-         'narration': '这一讲的内容可以归成几条。插件就是导出名字和 apply 的 ts 文件，在 patch 里用绝对路径插入，免编译。挑最晚、最窄的插口；waterfall 钩子要么返回决定，要么调用 next。护栏实测把注入从五次降到零次，代价是四次误拦。收益和代价要一起报告。课后写一个挂在工具执行之后的插件，打印工具名和输出长度，再交给 next，跑八道小题，预期每次工具调用打印一行，结果仍是八道全对、费用和基线相近。下一讲，我们讲成本与速度。'},
+         'exercise': '20 分钟：照 assignment3/templates/trim-tool-output.ts 的签名 (exec, result, next) 写一个 tools/post-execute 插件，把工具名和输出长度写一行到 stderr 或日志文件，再调用 next；跑作业二的 8 道小题，预期每次工具调用记一行，仍 8/8 解出、费用与基线相近',
+         'narration': '这一讲的内容可以归成几条。插件就是导出名字和 apply 的 ts 文件，在 patch 里用绝对路径插入，免编译。挑最晚、最窄的插口；waterfall 钩子要么返回决定，要么调用 next。护栏实测把注入从五次降到零次，代价是四次误拦。收益和代价要一起报告。课后写一个挂在工具执行之后的插件，把工具名和输出长度写到标准错误或日志文件，再交给 next，签名照作业三的裁剪模板写，跑八道小题，预期每次工具调用记一行，结果仍是八道全对、费用和基线相近。下一讲，我们讲成本与速度。'},
     ],
 }
