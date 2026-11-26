@@ -35,7 +35,7 @@ LECTURE = {
          'sub': '任务容器默认断网，只能经白名单代理访问 DeepSeek API',
          'rows': [('任务容器', [('SWE-bench 官方镜像', 420, 'blue'), ('限 4 核 · 8GB', 300, 'gray')]),
                   ('网络', [('--internal 网络', 360, 'purple'), ('egress 代理 tinyproxy', 420, 'orange')]),
-                  ('出网', [('api.deepseek.com ✓', 400, 'green'), ('其他地址 ✗', 300, 'red')]),
+                  ('出网', [('api.deepseek.com ✓', 400, 'green'), ('其他地址 ×', 300, 'red')]),
                   ('判分', [('另起一个干净容器', 420, 'blue'), ('官方 swebench 5.0.2', 420, 'green')])],
          'caption': '跑 agent 和判分，用的是两个容器',
          'narration': '落到课程的架构。空选项这道题跑在 SWE bench 官方预构建的镜像里，容器限四核 CPU、八 GB 内存。容器只接一个内部网络，默认断网，只能经白名单代理访问 DeepSeek 的 API。agent 跑完，运行器用 git diff 取出补丁，然后把这个容器删掉。判分时，官方 swebench 工具另起一个干净容器，打上补丁，再跑测试。跑 agent 和判分用的是两个容器，这一点下一页细说。'},
