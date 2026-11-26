@@ -25,14 +25,14 @@ python3 quickstart/quickstart.py
 ## 学员需要准备（完整课程）
 
 - x86_64 Linux，或 Windows + WSL2，**不支持 macOS**；100GB 磁盘；Docker。
-- 内存：16GB 可以完成 A0–A3 和 A4 的 8B 实验；A4 L3 和 A5 需要 32GB（内存不足的学员，A5 可以使用课程提供的本地基线）。
+- 内存：16GB 可以完成 A0–A3 和 A4 的 8B 实验；A4 L3 和 A5 需要 32GB（内存不足 32GB 的学员，A5 走小内存路线：Qwen3-4B，16GB 可跑，同样亲手完成）。
 - 先修：熟练使用 Python，会用 git 和 Docker，能读简单的 HTML/JS 和 TypeScript。
 - **为本课程单独创建**的 [DeepSeek API key](https://platform.deepseek.com/)，只充值少量金额，课程结束后删除。花费估算见[课程大纲](docs/syllabus.md#预计花费deepseek-api)。
 - 从 [作业 0：环境自检](assignment0/) 开始。
 
 > ⚠️ **安全与隐私**：
 >
-> - agent 会执行 shell 命令，所以课程的所有作业都在 Docker 容器中运行，网络只放行 DeepSeek API（见 [infra/](infra/)）。课程脚本检测到自己不在容器里时，会拒绝运行 agent。
+> - agent 会执行 shell 命令，所以课程的所有作业都在 Docker 容器中运行，网络只放行 DeepSeek API（见 [infra/](infra/)）。课程脚本检测到自己不在容器里时，会拒绝运行 agent。唯一的例外是 quickstart：它没有 shell 工具，只处理课程自带的三道题，原因见 [quickstart/README.md](quickstart/README.md)。
 > - 出网白名单防不住通过 `api.deepseek.com` 本身外传数据，所以请务必使用单独创建、限定额度的 key。
 > - DSH 默认会把会话日志随请求上传给 DeepSeek。课程配置（[infra/course.patch.yml](infra/course.patch.yml)）关闭了这一行为，课程的所有脚本都会自动加载这份配置。
 > - 不要把 API key 提交到 git。

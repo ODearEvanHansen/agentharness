@@ -65,6 +65,8 @@ cd ..
 ```bash
 S=llama.cpp/build/bin/llama-server
 python assignment4/engine/bench.py --exp E1 --model models/Qwen3-8B-Q4_K_M.gguf --server $S
+python assignment4/engine/bench.py --exp E2 --model models/Qwen3-8B-Q4_K_M.gguf --server $S
+python assignment4/engine/bench.py --exp E4 --model models/Qwen3-8B-Q4_K_M.gguf --server $S
 python assignment4/engine/bench.py --exp E3 --model models/Qwen3-8B-Q4_K_M.gguf --draft models/Qwen3-0.6B-Q8_0.gguf --server $S
 # E5 二选一：16GB 路线
 python assignment4/engine/bench.py --exp E5 --model models/Qwen3-8B-Q4_K_M.gguf --model models/Qwen3-8B-Q8_0.gguf --server $S
@@ -111,7 +113,7 @@ L2 里你调的是别人写好的推理服务。这一关自己写一个：用 n
 
 **准备**（只需要 16GB 内存；权重转成 fp32 后常驻约 3.5GB）：
 ```bash
-python3 -m venv .mini-venv && . .mini-venv/bin/activate
+python3 -m venv ~/.venvs/agentharness-mini && . ~/.venvs/agentharness-mini/bin/activate   # 放在仓库外：仓库会被挂载给 agent
 pip install numpy safetensors tokenizers          # 不需要 torch / transformers
 python assignment4/miniengine/download.py          # 约 1.5GB，到 models/Qwen3-0.6B/；国内先 export HF_ENDPOINT=https://hf-mirror.com
 ```

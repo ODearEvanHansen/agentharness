@@ -237,8 +237,8 @@ DSH 的模型供应商配置在 `llm-pi-ai` 插件的 `providers` 里。用一�
     mkdir -p assignment3/submission/$NICK
     cp assignment3/templates/trim-tool-output.ts assignment3/templates/mini.patch.yml assignment3/templates/swe.patch.yml \
        assignment3/submission/$NICK/
-    sed -i "s|NICK|$NICK|" assignment3/submission/$NICK/mini.patch.yml
-    sed -i -e "s|HOST_REPO|$PWD|" -e "s|NICK|$NICK|" assignment3/submission/$NICK/swe.patch.yml
+    perl -pi -e "s|NICK|$NICK|g" assignment3/submission/$NICK/mini.patch.yml
+    perl -pi -e "s|HOST_REPO|$PWD|g; s|NICK|$NICK|g" assignment3/submission/$NICK/swe.patch.yml
     cat assignment3/submission/$NICK/*.patch.yml     # 确认路径对
     ```
 

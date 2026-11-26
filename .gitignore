@@ -29,6 +29,11 @@ assignment2/results/dsh-homes/
 assignment2/results/work/
 assignment2/results/judge/
 assignment2/results/*.bak-*
+assignment2/results/actions/
+assignment2/results/noagent/*/oracle_cache/
+assignment2/results/noagent/*/raw/
+.mini-venv/
+llama.cpp/
 site/
 # 提交目录里的日志不忽略
 !assignment*/submission/**/*.log

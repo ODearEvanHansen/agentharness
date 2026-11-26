@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """下载 Qwen3-0.6B 的 config / tokenizer / safetensors（约 1.5GB）到仓库根目录 models/Qwen3-0.6B/。
 国内可先 export HF_ENDPOINT=https://hf-mirror.com 。已下载且校验通过的文件会跳过。"""
-import hashlib, os, sys, urllib.request
+import hashlib, os, sys, urllib.error, urllib.request
 from pathlib import Path
 
 REPO = "Qwen/Qwen3-0.6B"
@@ -31,7 +31,16 @@ def main():
         url = f"{base}/{REPO}/resolve/main/{name}"
         print(f"↓ {url}")
         tmp = p.with_suffix(p.suffix + ".part")
-        with urllib.request.urlopen(url) as r, open(tmp, "wb") as f:
+        # 自带 User-Agent：hf-mirror.com 会拒绝 urllib 默认的 Python-urllib/x.y（HTTP 403）
+        req = urllib.request.Request(url, headers={"User-Agent": "agentharness-download/1.0"})
+        try:
+            r = urllib.request.urlopen(req, timeout=60)
+        except (urllib.error.URLError, TimeoutError) as e:
+            sys.exit(f"下载失败：{url}\n  {e}\n"
+                     f"  国内网络请先执行 export HF_ENDPOINT=https://hf-mirror.com 再重试；\n"
+                     f"  或者手动下载 {', '.join(FILES)} 这几个文件到 {DEST}/"
+                     f"（例如 pip install huggingface_hub 后运行 hf download {REPO} {' '.join(FILES)} --local-dir {DEST}）。")
+        with r, open(tmp, "wb") as f:
             total, done = int(r.headers.get("Content-Length", 0)), 0
             while chunk := r.read(1 << 20):
                 f.write(chunk); done += len(chunk)

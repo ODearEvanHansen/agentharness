@@ -126,7 +126,7 @@ class Engine:
 
     def admit(self, mode):
         """静态批处理：只有当前批全部结束才接新的一批；连续批处理：每一步都把空出来的槽位补上。"""
-        # TODO(L4-2): static：running 非空就不接新请求；continuous：每步都补满 max_batch。用 can_admit 判断 KV 够不够；新请求要 r.kv = self.new_kv() 并放进 running。返回本步新接纳的请求列表
+        # TODO(L4-3): static：running 非空就不接新请求；continuous：每步都补满 max_batch。用 can_admit 判断 KV 够不够；新请求要 r.kv = self.new_kv() 并放进 running。返回本步新接纳的请求列表
         raise NotImplementedError("Engine.admit")
 
     def step(self, mode="continuous"):

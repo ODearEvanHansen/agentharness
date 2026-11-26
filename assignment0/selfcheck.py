@@ -68,7 +68,7 @@ def check_resources():
         if total >= 30:
             add("✅", "内存", f"{total:.0f} GB")
         elif total >= 15:
-            add("⚠️", "内存", f"{total:.0f} GB", "可完成 A0–A3 和 A4 的 8B 实验；A4 L3 与 A5 的 30B-A3B 需要 32GB（A5 可用课程提供的本地基线）；A2 建议 --parallel 1")
+            add("⚠️", "内存", f"{total:.0f} GB", "可完成 A0–A3 和 A4 的 8B 实验；A4 L3 与 A5 的 30B-A3B 需要 32GB（A5 可走 Qwen3-4B 小内存路线）；A2 建议 --parallel 1")
         else:
             wsl = False
             try:
@@ -119,10 +119,10 @@ def check_network():
         code, t = http(url)
         if code is None:
             add("❌" if required else "⚠️", f"网络：{name}", f"不可达 ({t})",
-                "配置镜像/代理：pip 用 -i 国内源；Docker 配 registry-mirrors；HF 设 HF_ENDPOINT=https://hf-mirror.com")
+                "配置镜像/代理：pip 用 -i 国内源；Docker 配 registry-mirrors（课程镜像都在 GHCR，见 infra/README.md）；HF 设 HF_ENDPOINT=https://hf-mirror.com")
         else:
             slow = isinstance(t, float) and t > 3
-            add("⚠️" if slow else "✅", f"网络：{name}", f"HTTP {code}，{t}s", "较慢，建议配置国内镜像" if slow else "")
+            add("⚠️" if slow else "✅", f"网络：{name}", f"HTTP {code}，{t}s" + ("（能连通；没带凭据所以是 401，正常）" if code == 401 else ""), "较慢，建议配置国内镜像" if slow else "")
 
 
 def check_key():
@@ -136,7 +136,7 @@ def check_key():
     try:
         with urllib.request.urlopen(req, timeout=10) as r:
             b = json.load(r)["balance_infos"][0]
-        add("✅", "DEEPSEEK_API_KEY", f"有效，余额 {b['total_balance']} {b['currency']}")
+        add("✅", "DEEPSEEK_API_KEY", "有效，余额充足" if float(b["total_balance"]) >= 1 else f"有效，但余额不足 1 {b['currency']}，请先充值")
         add("⚠️", "API key 安全", "建议为本课程单独创建 key、只充值少量余额，课程结束后删除",
             "agent 在容器里运行不可信代码时可以读到 key；白名单代理也挡不住经 api.deepseek.com 的数据外传")
     except urllib.error.HTTPError as e:

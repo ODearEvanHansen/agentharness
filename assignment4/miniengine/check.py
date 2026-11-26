@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """L4 自动检查：前向的基本块 → 贪心 token 对齐 → 调度器 → 分页 KV → 测量结果文件。
-用法：python assignment4/miniengine/check.py   （没下载权重时，只跳过 token 对齐这一项）"""
+用法：python assignment4/miniengine/check.py   （没下载权重时，只有贪心对齐这一项判为 ❌，其余照常检查）"""
 import json, math, os, sys
 from pathlib import Path
 

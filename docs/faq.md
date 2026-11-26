@@ -4,7 +4,7 @@
 
 ## Windows / macOS 能做吗？
 
-Windows 可以：启用 WSL2，在 WSL 里安装 Docker Engine（推荐）或使用 Docker Desktop 的 WSL2 后端，之后**所有操作都在 WSL2 里进行**。macOS 不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2。完整步骤（含国内镜像源、两种 Docker 安装方式的取舍、排错表）见[环境搭建指南](setup.md)。
+Windows 可以：启用 WSL2，在 WSL 里安装 Docker Engine（推荐）或使用 Docker Desktop 的 WSL2 后端，之后**所有操作都在 WSL2 里进行**。macOS 不支持完整课程（可以跑 quickstart），请使用 x86_64 Linux 云主机，或 Windows + WSL2，见[Mac 用户怎么办](setup.md#mac-用户怎么办)。完整步骤（含国内镜像源、两种 Docker 安装方式的取舍、排错表）见[环境搭建指南](setup.md)。
 
 ### WSL2 内存和磁盘
 

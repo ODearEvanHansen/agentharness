@@ -145,8 +145,36 @@ class ActionLogEnv(LocalEnv):
 
 
 # ------------------------------------------------------------------ agents
+class TaskTimeout(BaseException):
+    """单题超时。继承 BaseException，这样 miniLoop 里的 except Exception 拦不住它，循环会真正停下。"""
+
+
+_TLS = threading.local()   # 当前工作线程对应题目的取消信号（threading.Event）
+
+
+def _with_cancel(ev, fn, *args):
+    _TLS.cancel = ev
+    return fn(*args)
+
+
+def _patch_chat(agent):
+    """包一层 agent.chat：题目超时后，下一次请求模型之前抛出 TaskTimeout，不再继续花钱。"""
+    if getattr(agent.chat, "_ah_wrapped", False):
+        return
+    orig = agent.chat
+
+    def chat(*a, **kw):
+        ev = getattr(_TLS, "cancel", None)
+        if ev is not None and ev.is_set():
+            raise TaskTimeout("单题超时，运行器已停止这道题")
+        return orig(*a, **kw)
+    chat._ah_wrapped = True
+    agent.chat = chat
+
+
 def run_miniloop(env, prompt, model):
     import agent
+    _patch_chat(agent)
     r = agent.solve(env, prompt, model)
     return r["usage"], r["steps"], r["tool_calls"]
 
@@ -331,6 +359,14 @@ def main():
     if a.suite == "mini" and not in_container():
         sys.exit("小题模式会在当前机器上直接执行 agent 生成的 shell 命令，必须在容器里运行（见 assignment2/README.md「在容器里跑小题」）。\n"
                  "完整命令（隔离网络、出网代理、资源限制）见该小节；容器里不能挂载 docker.sock。")
+    if a.suite == "swe" and tasks:
+        try:
+            ok = subprocess.run(["docker", "info"], capture_output=True, timeout=30).returncode == 0
+        except (OSError, subprocess.TimeoutExpired):
+            ok = False
+        if not ok:
+            sys.exit("Docker 不可用（没装，或守护进程没启动）：SWE 模式的每道题都要在评测镜像里跑。\n"
+                     "先让 `docker info` 能正常输出，再按 assignment0/README.md 关卡 1 检查隔离网络和出网代理。")
     if a.agent == "dsh" and a.suite == "mini":
         os.environ.setdefault("DSH_PERMISSION_MODE", "danger-full-access")   # 隔离由外层容器负责
     if a.prompt_suffix_file:
@@ -342,13 +378,16 @@ def main():
         t0 = time.time()
         err = None
         ex = cf.ThreadPoolExecutor(1)
+        ev = threading.Event()
         try:
-            r = ex.submit(runner, t, a.agent, a.model, outdir).result(timeout=a.timeout)
+            r = ex.submit(_with_cancel, ev, runner, t, a.agent, a.model, outdir).result(timeout=a.timeout)
         except Exception as e:
             err = f"{type(e).__name__}: {str(e)[:300]}"
-            if isinstance(e, cf.TimeoutError) and t["id"] in CONTAINERS:
-                # 超时：删除任务容器，正在运行的 agent 随之失去执行环境并很快退出，不会继续在后台花钱
-                subprocess.run(["docker", "rm", "-f", CONTAINERS[t["id"]]], capture_output=True)
+            if isinstance(e, cf.TimeoutError):
+                # 超时：miniLoop 在下一次请求模型前停下（见 _patch_chat）；DSH 随任务容器删除而退出
+                ev.set()
+                if t["id"] in CONTAINERS:
+                    subprocess.run(["docker", "rm", "-f", CONTAINERS[t["id"]]], capture_output=True)
             r = {"solved": False if a.suite == "mini" else None, "steps": 0, "tool_calls": 0,
                  "usage": {"requests": 0, "input_miss": 0, "cache_read": 0, "output": 0}, "model_patch": ""}
         finally:
@@ -380,8 +419,19 @@ def main():
                 f.write(json.dumps({"instance_id": r["id"], "model_name_or_path": a.agent + tag,
                                     "model_patch": r.get("model_patch", "")}) + "\n")
         ds = "infra/swebench/dataset_hard.json" if "hard" in Path(a.instances).name else "infra/swebench/dataset.json"
-        print(f"\n{n} 题完成，{sum(usage_cost.record_cny(r) for r in recs):.4f} 元。predictions -> {preds}\n判分："
-              f"python -m swebench.harness.run_evaluation -d {ds} -p {preds} -id {a.agent}{tag}")
+        bad = [r["id"] for r in recs if r.get("error")]
+        empty = [r["id"] for r in recs if not r.get("error") and not r.get("model_patch")]
+        cost = sum(usage_cost.record_cny(r) for r in recs)
+        if bad:
+            print(f"\n{n} 题中 {len(bad)} 题出错（见上方每行末尾的报错），{cost:.4f} 元。出错的题重新运行同一条命令会自动重跑。"
+                  f"\npredictions -> {preds}（出错的题是空补丁，现在判分没有意义）")
+            sys.exit(1)
+        print(f"\n{n} 题完成，{cost:.4f} 元。predictions -> {preds}")
+        if empty:
+            print(f"⚠️ {len(empty)} 题没有产生任何改动（空补丁）：{', '.join(empty[:5])}{' ...' if len(empty) > 5 else ''}")
+        rid = f"a2-mine{tag}"
+        print(f"判分：python -m swebench.harness.run_evaluation -d {ds} -p {preds} -id {rid}\n"
+              f"      mv {a.agent}{tag}.{rid}.json {outdir}/")
 
 
 if __name__ == "__main__":

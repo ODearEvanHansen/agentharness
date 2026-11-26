@@ -36,6 +36,7 @@ docker run -d --name agentharness-llm --cpus 16 --memory 30g --network agentharn
   --model /models/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --jinja -c 65536 -np 2 -t 16 \
   --host 0.0.0.0 --port 8091 --api-key "$LOCAL_LLM_KEY"
 ```
+  `--cpus 16` 和 `-t 16` 按 16 核写；本机核数更少时改成可用核数（例如 12 核用 `--cpus 12`、`-t 12`），否则 Docker 会拒绝启动。
   等模型加载完再继续：`docker logs -f agentharness-llm` 里出现 `listening on http://0.0.0.0:8091` 才算就绪。判断就绪要看健康检查或日志，**不要只看进程在不在**。课程团队就踩过这个坑：脚本用 `pgrep` 判断服务已经起来，结果匹配到的是脚本自己的命令行，本地服务其实没启动，6 道题全部退回到云端完成。
 - 上面用的是 llama.cpp 官方镜像，锁定 digest（`server` 标签，构建版本 418fe97b），比作业 4 锁定编译的 commit `4783b1145c` 新，所以性能数字只在本作业内部互相比较。这个本地模型服务的通用写法见 [infra/README.md 的"本地模型服务"一节](../infra/README.md#本地模型服务接入隔离网络)。课程团队用这条链路（运行器容器 → 隔离网络 → 按容器名访问 llama.cpp 容器）和一个 8B 模型跑过 1 道小题：解出，共 4 次本地请求。
 

@@ -1,13 +1,13 @@
 <!-- 本文件由 scripts/build_site.py 用于生成网站，站内链接在 GitHub 仓库里直接浏览会失效，请访问 https://odearevanhansen.github.io/agentharness/ -->
 # 课程大纲
 
-共 14 周授课 + 2 周项目期，37 讲（第 2、3、8、10、12 周各 2 讲，其余每周 3 讲）。**每讲由三部分组成**：一段 3–5 分钟的导读视频（B 站，程序合成，见文末说明），讲稿全文，以及必读材料加一个 10–20 分钟、写明预期结果的小练习。每周约 2 小时用于阅读和练习，加上作业时间，每周合计见下面的"学习节奏"。学习问题请到 [Discussions 的 Q&A](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a) 提问，脚本问题和内容错误请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)；作业 0 到 [Discussions](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1) 发帖打卡。
+共 14 周授课 + 2 周项目期，37 讲（第 2、3、8、10、12 周各 2 讲，其余每周 3 讲）。**每讲由三部分组成**：一段 3–5 分钟的导读视频（制作中，发布后在 B 站；程序合成，见文末说明），讲稿全文，以及必读材料加一个 10–20 分钟、写明预期结果的小练习。每周约 2 小时用于阅读和练习，加上作业时间，每周合计见下面的"学习节奏"。学习问题请到 [Discussions 的 Q&A](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a) 提问，脚本问题和内容错误请[提 Issue](https://github.com/ODearEvanHansen/agentharness/issues/new/choose)；作业 0 到 [Discussions](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1) 发帖打卡。
 
 **先修**：熟练使用 Python；会用 git 和 Docker；了解 HTTP；能读简单的 HTML/JavaScript 和 TypeScript（作业 1 有前端部分，作业 2、3 需要读或写少量 TS）。**不要求**有 GPU 或机器学习背景。
 
 **硬件**：需要 x86_64 Linux，或 Windows + WSL2，**不支持 macOS**；磁盘 100GB（每个 SWE-bench 评测镜像约 3GB，建议按题拉取、用完删除）。
 - **16GB 内存**：可以完成作业 0–3，以及作业 4 的推理实验（8B 模型）。
-- **32GB 内存**：作业 4 的 L3 和作业 5 需要（30B-A3B 模型常驻内存约 28GB）。内存不足 32GB 的学员，作业 5 可以改用课程团队提供的本地模型基线数据，评分只看路由设计和云端实验。
+- **32GB 内存**：作业 4 的 L3 和作业 5 需要（30B-A3B 模型常驻内存约 28GB）。内存不足 32GB 的学员，作业 5 走小内存路线（Qwen3-4B，16GB 可跑，每轮约 1 小时），同样亲手完成；`assignment5/baseline/` 只用于对照，不能作为提交数据。
 
 | 周 | 讲次 | 主题 | 要点 | 阅读 / 源码 | 作业 |
 |---|---|---|---|---|---|
@@ -21,7 +21,7 @@
 | 4 | L8 | Agent loop 剖析（下） | 停止规则四种（无调用、步数、成本/时间、卡住检测）；DSH guard：重复调用提醒与工具限时；tool_call 配对与 400；取消（ABORTED_BEFORE_DISPATCH）与失败（TOOL_OUTCOME_UNKNOWN / TOOL_NOT_STARTED）；请求层 vs loop 层重试、只自动重试幂等操作；并行上限与 exclusive barrier；ReAct 之外：Reflexion、计划后执行、树搜索 | DSH packages/core/agent-loop/README.md、packages/guard/README.md；Reflexion（Shinn 等，2023） | **A1 截止 · 发布 A2** |
 |  | L9 | 工具设计 | 工具五类与风险梯度；找代码四法（grep/glob、语义索引与仓库地图、外部信号、LSP）；改代码四法（整文件、diff、查找替换、结构化）及成本×鲁棒性；DSH edit/apply_patch/write 与先读后写策略；shell 四属性与执行工具五要点；五种附加工具（含询问用户）；五条设计原则；小题 4.9 vs 2.3 请求、SWE 20 题对照、SWE-agent 消融 | SWE-agent（Yang 等，2024）；Aider repo map 文档；DSH docs/tool-catalog.zh.md |  |
 |  | L10 | 上下文管理 | 上下文有限三理由（成本、延迟、注意力）；Lost in the Middle 与 Context Rot；窗口解剖；四级阶梯：准入、外置、变换、压缩（各含手段与外部例子）；每级的前缀缓存代价（本课补充）及例题算账；DSH 各级插件与阈值（spill、pruner 8192/4096/1024、compaction 0.8 与 16%）；五种上下文失败与修法 | Liu 等《Lost in the Middle》（TACL 2024）；Chroma《Context Rot》；Breunig《How Contexts Fail and How to Fix Them》（2025）；DSH packages/compaction、packages/spill README |  |
-| 5 | L11 | 记忆：让 agent 记住该记的 | 上下文窗口 vs 记忆存储；一条记忆的六个决定与归属；写入四档光谱（明确请求、规则、分类器、定期复审）；四种形态与四种存储；读写时机与取回五信号；归纳与触发时机；遗忘、有效时间与出处；失败模式（过期、记忆幻觉、取回失败、过度归纳、持久注入、污染膨胀、泄露）与评估、LoCoMo/LongMemEval/BEAM；DSH 文件记忆；仓库笔记对照实验 | LoCoMo（ACL 2024）、LongMemEval（ICLR 2025）、BEAM（ICLR 2026）；Mem0、Graphiti 文档；DSH packages/context/agent-instructions | A3 选做 L6 |
+| 5 | L11 | 记忆：让 agent 记住该记的 | 上下文窗口 vs 记忆存储；一条记忆的六个决定与归属；写入四档光谱（明确请求、规则、分类器、定期复审）；四种形态与四种存储；读写时机与取回五信号；归纳与触发时机；遗忘、有效时间与出处；失败模式（过期、记忆幻觉、取回失败、过度归纳、持久注入、污染膨胀、泄露）与评估、LoCoMo/LongMemEval/BEAM；DSH 文件记忆；仓库笔记对照实验 | LoCoMo（ACL 2024）、LongMemEval（ICLR 2025）、BEAM（ICLR 2026）；Mem0、Graphiti 文档；DSH packages/context/agent-instructions | （A3 第 7 周发布后，可做选做 L6） |
 |  | L12 | 多 agent 架构 | 多 agent 的四个理由；控制/通信/任务三张图；八种架构（监督者-工人、层级、流水线、市场、黑板、委员会、蜂群、动态拓扑）及典型弱点；六种切法与子任务规格八要素；粒度公式与六种拆分失败；通信四维度、类型化消息与幂等键；MCP vs A2A（Agent Card、任务生命周期）；DSH spawn/fork/maxDepth/wait_agent/Team；十六 agent C 编译器案例；单 agent vs 加子 agent 同题对照 | Anthropic「How we built our multi-agent research system」「Building a C compiler with a team of parallel Claudes」；Cognition「Don't Build Multi-Agents」；Towards a Science of Scaling Agent Systems；A2A 协议规范；DSH packages/subagent、team/agent-team |  |
 |  | L13 | 可靠性：错在哪一层 | 误差复利 0.95ⁿ 与两条杠杆；日志实测：bash 非零退出 5.1%、错误不预测失败、步数与难度混杂；故障注入 p=0/0.1/0.2/卡住 结果与恢复策略；看得见 vs 静默失败；五层故障模型（规格、harness、模型、工具、环境）的例子与修法；检查点与回滚、DSH 先读后改与版本过期；步数/成本/时间预算、超时、阻塞扇出、幂等键；为失败而设计五句话 | Where LLM Agents Fail and How They Can Learn from Failures；Why Do Multi-Agent LLM Systems Fail?（MAST）；Beyond the Leaderboard；The Danger of Overthinking；DSH packages/fs/fs-observation-policy、shell/bash-local |  |
 | 6 | L14 | 沙箱与评测基础设施 | 评测循环（重置→预算内行动→判分）与任务/试次/轨迹/结果四术语；agent harness 与评测 harness 分离（隐藏测试、只读挂载、拒绝符号链接）；容器+--internal 网络+出网白名单；隔离光谱（DSH bwrap/Landlock 三模式→容器/微虚拟机/远程执行，先沙箱后审批）；白名单防不住什么；镜像分发与坑；可复现性 | Harvard CS2680 notes/agent-evaluation（评测循环、两个 harness 分离）；infra/README.md；docs/setup.md；DSH packages/sandbox/README.md |  |
@@ -33,9 +33,9 @@
 | 8 | L20 | 实验方法 | 对照实验概念；六步迭代循环（先写预测、一次一改、无效即删）；基线阶梯（无 agent→默认→重跑→简单替代方案）；同配置两次的噪声（17/18 题，单题费用比 0.47–3.23）；逐题配对（回指第 16 讲 bootstrap）；事先定判断规则、不显著≠等价；统一计价与失败计入成本；运行卫生（输出目录、worktree、计时不干扰）；用轨迹做诊断与受控干预；报告清单 | Harvard CS2680 作业复盘（feedback_assignment）、notes/cost-effective-agents「公平成本实验」、notes/agent-evaluation「用轨迹决定改什么」；assignment3/README.md 方法要求 | **发布期末项目指南** |
 |  | L21 | 案例：工具输出裁剪 | 工具输出裁剪的想法与基线；动手前先算上限（按命中/未命中/输出拆账单）；waterfall 实现；小实验成本降到约 1/3；SWE 20 题 17 题 2.27 元，落在两次基线 2.24–2.44 元之间；第一版解释未查日志而被推翻（方法教训）；该查的五个日志问题（作业三 L2 由学员自己找原因）；找最贵路径表；教训与反成本 | assignment3/templates/trim-tool-output.ts；Harvard CS2680 第 8 讲（反成本、优化循环）与 notes/cost-effective-agents「Find the expensive path」；DSH tool-bash-persistent README |  |
 | 9 | L22 | LLM 内部：一句话在模型里走一遍 | 请求六阶段（分词→调度→预填充→解码→反分词→流式）；字节级 BPE 与 token 计费；采样参数与停止条件；Transformer 块（嵌入、RMSNorm、残差、注意力、SwiGLU 前馈、输出层）；Q/K/V 与因果掩码；注意力 O(n²) 与 FlashAttention；多头、GQA/MQA、KV 公式；MLA、滑动窗口、稀疏/线性注意力；参数分布与 2N FLOP/token | Harvard CS2680 L9 幻灯片（LLM 入门）；Vaswani et al. 2017《Attention Is All You Need》；Dao et al. 2022 FlashAttention；Ainslie et al. 2023 GQA；DeepSeek-V2 技术报告（MLA） |  |
-|  | L23 | 推理性能估算：动手之前先算账 | 三种上限（算力/带宽/容量）；kernel 时间 ≈ max(字节÷带宽, 运算÷算力)；算术强度与脊点；预填充估算（2N FLOP/token）与解码上限（带宽÷(权重+KV)）；CPU roofline 实测；线程扩展；KV 随上下文增长；CPU vs GPU（H200）概念对照；MBU/MFU | Harvard CS2680 L10a/10b 幻灯片（GPU 入门）；Williams et al. 2009 Roofline；课程 exp/roofline.md；作业四 E2/E5 | **发布 A4**（每个实验标注了学完哪一讲再做） |
+|  | L23 | 推理性能估算：动手之前先算账 | 三种上限（算力/带宽/容量）；kernel 时间 ≈ max(字节÷带宽, 运算÷算力)；算术强度与脊点；预填充估算（2N FLOP/token）与解码上限（带宽÷(权重+KV)）；CPU roofline 实测；线程扩展；KV 随上下文增长；CPU vs GPU（H200）概念对照；MBU/MFU | Harvard CS2680 L10a/10b 幻灯片（GPU 入门）；Williams et al. 2009 Roofline；课程实测数据 videos/real/exp_roofline_table.jsonl、exp_roofline_llamabench.jsonl；作业四 E2/E5 | **发布 A4**（每个实验标注了学完哪一讲再做） |
 |  | L24 | 本地模型：跑起来，再证明它真在干活 | 本地推理的得失；Ollama vs llama-server；GGUF 与元数据；内存估算（权重 + 144 KiB×-c）与 OOM；静默失败（含静默退回云端）；就绪看 /health；读日志与 timings 对账；剖析方法：时间线→单点→假设→改一处再测；会推理≠会用工具 | docs/setup-local.md 第一、三部分；assignment4/README.md L1；llama.cpp server README；Harvard CS2680 L10b 剖析方法部分 |  |
-| 10 | L25 | 批处理与调度：一个长提示卡住了谁 | LLM 服务为何特殊；TTFT/TBT/TPOT/E2E、P99 与 goodput；吞吐-交互性曲线（CPU 实测）；静态批 vs 连续批；选择性批（注意力不分摊）；预填充优先 vs 解码优先；分块预填充 CPU 实验；只看 P99 的陷阱；推理评测四个坑；对 agent 的启示（串行、-c÷-np、未缓存 token 作作业大小） | Harvard CS2680 L11 幻灯片；Yu et al. 2022 Orca；Agrawal et al. 2024 Sarathi-Serve；课程 exp/chunked.md、exp/batched_l25.txt；作业四 E1、L4 | **A3 截止** |
+| 10 | L25 | 批处理与调度：一个长提示卡住了谁 | LLM 服务为何特殊；TTFT/TBT/TPOT/E2E、P99 与 goodput；吞吐-交互性曲线（CPU 实测）；静态批 vs 连续批；选择性批（注意力不分摊）；预填充优先 vs 解码优先；分块预填充 CPU 实验；只看 P99 的陷阱；推理评测四个坑；对 agent 的启示（串行、-c÷-np、未缓存 token 作作业大小） | Harvard CS2680 L11 幻灯片；Yu et al. 2022 Orca；Agrawal et al. 2024 Sarathi-Serve；课程实测数据 videos/real/exp_chunked_results.jsonl；作业四 E1、L4 | **A3 截止** |
 |  | L26 | 服务端前缀缓存 | 因果注意力→前缀 KV 可复用、只能精确匹配；E2 基线对照（40553→493 ms，cache_n 4617）；块哈希（vLLM，链式哈希、末块不共享）vs 基数树（SGLang RadixAttention）+ 自测；引用计数共享、LRU 及更好的淘汰准则（Marconi/SSM）；命中与公平冲突、工具调用间隙 KV 去留；llama-server 对应物（cache_prompt、--cache-ram、--cache-reuse、--slot-save-path）；agent 协同清单（含 DSH 压缩指令追加保前缀）；云端命中率 95.8% | SGLang/RadixAttention（Zheng et al.）；vLLM 自动前缀缓存文档；Marconi（混合模型前缀缓存）；选读 Parrot |  |
 | 11 | L27 | KV 管理与压缩 | 多大：KV/token=2×层×KV头×头维×字节（Qwen3-8B 144 KiB，32k 4608 MiB；30B-A3B 3072 MiB 与日志对账），×长度×并发，KV 不能被批分摊；怎么管：三种浪费（预留/内部/外部碎片，公开 20–38%）、PagedAttention（M3：6.4%→90.6%）、共享与写时复制、满了排队/抢占重算/换出、按 KV 预算准入；怎么压：MHA/GQA/MLA、滑窗、稀疏注意力、SSM；KV 量化 E4（省 2158 MB 与公式 2160 吻合，但 pp 89.2→36.4、tg 10.21→9.23）及反转条件 | PagedAttention/vLLM（Kwon et al.）；MQA、GQA；DeepSeek-V2（MLA）；NSA；Mamba；KIVI |  |
 |  | L28 | 推测解码 | 一轮四步（起草/验证/接受/补一个）；拒绝采样精确性证明（cat/dog/rat，α=0.7）；E=(1−α^{k+1})/(1−α)、S=E/(ck+1)、最优 k；用 free_text 数据检验公式（k=8 预测 2.43 实测 2.23，偏乐观约 9%）；验证何时免费（GPU 屋脊 206 vs CPU 约 17）；E3 k=16 反而慢；草稿器谱系（独立/自推测/Medusa/EAGLE/MTP/检索）；n-gram CPU 实验（改名任务 3.38× vs 0.6B 草稿 1.44×；写作任务负结果 0.47×）；负载决定 k、MoE/长上下文/树验证；agent 复制式推测（SuffixDecoding、Cursor、Predicted Outputs 计费） | Leviathan et al. 2023；Chen et al. 2023；Medusa；EAGLE-1/2/3；DeepSeek-V3 技术报告（MTP）；SuffixDecoding |  |
@@ -76,7 +76,7 @@
 
 ## 按需学习路线
 
-不打算学完全课，也可以只做其中一部分。所有路线都要先完成[作业 0](assignments/a0.md) 关卡 1–3。
+不打算学完全课，也可以只做其中一部分。所有路线都要先完成[作业 0](../assignment0/README.md) 关卡 1–3。
 
 | 只想做 | 需要的作业部分 | 建议看的讲次 |
 |---|---|---|
@@ -84,7 +84,7 @@
 | 只做 A2（写 agent loop） | A0 | L1、L2、L7–L9、L14–L16 |
 | 只做 A3（优化 DSH） | A0；A2 README 的\"准备\"和\"在容器里跑小题\"两节（学会用运行器跑题） | L1、L2、L4、L5、L10、L11、L14、L15、L17–L21 |
 | 只做 A4（本地推理） | A0 关卡 1–2 | L22–L30 |
-| 只做 A5（全栈） | A0；A4 的 L1（Ollama 接入 DSH），内存不足 32GB 时改用 A5 提供的本地基线 | L4、L5、L12、L23、L24、L32、L33 |
+| 只做 A5（全栈） | A0；A4 的 L1（Ollama 接入 DSH），内存不足 32GB 时走 A5 的小内存路线（Qwen3-4B） | L4、L5、L12、L23、L24、L32、L33 |
 
 ## 评分权重（用于自评，不计学分）
 A0 是必做项，只判是否完成，作业 1 以它为前置。A1 占 10%，A2 占 15%，A3 占 20%，A4 占 20%，A5 占 15%，期末项目占 20%。每个作业都有自动检查和报告两部分。排行榜只做展示，不计入分数。
@@ -97,9 +97,11 @@ A0 是必做项，只判是否完成，作业 1 以它为前置。A1 占 10%，A
 | A0–A1 | 几元 |
 | A2 | 不到 13 元 |
 | A3 | 必做部分约 33 元；如果每天在 20 题上调试 10 轮、持续两周（140 轮 × 每轮 2.4–3.4 元），会到 **340–480 元** |
-| A4 | 只用本地模型，不花 API 费用 |
+| A4 | 基本只用本地模型；L3 和 deepseek-flash 的对比会花几分钱 |
 | A5 | 必做部分的云端花费不到 7 元 |
 | 期末项目 | 建议控制在 100 元以内 |
+
+上表只算 DeepSeek API。Mac 用户需要租的 x86_64 云主机费用不在其中（见[环境搭建指南](setup.md#mac-用户怎么办)）。
 
 调试请先在 8 道小题或几道题的子集上进行，跑通后再上 20 题。**重跑同样要计费**：每次重跑 20 题都是一轮完整的花费。全课总额要等外部试学员做完后才能校准，届时公布。
 

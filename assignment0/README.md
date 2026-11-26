@@ -2,6 +2,8 @@
 
 目标：确认你的机器能完成本课程的全部作业。预计 1–2 小时，大部分时间花在下载上。**第 1 周周末截止**，作业 1 要求先完成本作业。
 
+**只支持 x86_64 Linux 和 Windows + WSL2，不支持 macOS**（Mac 用户见[环境搭建指南](../docs/setup.md)的“Mac 用户怎么办”）。不确定自己的机器行不行，可以先跑 `python3 assignment0/selfcheck.py`：它只检查、不安装，第一行就告诉你操作系统是否支持。
+
 ## 先认识几个词
 
 | 词 | 意思 |
@@ -59,11 +61,11 @@ source ~/.venvs/agentharness/bin/activate && source ~/.config/agentharness/env &
 | 现象 | 处理 |
 |---|---|
 | PyPI / Hugging Face 慢或不通 | pip 换国内源；Hugging Face 一般用不到（课程已把数据集随仓库分发），确实需要时设置 `HF_ENDPOINT=https://hf-mirror.com` |
-| GHCR 不通或很慢 | 见 [infra/README.md](../infra/README.md) 的"国内访问"一节 |
+| GHCR 不通或很慢 | 见 [infra/README.md](../infra/README.md) “SWE-bench 评测镜像”一节里的“国内访问”一条 |
 | Docker Hub 不通 | **不能忽略**：运行器和出网代理镜像都从 Docker Hub 的基础镜像构建。请配置镜像加速，或拉取 `ghcr.io/odearevanhansen/agentharness-runner:0.1` 和 `ghcr.io/odearevanhansen/agentharness-egress:0.1` 后用 `docker tag` 改成本地名字，见 [infra/README.md](../infra/README.md) |
 | `DEEPSEEK_API_KEY` 格式警告 | 官方 key 以 `sk-` 开头，检查是不是误复制了其他平台的 key |
 | 内存 ⚠️（WSL2 下不足 16GB） | 按关卡 1 写 `.wslconfig` 并 `wsl --shutdown` |
-| 内存 ⚠️（16–32GB） | 可以完成 A0–A3，以及 A4 的 8B 实验；A4 L3 和 A5 需要 32GB，A5 可以改用课程提供的本地基线数据 |
+| 内存 ⚠️（16–32GB） | 可以完成 A0–A3，以及 A4 的 8B 实验；A4 L3 和 A5 需要 32GB，A5 走小内存路线（Qwen3-4B）亲手完成 |
 | macOS | 不支持，请使用 x86_64 Linux 云主机，或 Windows + WSL2 |
 
 ## 选做：第一次调用（5 分钟）
@@ -118,7 +120,7 @@ print(f"共 {step + 1} 次请求，花费约 {cny:.4f} 元")
 
    | 现象 | 处理 |
    |---|---|
-   | 拉取镜像超时 | 先单独 `docker pull` 第 1 步的镜像；GHCR 慢见 [infra/README.md](../infra/README.md) 的"国内访问"一节 |
+   | 拉取镜像超时 | 先单独 `docker pull` 第 1 步的镜像；GHCR 慢见 [infra/README.md](../infra/README.md) “SWE-bench 评测镜像”一节里的“国内访问”一条 |
    | 找不到镜像（not found / manifest unknown） | 确认用的是仓库里的 `infra/swebench/dataset.json`，并且机器是 x86_64 |
    | `Instances resolved: 0` | 打开 `test_output.txt` 看哪条测试失败；常见原因是内存不足或上次中断留下的同名容器，用 `docker ps -a` 找到并删掉后重跑 |
    | 磁盘满（no space left on device） | `docker system df` 查看占用，用 `docker image prune` 清理不用的镜像；WSL2 用户检查 Docker Desktop 的磁盘位置（见关卡 1） |
@@ -127,6 +129,6 @@ print(f"共 {step + 1} 次请求，花费约 {cny:.4f} 元")
 
 ## 完成标准
 到 [Discussions 的 Show and tell 分类](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=show-and-tell&title=%E4%BD%9C%E4%B8%9A%200%20%E6%89%93%E5%8D%A1)发一个标题为“作业 0 打卡”的帖子，贴出以下内容（有问题请发到 [Q&A 分类](https://github.com/ODearEvanHansen/agentharness/discussions/new?category=q-a)）：
-- `selfcheck.py` 的完整输出（不要包含 key）；
+- `selfcheck.py` 的完整输出（不要包含 key；新版本不再打印余额数字）；
 - 关卡 3 第 2 步和第 3 步的输出；
 - `infra/README.md` 中白名单三条验证的输出。

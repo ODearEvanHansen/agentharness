@@ -1,6 +1,6 @@
 # 作业 2：miniLoop —— 自己写一个 agent loop
 
-> 预计 15–20 小时。第 4 周发布，第 7 周截止。对应第 2 讲（最小 agent 循环）、第 7–9、14–16 讲（agent loop、评测基础设施、工具设计、评测；第 16 讲的重复次数、pass@k 与配对比较用于解读和报告结果）。
+> 预计 15–20 小时。第 4 周发布，第 7 周截止。对应第 2 讲（最小 agent 循环）、第 7–9、14–16 讲（agent loop、评测基础设施、工具设计、评测；第 16 讲的重复次数、pass@k 与配对比较用于解读和报告结果）。Part A 的小题和 Part B 学完第 7–9 讲就能做；SWE 子集和 Part C 建议学完第 6 周的第 14–16 讲再做。
 
 agent 本质上就是"模型 + 循环 + 工具"。这个作业要你只用 Python 标准库写一个最小的 agent loop，让它在隔离容器里解真实的 SWE-bench 题目，再和工业级 harness（DSH）做对照。
 
@@ -40,10 +40,10 @@ python -m swebench.harness.run_evaluation -d infra/swebench/dataset.json \
   -p assignment2/results/predictions-miniloop.jsonl -id a2-mine
 mv miniloop.a2-mine.json assignment2/results/     # 官方评测把报告写在当前目录（仓库根目录）
 ```
-报告文件名是 `<模型名>.<run_id>.json`，模型名取自 predictions 里的 `model_name_or_path`（这里是 `miniloop`）；如果 `mv` 找不到文件，用 `ls *.a2-mine.json` 看实际名字。
+报告文件名是 `<模型名>.<run_id>.json`，模型名取自 predictions 里的 `model_name_or_path`（这里是 `miniloop`）；如果 `mv` 找不到文件，用 `ls *.a2-mine.json` 看实际名字。`run.py` 跑完时会打印这两条命令（带上你的 `--tag`），照抄即可。
 **断点续跑**：结果按题追加写入 `assignment2/results/<suite>-<agent>[-<tag>].jsonl`。再次运行同样的命令时，已有无错误记录的题会跳过，并打印 `跳过 N 道已有记录的题（结果文件 ...）；要重跑请加 --fresh 或换 --tag`；出错的题会重跑。想全部重跑：加 `--fresh`（旧文件改名为 `<名字>.jsonl.bak-<时间戳>` 留作备份），或者换一个 `--tag` 写到新文件。改了 agent 代码之后一定要这么做，否则看到的还是旧结果。
 
-数据集 `dataset.json` 已随仓库提供，**不需要访问 Hugging Face**。单题超时（`--timeout`，默认 1200 秒）后，运行器会删除该题的任务容器，agent 随之停止。
+数据集 `dataset.json` 已随仓库提供，**不需要访问 Hugging Face**。单题超时（`--timeout`，默认 1200 秒）后，运行器会删除该题的任务容器；DSH 随之退出，你的 miniLoop 会在下一次请求模型之前被运行器停下（`run.py` 包装了 `chat()`，抛出的 `TaskTimeout` 不是 `Exception` 的子类，`except Exception` 拦不住它，也请不要用裸 `except:`）。没有 Docker 或 Docker 没启动时，SWE 模式会直接报错退出；有题出错时不会打印判分命令。
 
 **容易踩的坑（提前告诉你）**
 1. **思考模式**：DeepSeek 默认开启思考模式。带 `tool_calls` 的 assistant 消息必须原样带回 `reasoning_content`，否则下一次请求会返回 400。

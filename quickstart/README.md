@@ -10,7 +10,7 @@ export DEEPSEEK_API_KEY=sk-...        # 建议为本课程单独创建 key，只
 python3 quickstart/quickstart.py
 ```
 
-不需要 pip 安装任何依赖（只用标准库）。跑完会打印每道题是否通过、请求次数、花费（元），以及总解决率和缓存命中率。3 道题合计通常不到 1 分钱（实测 0.007–0.008 元）。
+不需要 pip 安装任何依赖（只用标准库）。跑完会打印每道题是否通过、请求次数、花费（元），以及总解决率和缓存命中率。3 道题合计约 1 分钱（低峰实测 0.007–0.008 元，白天高峰约 0.015 元，原因见下文）。
 
 ## 正常输出长什么样
 
@@ -48,6 +48,6 @@ agent 只有读文件、写文件、运行该题测试三个工具，没有任�
 
 ## 接下来
 
-- 换个模型：`python3 quickstart/quickstart.py --model deepseek-v4-pro`，对比解决率和花费。
+- 换个模型：`python3 quickstart/quickstart.py --model deepseek-v4-pro`，对比花费和耗时（这三道题两个模型通常都能全解，差别主要在价格）。
 - 只跑一道：`--tasks t05_parse_duration`。
 - 想自己写这个 loop、在真实 SWE-bench 题上和工业级 harness 对比：看[作业 2](https://odearevanhansen.github.io/agentharness/assignments/a2/)（需要 Linux/WSL2 + Docker）。

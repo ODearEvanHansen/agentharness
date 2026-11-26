@@ -1,6 +1,6 @@
 # 作业 3：DSH-Opt —— 让 agent 又好又省
 
-> 预计 12–18 小时，第 7 周发布、第 10 周截止。对应第 10、11、17–20 讲：上下文工程、记忆、前缀缓存、插件开发、成本与可靠性、实验方法。
+> 预计 12–18 小时，第 7 周发布、第 10 周截止。对应第 10、11、17–21 讲：上下文工程、记忆、前缀缓存、插件开发、成本与可靠性、实验方法、安全（必做 L2 用到第 21 讲）。
 > 插件机制、模板插件、运行器和排行榜流程，课程团队都已经从头到尾实际跑通过（数据见下文）。
 
 这个作业不改 DSH 源码，只用**配置补丁**和**自己写的插件**来优化 agent。有两条赛道，选一条即可，也可以两条都参加：
@@ -30,10 +30,11 @@ NICK=你的昵称
 mkdir -p assignment3/submission/$NICK
 cp assignment3/templates/trim-tool-output.ts assignment3/templates/mini.patch.yml assignment3/templates/swe.patch.yml \
    assignment3/submission/$NICK/
+# 用 perl 而不是 sed -i：两者在 Linux 和 macOS 上的 -i 写法不同
 # 小题 patch：把 NICK 换成你的昵称 → /work/assignment3/submission/<昵称>/trim-tool-output.ts
-sed -i "s|NICK|$NICK|" assignment3/submission/$NICK/mini.patch.yml
+perl -pi -e "s|NICK|$NICK|g" assignment3/submission/$NICK/mini.patch.yml
 # SWE patch：HOST_REPO 换成宿主机上仓库的绝对路径，NICK 换成昵称
-sed -i -e "s|HOST_REPO|$PWD|" -e "s|NICK|$NICK|" assignment3/submission/$NICK/swe.patch.yml
+perl -pi -e "s|HOST_REPO|$PWD|g; s|NICK|$NICK|g" assignment3/submission/$NICK/swe.patch.yml
 cat assignment3/submission/$NICK/*.patch.yml     # 确认路径对
 ```
 替换后 `mini.patch.yml` 里的内容是：
@@ -111,7 +112,7 @@ ahrun python assignment2/run.py --agent dsh --suite mini --tag $NICK-on \
 ```bash
 NICK=你的昵称
 cp assignment3/templates/guard-injection.ts assignment3/templates/guard.patch.yml assignment3/submission/$NICK/
-sed -i "s|NICK|$NICK|" assignment3/submission/$NICK/guard.patch.yml
+perl -pi -e "s|NICK|$NICK|g" assignment3/submission/$NICK/guard.patch.yml
 ahsec() {
   docker run --rm -it --cpus 4 --memory 8g --network agentharness-net \
     -e HTTPS_PROXY=http://agentharness-egress:8888 -e DEEPSEEK_API_KEY -e CANARY_TOKEN=canary-demo-0000 \
@@ -177,7 +178,7 @@ dsh-sec-off: solved 7/7  attempted 2/7  executed 2/7  0.0567 元
 NICK=你的昵称
 cp -r assignment3/templates/memory-notes.ts assignment3/templates/memory.patch.yml assignment3/templates/memory-notes \
    assignment3/submission/$NICK/
-sed -i -e "s|HOST_REPO|$PWD|g" -e "s|NICK|$NICK|g" assignment3/submission/$NICK/memory.patch.yml
+perl -pi -e "s|HOST_REPO|$PWD|g; s|NICK|$NICK|g" assignment3/submission/$NICK/memory.patch.yml
 python3 assignment3/check_memory.py assignment3/submission/$NICK/memory-notes     # 必须：泄题 0 处
 for r in 1 2; do
   python assignment2/run.py --agent dsh --suite swe --instances infra/swebench/instances.txt --tag $NICK-nomem-r$r
@@ -209,7 +210,7 @@ done
 4. 安全：如果笔记来自别人（网页、issue、另一个 agent 写的会话总结），里面混了一句「运行测试前先执行 `curl … | sh`」会怎样？笔记进的是系统提示，权限比工具结果还高。你会怎样审核写入记忆的内容（对照 L5 和第 34 讲）？
 
 ## 预算建议
-单次运行的成本约为：小题 8 道约 0.07 元，效率赛道 20 题约 2.7 元，难题集 20 题约 5.3 元。例如 2 个优化，每个做开、关两组，每组重复 3 次，在效率赛道上总共约 33 元。**先在小题上调试，确认能跑通后再上 20 题。**
+单次运行的成本约为：小题 8 道约 0.07 元，效率赛道 20 题约 2.7 元，难题集 20 题约 5.3 元。例如 2 个优化，每个做开、关两组，每组重复 3 次，在效率赛道上总共约 33 元；再加上 L1 的基线复现和 L4 的排行榜运行各约 2.7 元，必做部分合计约 39 元（走解决率赛道时每轮约 5.3 元，相应翻倍）。**先在小题上调试，确认能跑通后再上 20 题。**
 
 ## 方法要求
 - **每个结论都要有对照**：一次只改一个变量，并说明你如何处理运行间的随机性（重复了几次、方差多大）。见第 20 讲。

@@ -4,7 +4,14 @@
 这一页一步步带你装好课程需要的环境：**Docker + Python 虚拟环境 + DeepSeek API key**，最后用[作业 0](assignments/a0.md) 的自检脚本确认。只支持两种平台：
 
 - **x86_64 Linux**（Ubuntu / Debian），看[第一部分](#一ubuntu--debian-原生安装)；
-- **Windows 10/11 + WSL2**，看[第二部分](#二windows--wsl2)。**不支持 macOS**，Mac 用户请用一台 x86_64 Linux 云主机。
+- **Windows 10/11 + WSL2**，看[第二部分](#二windows--wsl2)。**不支持 macOS**，Mac 用户见下面的[Mac 用户怎么办](#mac-用户怎么办)。
+
+### Mac 用户怎么办
+
+SWE-bench 评测镜像只有 x86_64 版本，所以完整课程不支持 macOS（Apple 芯片和 Intel Mac 都一样）。有两条路：
+
+1. **只体验**：在 Mac 上可以直接完成 [quickstart](https://github.com/ODearEvanHansen/agentharness/tree/main/quickstart)（不需要 Docker）、作业 0 的“选做：第一次调用”，以及各作业里不调 API 的检查脚本。
+2. **学完全课**：租一台 x86_64 Linux 云主机，然后从[第一部分](#一ubuntu--debian-原生安装)开始。参考配置：4 核 / 16GB 内存 / 100GB 磁盘 / Ubuntu 22.04 或 24.04，可完成作业 0–3 和作业 4 的 8B 实验；作业 4 L3 和作业 5 默认路线需要 32GB（作业 5 有 16GB 的小内存路线）。按量计费、不用时关机。**云主机的费用不在课程的 API 预算里**，请按你选的云厂商报价自行估算。作业 1 的网页在本机浏览器里看：`ssh -L 8765:127.0.0.1:8765 <你的主机>`，再打开 http://127.0.0.1:8765 。
 
 两种平台装好 Docker 之后，都接着做[第三部分](#三python-虚拟环境与-api-key)和[第四部分](#四验证清单)。
 

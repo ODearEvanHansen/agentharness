@@ -17,6 +17,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "site_src"
 GH = "https://github.com/ODearEvanHansen/agentharness"
+NATIVE_PAGES = ("home", "setup", "setup-local", "project", "leaderboard", "faq", "grading")
 ASSIGN_NAMES = {0: "环境自检", 1: "DSH-Lens", 2: "miniLoop", 3: "DSH-Opt", 4: "DSH-Serve", 5: "DSH-Stack"}
 
 
@@ -34,7 +35,8 @@ def fix_links(md: str, src: Path) -> str:
             return m.group(0)
         r = str(rel)
         site_map = {"README.md": "index.md", "docs/syllabus.md": "syllabus.md", "infra/README.md": "infra.md",
-                    "assignment2/QUESTIONS.md": "assignments/a2-questions.md"}
+                    "assignment2/QUESTIONS.md": "assignments/a2-questions.md",
+                    **{f"docs/{n}.md": f"{n}.md" for n in NATIVE_PAGES if n != "home"}, "docs/home.md": "index.md"}
         mm = re.match(r"assignment(\d)(/README\.md|/?)$", r)
         if r in site_map or mm:
             page = site_map.get(r) or f"assignments/a{mm.group(1)}.md"
@@ -144,7 +146,7 @@ def leaderboard_md():
 def main():
     shutil.rmtree(OUT, ignore_errors=True)
     OUT.mkdir()
-    for name in ("home", "setup", "setup-local", "project", "leaderboard", "faq", "grading"):   # 站点原生页面（链接按站内路径写）
+    for name in NATIVE_PAGES:   # 站点原生页面（链接按站内路径写）
         src = (REPO / "docs" / f"{name}.md").read_text(encoding="utf-8")
         if name == "leaderboard":
             src = src.replace("{{LEADERBOARD}}", leaderboard_md())
