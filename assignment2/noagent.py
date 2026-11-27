@@ -260,8 +260,9 @@ def main():
             f.write(json.dumps(recs[i], ensure_ascii=False) + "\n")
     rs = [recs[i] for i in ids]
     cost = sum(r.get("cny", 0) for r in rs)
-    solved = sum(bool(r["solved"]) for r in rs)
-    print(f"\nnoagent {a.suite}: solved {solved}/{len(rs)}  {cost:.4f} 元（每题 {cost / len(rs):.4f} 元）  "
+    judged = [r for r in rs if r["solved"] is not None]
+    solved = f"solved {sum(bool(r['solved']) for r in judged)}/{len(rs)}" if judged else "未判分（加 --judge 或按上面的命令判分）"
+    print(f"\nnoagent {a.suite}: {solved}  {cost:.4f} 元（每题 {cost / len(rs):.4f} 元）  "
           f"中位耗时 {statistics.median(r['seconds'] for r in rs):.1f}s  "
           f"prompt tokens 合计 {sum(r.get('prompt_tokens', 0) for r in rs)}（中位 {statistics.median(r.get('prompt_tokens', 0) for r in rs):.0f}）"
           f"  结果 -> {out}")
